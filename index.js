@@ -17,7 +17,9 @@ require('express-async-errors')
 /* ----------------------------------- */
 // Configrations:
 
-
+// Connect to DB:
+const { dbConnection } = require('./src/configs/dbConnection')
+dbConnection()
 
 /* ------------------------------------------------------- */
 // Middlewares:
