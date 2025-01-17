@@ -7,4 +7,11 @@
 const router = require("express").Router();
 
 // Tokens:
-router.use("/tokens", require("./tokens"));
+router.use("/tokens", require("./token"));
+
+// Feedbacks:
+router.use("/feedbacks", require("./feedback"));
+
+/* ------------------------------------------------- */
+
+module.exports = router;

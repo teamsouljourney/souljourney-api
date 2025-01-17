@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const express = require("express");
 const app = express();
 
@@ -27,7 +31,8 @@ dbConnection();
 // Accept JSON:
 app.use(express.json());
 
-/* ------------------------------------------------------- */
+// res.getModelList():
+app.use(require("./src/middlewares/queryHandler"));
 
 /* ------------------------------------------------------- */
 // Routes:
@@ -37,8 +42,16 @@ app.all("/", (req, res) => {
   res.send({
     error: false,
     message: "Welcome to Soul Journey API",
+    documents: {
+      swagger: "/documents/swagger",
+      redoc: "/documents/redoc",
+      json: "/documents/json",
+    },
   });
 });
+
+// Routes:
+app.use(require("./src/routes/index"));
 
 // Not Found
 app.use("*", (req, res) => {
@@ -48,7 +61,16 @@ app.use("*", (req, res) => {
   });
 });
 
+/* ------------------------------------------------- */
+
+// errorHandler:
+app.use(require("./src/middlewares/errorHandler"));
+
 /* ------------------------------------------------------- */
+
 // RUN SERVER:
-app.listen(PORT, HOST, () => console.log(`http://${HOST}:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on http://${HOST}:${PORT}`);
+});
+
 /* ------------------------------------------------------- */
