@@ -103,7 +103,7 @@ module.exports = {
     });
   },
 
-  delete: async (req, res) => {
+  deleteToken: async (req, res) => {
     /*
             #swagger.tags = ['Token']
             #swagger.summary = 'Delete token by ID'
