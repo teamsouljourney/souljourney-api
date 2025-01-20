@@ -43,6 +43,10 @@ const documents = {
     ],
    
     definitions: {
+
+        Feedback: require('./src/models/feedback').schema.obj,
+
+        Token: require('./src/models/token').schema.obj,
         
         // User: require('./src/models/user').schema.obj,
        
