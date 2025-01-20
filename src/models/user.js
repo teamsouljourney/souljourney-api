@@ -119,4 +119,8 @@ UserSchema.methods.markAsVerified = async function () {
     await this.save({validateBeforeSave: false})
 }
 
+UserSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword)
+}
+
 module.exports = mongoose.model("User", UserSchema)
