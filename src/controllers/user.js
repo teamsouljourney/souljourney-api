@@ -16,6 +16,7 @@ module.exports = {
     create: async (req, res) => {
         res.status(200).send({
             error: false,
+            message: "User created successfully!",
             data
         })
     },
@@ -30,13 +31,16 @@ module.exports = {
         const data = await User.updateOne({_id: req.params.id}, req.body, {runValidators: true})        
         res.status(201).send({
             error: false,
+            message: "User updated successfully!",
             data,
             new: await User.findOne({_id: req.params.id})
         })
     },
     delete: async (req, res) => {
-        res.status(200).send({
-            error: false,
+        const data = await User.deleteOne({_id: req.params.id})
+        res.status(data.deletedCount ? 204 : 404).send({
+            error: !data.deletedCount,
+            message: data.deletedCount ? "User deleted successfully!" : "User not found!",
             data
         })
     },
