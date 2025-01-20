@@ -8,9 +8,10 @@ const router = require("express").Router();
 
 /* ------------------------------------------------- */
 
-const { signup } = require("../controllers/auth");
+const { signup, verifyEmail } = require("../controllers/auth");
 
 router.post("/signup", signup);
+router.get("/verify-email", verifyEmail);
 
 /* ------------------------------------------------- */
 
