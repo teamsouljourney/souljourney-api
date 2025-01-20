@@ -21,6 +21,8 @@ module.exports = {
         })
     },
     read: async (req, res) => {
+        const data = await User.findOne({_id: req.params.id})
+        
         res.status(200).send({
             error: false,
             data
