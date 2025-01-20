@@ -4,7 +4,9 @@
 ------------------------------------------------------- */
 
 const {mongoose} = require("../configs/dbConnection")
-const validator = require("validator")
+const validator = require("validator");
+const validatePassword = require("../helpers/validatePassword");
+const bcrypt = require("bcryptjs")
 
 /* ------------------------------------------------------- *
 {
@@ -38,7 +40,8 @@ const UserSchema = new mongoose.Schema({
         },
         trim: true,
         validate: {
-            // validator: 
+            validator: validatePassword,
+            message: "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character."
         }
     },
     email: {
@@ -67,8 +70,7 @@ const UserSchema = new mongoose.Schema({
     phone: {
         type: String,
         trim: true,
-        unique: true,
-        default: ""
+        unique: true
     },
     address: {
         type: String,
@@ -104,5 +106,40 @@ const UserSchema = new mongoose.Schema({
     collection: 'users',
     timestamps: true
 })
+
+// Hash the password before saving the user to the database
+UserSchema.pre("save", async function (next) {
+    if (this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 12)
+    }
+    next()
+})
+
+// Method to mark the user's email as verified
+UserSchema.methods.markAsVerified = async function () {
+    this.isEmailVerified = true
+    await this.save({validateBeforeSave: false})
+}
+
+// Method to check if the provided password matches the hashed password in the database
+UserSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+    return await bcrypt.compare(candidatePassword, userPassword)
+}
+
+// UserSchema.methods.createPasswordResetToken = function () {
+//     const resetToken = crypto.randomBytes(32).toString("hex")
+    
+// }
+
+// Method to create a verification code and set an expiration time
+UserSchema.methods.createVerificationCode = function() {
+    const verificationCode = Math.floor(100000 + Math.random() * 900000)
+
+    this.verificationCode = verificationCode
+
+    this.verificationCodeExpires = Date.now() + 10 * 60 * 1000
+
+    return verificationCode
+}
 
 module.exports = mongoose.model("User", UserSchema)
