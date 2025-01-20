@@ -107,6 +107,7 @@ const UserSchema = new mongoose.Schema({
     timestamps: true
 })
 
+// Hash the password before saving the user to the database
 UserSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 12)
@@ -114,11 +115,13 @@ UserSchema.pre("save", async function (next) {
     next()
 })
 
+// Method to mark the user's email as verified
 UserSchema.methods.markAsVerified = async function () {
     this.isEmailVerified = true
     await this.save({validateBeforeSave: false})
 }
 
+// Method to check if the provided password matches the hashed password in the database
 UserSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword)
 }
@@ -128,6 +131,7 @@ UserSchema.methods.correctPassword = async function (candidatePassword, userPass
     
 // }
 
+// Method to create a verification code and set an expiration time
 UserSchema.methods.createVerificationCode = function() {
     const verificationCode = Math.floor(100000 + Math.random() * 900000)
 
