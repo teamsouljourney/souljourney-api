@@ -68,7 +68,7 @@ const UserSchema = new mongoose.Schema({
         trim: true,
         default: ""
     },
-    proffesion: {
+    profession: {
         type: String,
         trim: true,
         default: ""
