@@ -19,14 +19,14 @@ module.exports = {
         const userData = await User.create(req.body)
         // console.log(userData);
         
-        // Simple Token
+        //? Simple Token
         const tokenData = await Token.create({
             userId: userData._id,
             token: crypto.randomBytes(32).toString('hex')
         })
         // console.log(tokenData);
 
-        // JWT
+        //? JWT
 
         // Access Token
         const accessData = {
