@@ -4,7 +4,8 @@
 ------------------------------------------------------- */
 
 const {mongoose} = require("../configs/dbConnection")
-const validator = require("validator")
+const validator = require("validator");
+const validatePassword = require("../helpers/validatePassword");
 
 /* ------------------------------------------------------- *
 {
@@ -38,7 +39,8 @@ const UserSchema = new mongoose.Schema({
         },
         trim: true,
         validate: {
-            // validator: 
+            validator: validatePassword,
+            message: "Password must be at least 8 characters long and include at least one lowercase letter, one uppercase letter, one number, and one special character."
         }
     },
     email: {
@@ -67,8 +69,7 @@ const UserSchema = new mongoose.Schema({
     phone: {
         type: String,
         trim: true,
-        unique: true,
-        default: ""
+        unique: true
     },
     address: {
         type: String,
