@@ -1,7 +1,7 @@
 "use strict";
 
 /* ------------------------------------------------- */
-/*                  BLOGMOTION API                   */
+/*                  SOULJOURNEY API                  */
 /* ------------------------------------------------- */
 
 const jwt = require("jsonwebtoken");
