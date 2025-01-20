@@ -114,4 +114,9 @@ UserSchema.pre("save", async function (next) {
     next()
 })
 
+UserSchema.methods.markAsVerified = async function () {
+    this.isEmailVerified = true
+    await this.save({validateBeforeSave: false})
+}
+
 module.exports = mongoose.model("User", UserSchema)
