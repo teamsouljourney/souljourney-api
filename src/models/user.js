@@ -6,7 +6,8 @@
 const {mongoose} = require("../configs/dbConnection")
 const validator = require("validator");
 const validatePassword = require("../helpers/validatePassword");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
+const resetTokenHash = require("../helpers/resetTokenHash");
 
 /* ------------------------------------------------------- *
 {
@@ -126,10 +127,24 @@ UserSchema.methods.correctPassword = async function (candidatePassword, userPass
     return await bcrypt.compare(candidatePassword, userPassword)
 }
 
-// UserSchema.methods.createPasswordResetToken = function () {
-//     const resetToken = crypto.randomBytes(32).toString("hex")
-    
-// }
+/*
+ * This method generates a password reset token for a user.
+ * It creates a random token, hashes it for security, and sets an expiration time.
+ * The raw token is returned to be sent to the user via email.
+ */
+UserSchema.methods.createPasswordResetToken = function () {
+    // Generates a random 32-byte reset token and converts it to a hexadecimal string
+    const resetToken = crypto.randomBytes(32).toString("hex")
+
+    // Hashes the reset token and stores it in the database for security
+    this.passwordResetToken = resetTokenHash(resetToken)
+
+    // Sets an expiration time for the reset token (10 minutes from now)
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000
+
+    // Returns the raw reset token (not hashed) to be sent to the user
+    return resetToken    
+}
 
 // Method to create a verification code and set an expiration time
 UserSchema.methods.createVerificationCode = function() {
