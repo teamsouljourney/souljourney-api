@@ -123,4 +123,19 @@ UserSchema.methods.correctPassword = async function (candidatePassword, userPass
     return await bcrypt.compare(candidatePassword, userPassword)
 }
 
+// UserSchema.methods.createPasswordResetToken = function () {
+//     const resetToken = crypto.randomBytes(32).toString("hex")
+    
+// }
+
+UserSchema.methods.createVerificationCode = function() {
+    const verificationCode = Math.floor(100000 + Math.random() * 900000)
+
+    this.verificationCode = verificationCode
+
+    this.verificationCodeExpires = Date.now() + 10 * 60 * 1000
+
+    return verificationCode
+}
+
 module.exports = mongoose.model("User", UserSchema)
