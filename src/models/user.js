@@ -4,6 +4,7 @@
 ------------------------------------------------------- */
 
 const {mongoose} = require("../configs/dbConnection")
+const validator = require("validator")
 
 /* ------------------------------------------------------- *
 {
@@ -32,15 +33,21 @@ const UserSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
-        trim: true
+        required: function () {
+            return this.googleId ? false : true
+        },
+        trim: true,
+        validate: {
+            // validator: 
+        }
     },
     email: {
         type: String,
         required: true,
         unique: true,
         trim: true,
-        index: true
+        index: true,
+        validate: [validator.isEmail, "Please provide a valid e-mail!"]
     },
     firstName: {
         type: String,
