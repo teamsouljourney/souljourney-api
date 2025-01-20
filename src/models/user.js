@@ -19,6 +19,10 @@ const {mongoose} = require("../configs/dbConnection")
 /* ------------------------------------------------------- */
 
 const UserSchema = new mongoose.Schema({
+    googleId: {
+        type: String,
+        unique: true
+    },
     userName: {
         type: String,
         required: [true, "Username is required"],
@@ -37,10 +41,6 @@ const UserSchema = new mongoose.Schema({
         unique: true,
         trim: true,
         index: true
-    },
-    googleId: {
-        type: String,
-        unique: true
     },
     firstName: {
         type: String,
