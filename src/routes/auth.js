@@ -1,7 +1,7 @@
 "use strict";
 
 /* ------------------------------------------------- */
-/*                  BLOGMOTION API                   */
+/*                 SOULJOURNEY API                   */
 /* ------------------------------------------------- */
 
 const router = require("express").Router();
