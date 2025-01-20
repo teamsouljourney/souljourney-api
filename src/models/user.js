@@ -10,15 +10,13 @@ const bcrypt = require("bcryptjs");
 const resetTokenHash = require("../helpers/resetTokenHash");
 
 /* ------------------------------------------------------- *
+User Model requirements
 {
     "userName": "admin",
     "password": "aA?123456",
     "email": "admin@site.com",
     "firstName": "admin",
-    "lastName": "admin",
-    "isActive": true,
-    "isAdmin": true,
-    "isStaff": true,
+    "lastName": "admin"
 }
 /* ------------------------------------------------------- */
 
