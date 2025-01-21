@@ -4,7 +4,6 @@ SOULJOURNEY API
 ------------------------------------------------------- */
 const User = require("../models/user");
 const Token = require("../models/token")
-const jwt = require("jsonwebtoken");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const { createSendToken } = require("../helpers/jwtFunctions");
 
@@ -49,7 +48,7 @@ module.exports = {
         const user = await User.create(req.body)
         // console.log(user);
         
-        //? Simple Token
+        //* Simple Token
         const tokenData = await Token.create({
             userId: user._id,
             // token: crypto.randomBytes(32).toString('hex')
@@ -57,7 +56,7 @@ module.exports = {
         })
         // console.log(tokenData);
 
-        //? JWT    
+        //* JWT    
         createSendToken(user, 202, tokenData, res)
         
     },
