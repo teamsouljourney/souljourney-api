@@ -15,8 +15,12 @@ router.use("/users", require("./user"));
 // Feedbacks:
 router.use("/feedbacks", require("./feedback"));
 
+//category
+router.use("/categories", require("./category"));
+
 //documents:
 router.use("/documents", require("./document"))
+
 
 /* ------------------------------------------------- */
 
