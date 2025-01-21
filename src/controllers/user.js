@@ -4,7 +4,9 @@ SOULJOURNEY API
 ------------------------------------------------------- */
 const User = require("../models/user");
 const Token = require("../models/token")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const passwordEncrypt = require("../helpers/passwordEncrypt");
+const { createSendToken } = require("../helpers/jwtFunctions");
 
 module.exports = {
     list: async (req, res) => {
@@ -44,37 +46,20 @@ module.exports = {
                 }
             }
         */
-        const userData = await User.create(req.body)
-        // console.log(userData);
+        const user = await User.create(req.body)
+        // console.log(user);
         
         //? Simple Token
         const tokenData = await Token.create({
-            userId: userData._id,
-            token: crypto.randomBytes(32).toString('hex')
+            userId: user._id,
+            // token: crypto.randomBytes(32).toString('hex')
+            token: passwordEncrypt(user._id + Date.now())
         })
         // console.log(tokenData);
 
-        //? JWT
-
-        // Access Token
-        const accessData = {
-            _id: userData._id,
-            userName: userData.userName,
-            email: userData.email,
-            isActive: userData.isActive,
-            isAdmin: userData.isAdmin
-        }
-
-        //Convert to JWT
-        const accessToken = jwt.sign(accessData, process.env._ACCESS_KEY, {expiresIn: "2h"})
-
-        res.status(202).send({
-            error: false,
-            message: "User created successfully!",
-            token: tokenData.token,
-            bearer: {access: accessToken},
-            userData
-        })
+        //? JWT    
+        createSendToken(user, 202, tokenData, res)
+        
     },
     read: async (req, res) => {
         /* 
