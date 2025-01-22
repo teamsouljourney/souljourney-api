@@ -6,6 +6,8 @@
 
 const { mongoose } = require("../configs/dbConnection");
 const passwordEncrypt = require('../helpers/passwordEncrypt')
+const uniqueValidator = require("mongoose-unique-validator");
+
 
 
 const TherapistSchema = new mongoose.Schema(
@@ -34,11 +36,10 @@ const TherapistSchema = new mongoose.Schema(
             trim:true,
             required: true,
             unique:true,
-            validate(email) {
-                if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-                    throw new Error("Invalid email address");
-                }
-            }
+            validate: [
+                // (email) => emailValidation(email),
+                "Email format is not valid",
+            ],
         },
         password:{
             type:String,
@@ -46,15 +47,14 @@ const TherapistSchema = new mongoose.Schema(
             trim:true,
             required: true,
             set: (password) => passwordEncrypt(password),
-            validate(password) {
-                if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
-                    throw new Error("Password must be at least 8 characters long and contain at least one letter and one number");
-                }
-            },  
+            validate: [
+                // (password) => passwordValidation(password),
+                // "Password format is not valid",
+                ],
         },
         image: {
-            type: String, // URL olarak saklanacak
-            default: '' // Varsayılan resim URL'si
+            type: String,
+            default: '' 
         },
 
         categoryId: {
@@ -81,5 +81,8 @@ const TherapistSchema = new mongoose.Schema(
         timestamps: true,
       }
 );
+UserSchema.plugin(uniqueValidator, {
+    message: "This {PATH} is exist",
+  });
 
 module.exports = mongoose.model("Therapist ", TherapistSchema);
