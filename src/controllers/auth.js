@@ -9,6 +9,7 @@
 const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const User = require("../models/user");
+const Token = require("../models/token");
 const {
   signVerificationToken,
   createSendToken,
@@ -137,17 +138,17 @@ module.exports = {
             }
         */
 
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     // 1) Check if username and password exist
-    if (!username || !password) {
+    if (!email || !password) {
       throw new CustomError("Please provide email and password!", 400);
     }
 
     // 2) Check if user exists && password is correct
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ email });
 
-    if (!user.isVerified) {
+    if (!user.isEmailVerified) {
       throw new CustomError("Please verify your email before logging in", 401);
     }
 
@@ -217,7 +218,7 @@ module.exports = {
           status: result.deletedCount > 0 ? "success" : "fail",
           message:
             result.deletedCount > 0
-              ? "Simple token deleted successfully. Logout completed."
+              ? "Logout successfully."
               : "Simple token not found. It may have already been logged out.",
         });
 
@@ -226,7 +227,7 @@ module.exports = {
 
         return res.status(200).json({
           status: "success",
-          message: "JWT blacklisted successfully. Logout completed.",
+          message: "JWT blacklisted successfully. Logout successfully.",
         });
 
       default:
