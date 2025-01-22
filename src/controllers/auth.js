@@ -17,6 +17,24 @@ const CustomError = require("../errors/customError");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 
 module.exports = {
+  /*
+            #swagger.tags = ["Authentication"]
+            #swagger.summary = "Signup"
+            #swagger.description = 'Create a new user account and send a verification email.'
+            #swagger.parameters["body"] = {
+                in: "body",
+                required: true,
+                schema: {
+                    "username": "testUser",
+                    "firstName": "John",
+                    "lastName": "Doe",
+                    "email": "test@example.com",
+                    "password": "password123"
+                }
+            }
+          
+        */
+
   signup: async (req, res) => {
     const newUser = await User.create({
       username: req.body.username,
