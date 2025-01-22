@@ -50,7 +50,6 @@ module.exports = {
     });
 
     const verificationToken = signVerificationToken(newUser._id);
-    console.log("Verification Token:", verificationToken);
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
@@ -84,7 +83,7 @@ module.exports = {
 
     if (!token) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=missing-token`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=error&status=missing-token`
       );
     }
 
@@ -96,7 +95,7 @@ module.exports = {
       );
     } catch (error) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=invalid-token`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=error&status=invalid-token`
       );
     }
 
@@ -106,20 +105,20 @@ module.exports = {
 
     if (!user) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=user-not-found`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=error&status=user-not-found`
       );
     }
 
     if (user.isVerified) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=already-verified`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=warning&status=already-verified`
       );
     }
 
     await user.markAsVerified();
 
     return res.redirect(
-      `${process.env.CLIENT_URL}/auth/verify-email/success?status=success`
+      `${process.env.CLIENT_URL}/auth/verify-email?statusType=success&status=success`
     );
   },
 
