@@ -15,6 +15,7 @@ const {
 const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
+const blacklistToken = require("../helpers/blacklistFunctions");
 
 module.exports = {
   /*
@@ -218,7 +219,7 @@ module.exports = {
         });
 
       case "Bearer":
-        // await blacklistToken(tokenValue);
+        await blacklistToken(tokenValue);
 
         return res.status(200).json({
           status: "success",
