@@ -38,7 +38,7 @@ module.exports = {
 
   signup: async (req, res) => {
     const newUser = await User.create({
-      username: req.body.username,
+      userName: req.body.userName,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
