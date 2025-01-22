@@ -81,7 +81,7 @@ const TherapistSchema = new mongoose.Schema(
         timestamps: true,
       }
 );
-UserSchema.plugin(uniqueValidator, {
+TherapistSchema.plugin(uniqueValidator, {
     message: "This {PATH} is exist",
   });
 
