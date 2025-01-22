@@ -6,6 +6,8 @@
 
 // Auth Controller:
 
+const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 const User = require("../models/user");
 const {
   signVerificationToken,
@@ -47,6 +49,7 @@ module.exports = {
     });
 
     const verificationToken = signVerificationToken(newUser._id);
+    console.log("Verification Token:", verificationToken);
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
