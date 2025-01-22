@@ -10,6 +10,7 @@ const User = require("../models/user");
 const {
   signVerificationToken,
   createSendToken,
+  signResetToken,
 } = require("../helpers/jwtFunctions");
 const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
@@ -211,6 +212,74 @@ module.exports = {
           status: "fail",
           message: `Unsupported token type '${tokenType}'. Use 'Token' or 'Bearer'.`,
         });
+    }
+  },
+
+  forgotPassword: async (req, res) => {
+    const { email } = req.body;
+
+    // 1) Get user based on POSTed email
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw new CustomError("There is no user with email address.", 404);
+    }
+
+    // 2) Generate resetToken and verificationCode
+    const resetToken = user.createPasswordResetToken();
+    const verificationCode = user.createVerificationCode();
+    await user.save({ validateBeforeSave: false });
+
+    // Generate JWT token with resetToken and verificationCode
+    const jwtResetToken = signResetToken(
+      user._id,
+      resetToken,
+      verificationCode
+    );
+
+    // Reset URL with JWT
+    const resetURL = `${process.env.CLIENT_URL}/auth/reset-password/${jwtResetToken}`;
+
+    const message = `
+    Hi ${user.username},
+  
+    You requested to reset your password. Please use the verification code below to proceed:
+  
+    Verification Code: ${verificationCode}
+  
+    Alternatively, you can reset your password by clicking on the following link:
+    ${resetURL}
+  
+    If you did not request this, please ignore this email.
+  
+    Best regards,
+    The Team
+  `;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: "Your password reset token (valid for 10 min)",
+        message,
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Reset token and verification code sent to email!",
+        jwtResetToken,
+      });
+    } catch (err) {
+      console.error("Error in forgotPassword:", err);
+
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+      user.verificationCode = undefined;
+      user.verificationCodeExpires = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      throw new CustomError(
+        "There was an error sending the reset token and verification code. Try again later!",
+        500
+      );
     }
   },
 };
