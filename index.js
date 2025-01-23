@@ -37,6 +37,9 @@ app.use(require("./src/middlewares/authentication"));
 // res.getModelList():
 app.use(require("./src/middlewares/queryHandler"));
 
+// Run Logger:
+// app.use(require('./src/middlewares/logger'))
+
 /* ------------------------------------------------------- */
 // Routes:
 
