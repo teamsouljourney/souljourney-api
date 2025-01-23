@@ -44,7 +44,11 @@ const documents = {
    
     definitions: {
 
+        Category: require('./src/models/category').schema.obj,
+
         Feedback: require('./src/models/feedback').schema.obj,
+        
+        Therapist: require('./src/models/therapist').schema.obj,
 
         Token: require('./src/models/token').schema.obj,
         
