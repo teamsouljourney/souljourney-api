@@ -5,15 +5,15 @@
 
 const router = require("express").Router()
 
-const user = require("../controllers/therapist")
+const therapist = require("../controllers/therapist")
 
 router.route("/")
-    .get(user.list)
-    .post(user.create)
+    .get(therapist.list)
+    .post(therapist.create)
 router.route("/:id")
-    .get(user.read)
-    .put(user.update)
-    .patch(user.update)
-    .delete(user.delete)
+    .get(therapist.read)
+    .put(therapist.update)
+    .patch(therapist.update)
+    .delete(therapist.delete)
 
 module.exports = router
