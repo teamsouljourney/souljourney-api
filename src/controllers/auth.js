@@ -14,6 +14,8 @@ const {
   signVerificationToken,
   createSendToken,
   signResetToken,
+  signAccessToken,
+  signRefreshToken,
 } = require("../helpers/jwtFunctions");
 const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
@@ -175,6 +177,42 @@ module.exports = {
 
     // JWT:
     createSendToken(user, 200, tokenData, res);
+  },
+
+  authSuccess: async (req, res) => {
+    const user = req.user;
+
+    if (!user) {
+      return res.redirect(`${process.env.CLIENT_URL}/auth/failure`);
+    }
+    // TOKEN:
+    let tokenData = await Token.findOne({ userId: user._id });
+    if (!tokenData)
+      tokenData = await Token.create({
+        userId: user._id,
+        token: passwordEncrypt(user._id + Date.now()),
+      });
+
+    // JWT:
+    const accessToken = signAccessToken(user);
+    const refreshToken = signRefreshToken(user);
+
+    const data = {
+      error: false,
+      message: "You are successfully logged in!",
+      token: tokenData.token,
+      bearer: {
+        access: accessToken,
+        refresh: refreshToken,
+      },
+      user,
+    };
+
+    res.redirect(
+      `${process.env.CLIENT_URL}/auth/success?user=${encodeURIComponent(
+        JSON.stringify(data)
+      )}`
+    );
   },
 
   logout: async (req, res) => {

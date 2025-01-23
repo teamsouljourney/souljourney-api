@@ -45,8 +45,8 @@ const createSendToken = (user, statusCode, tokenData, res) => {
     error: "false",
     token: tokenData.token,
     bearer: {
-      accessToken,
-      refreshToken,
+      access: accessToken,
+      access: refreshToken,
     },
     user,
   });
