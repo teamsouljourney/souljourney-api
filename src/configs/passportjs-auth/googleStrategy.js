@@ -54,6 +54,7 @@ passport.use(
           image: profile.photos
             ? profile.photos[0].value
             : "default-avatar.jpg",
+          isEmailVerified: true,
         });
 
         await user.save();
