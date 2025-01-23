@@ -5,6 +5,9 @@
 /* ------------------------------------------------- */
 
 const express = require("express");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const MongoStore = require("connect-mongo");
 const app = express();
 
 /* ----------------------------------- */
@@ -27,6 +30,28 @@ dbConnection();
 
 /* ------------------------------------------------------- */
 // Middlewares:
+
+// Passportjs Authentication Config
+require("./src/configs/passportjs-auth/passportConfig");
+app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB,
+      collectionName: "sessions",
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+      secure: process.env.NODE_ENV,
+    },
+  })
+);
+
+/* ------------------------------------------------- */
 
 // Accept JSON:
 app.use(express.json());
