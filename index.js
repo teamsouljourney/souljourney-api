@@ -9,6 +9,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const app = express();
+const cors = require("cors");
 
 /* ----------------------------------- */
 // Required Modules:
@@ -30,6 +31,14 @@ dbConnection();
 
 /* ------------------------------------------------------- */
 // Middlewares:
+
+// Cors
+const corsOptions = {
+  origin: process.env.CLIENT_URL,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // Passportjs Authentication Config
 require("./src/configs/passportjs-auth/passportConfig");
