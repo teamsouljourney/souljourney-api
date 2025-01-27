@@ -9,6 +9,7 @@ const validator = require("validator");
 const validatePassword = require("../helpers/validatePassword");
 const bcrypt = require("bcryptjs");
 const resetTokenHash = require("../helpers/resetTokenHash");
+const uniqueValidator = require("mongoose-unique-validator");
 
 /* ------------------------------------------------------- *
 User Model requirements
@@ -110,6 +111,10 @@ const UserSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+UserSchema.plugin(uniqueValidator, {
+    message: "This {PATH} is exist",
+});
 
 // Hash the password before saving the user to the database
 UserSchema.pre("save", async function (next) {
