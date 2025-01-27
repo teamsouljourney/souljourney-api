@@ -23,25 +23,25 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 
 module.exports = {
-  /*
-            #swagger.tags = ["Authentication"]
-            #swagger.summary = "Signup"
-            #swagger.description = 'Create a new user account and send a verification email.'
-            #swagger.parameters["body"] = {
-                in: "body",
-                required: true,
-                schema: {
-                    "username": "testUser",
-                    "firstName": "John",
-                    "lastName": "Doe",
-                    "email": "test@example.com",
-                    "password": "password123"
-                }
-            }
-          
-        */
-
+  
   signup: async (req, res) => {
+    /*
+        #swagger.tags = ["Authentication"]
+        #swagger.summary = "Signup"
+        #swagger.description = 'Create a new user account and send a verification email.'
+        #swagger.parameters["body"] = {
+            in: "body",
+            required: true,
+            schema: {
+                "username": "testUser",
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "test@example.com",
+                "password": "password123"
+            }
+        }
+            
+    */
     const newUser = await User.create({
       userName: req.body.userName,
       firstName: req.body.firstName,
