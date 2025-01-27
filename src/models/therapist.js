@@ -10,7 +10,7 @@ const validator = require("validator");
 const validatePassword = require("../helpers/validatePassword");
 const bcrypt = require("bcryptjs");
 const resetTokenHash = require("../helpers/resetTokenHash");
-// const uniqueValidator = require("mongoose-unique-validator");
+const uniqueValidator = require("mongoose-unique-validator");
 
 
 const TherapistSchema = new mongoose.Schema(
@@ -88,9 +88,9 @@ const TherapistSchema = new mongoose.Schema(
         timestamps: true,
       }
 );
-// TherapistSchema.plugin(uniqueValidator, {
-//     message: "This {PATH} is exist",
-//   });
+TherapistSchema.plugin(uniqueValidator, {
+    message: "This {PATH} is exist",
+});
 
 
 TherapistSchema.pre("save", async function (next) {
