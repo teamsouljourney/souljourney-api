@@ -40,28 +40,38 @@
   "paths": {
     "/auth/signup": {
       "post": {
-        "description": "",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Signup",
+        "description": "Create a new user account and send a verification email.",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "userName": {
-                  "example": "any"
+                "username": {
+                  "type": "string",
+                  "example": "testUser"
                 },
                 "firstName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "John"
                 },
                 "lastName": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "Doe"
                 },
                 "email": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "test@example.com"
                 },
                 "password": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "password123"
                 }
               }
             }
@@ -276,7 +286,7 @@
           "Users"
         ],
         "summary": "List Users",
-        "description": "  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>   <li>URL/?<b>limit=10&page=1</b></li>  </ul>  ",
+        "description": "\r  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.\r  <ul> Examples:\r   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r   <li>URL/?<b>limit=10&page=1</b></li>\r  </ul>\r  ",
         "responses": {
           "200": {
             "description": "OK"
@@ -653,7 +663,7 @@
           "Feedbacks"
         ],
         "summary": "List Feedbacks",
-        "description": "  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>   <li>URL/?<b>limit=10&page=1</b></li>  </ul>  ",
+        "description": "\r  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.\r  <ul> Examples:\r   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r   <li>URL/?<b>limit=10&page=1</b></li>\r  </ul>\r  ",
         "responses": {
           "200": {
             "description": "OK"
@@ -790,7 +800,7 @@
           "Category"
         ],
         "summary": "List Categories",
-        "description": "  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.  <ul> Examples:   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>   <li>URL/?<b>limit=10&page=1</b></li>  </ul>  ",
+        "description": "\r  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.\r  <ul> Examples:\r   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r   <li>URL/?<b>limit=10&page=1</b></li>\r  </ul>\r  ",
         "responses": {
           "200": {
             "description": "OK"
