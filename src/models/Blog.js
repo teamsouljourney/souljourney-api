@@ -1,4 +1,10 @@
-import mongoose from "mongoose";
+"use strict";
+
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
+const { mongoose } = require("../configs/dbConnection");
 
 const BlogSchema = new mongoose.Schema(
   {
@@ -12,4 +18,4 @@ const BlogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Blog || mongoose.model("Blog", BlogSchema);
+module.exports = mongoose.models.Blog || mongoose.model("Blog", BlogSchema);

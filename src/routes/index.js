@@ -24,6 +24,9 @@ router.use("/categories", require("./category"));
 // documents:
 router.use("/documents", require("./document"));
 
+//blogs:
+router.use("/blogs", require("./blog"));
+
 /* ------------------------------------------------- */
 
 module.exports = router;
