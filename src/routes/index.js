@@ -6,23 +6,29 @@
 
 const router = require("express").Router();
 
+/* AUTH ROUTES */
+
 // Auth
 router.use("/auth", require("./auth"));
-
-// User:
-router.use("/users", require("./user"));
 
 // Tokens:
 router.use("/tokens", require("./token"));
 
-// Feedbacks:
-router.use("/feedbacks", require("./feedback"));
+// User:
+router.use("/users", require("./user"));
 
-// Category
+/* --------------------------------- */
+
+/* OTHER ROUTES */
+
+// Categories
 router.use("/categories", require("./category"));
 
-// documents:
+// Documents:
 router.use("/documents", require("./document"));
+
+// Feedbacks:
+router.use("/feedbacks", require("./feedback"));
 
 /* ------------------------------------------------- */
 
