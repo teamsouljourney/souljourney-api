@@ -5,7 +5,7 @@
 
 const router = require("express").Router()
 
-const blog = require("../controllers/blogController")
+const blog = require("../controllers/blog")
 
 router.route("/")
     .get(blog.list)
