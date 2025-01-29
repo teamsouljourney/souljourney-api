@@ -133,7 +133,7 @@ module.exports = {
                 in: "body",
                 required: true,
                 schema: {
-                    "username": "testUser",
+                    "email": "testUser",
                     "password": "password123"
                 }
             }
@@ -149,12 +149,12 @@ module.exports = {
     // 2) Check if user exists && password is correct
     const user = await User.findOne({ email });
 
-    if (!user.isEmailVerified) {
+    if (user && !user.isEmailVerified) {
       throw new CustomError("Please verify your email before logging in", 401);
     }
 
     // 3) Check if user isActive
-    if (!user.isActive) {
+    if (user && !user.isActive) {
       throw new CustomError(
         "This account is not active. Please contact support for assistance.",
         401

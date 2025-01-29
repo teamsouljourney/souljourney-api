@@ -6,26 +6,33 @@
 
 const router = require("express").Router();
 
+/* AUTH ROUTES */
+
 // Auth
 router.use("/auth", require("./auth"));
-
-// User:
-router.use("/users", require("./user"));
 
 // Tokens:
 router.use("/tokens", require("./token"));
 
+// User:
+router.use("/users", require("./user"));
+
+/* --------------------------------- */
+
+/* OTHER ROUTES */
+
+// Blogs:
+router.use("/blogs", require("./blog"));
+
+// Categories
+router.use("/categories", require("./category"));
+
+// Documents:
+router.use("/documents", require("./document"));
+
 // Feedbacks:
 router.use("/feedbacks", require("./feedback"));
 
-// Category
-router.use("/categories", require("./category"));
-
-// documents:
-router.use("/documents", require("./document"));
-
-//blogs:
-router.use("/blogs", require("./blog"));
 
 /* ------------------------------------------------- */
 

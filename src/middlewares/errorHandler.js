@@ -5,8 +5,9 @@
 // app.use(errorHandler):
 
 module.exports = (err, req, res, next) => {
+  console.log(err);
   
-  return res.status(err?.statusCode || res?.errorStatusCode || 400).send({
+  return res.status(res?.errorStatusCode || 400).send({
     error: true,
     message: err.message,
     cause: err.cause,
