@@ -21,6 +21,9 @@ router.use("/users", require("./user"));
 
 /* OTHER ROUTES */
 
+// Blogs:
+router.use("/blogs", require("./blog"));
+
 // Categories
 router.use("/categories", require("./category"));
 
@@ -29,6 +32,7 @@ router.use("/documents", require("./document"));
 
 // Feedbacks:
 router.use("/feedbacks", require("./feedback"));
+
 
 /* ------------------------------------------------- */
 

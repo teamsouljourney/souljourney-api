@@ -18,42 +18,48 @@ passport.use(
       }/auth/oauth2/callback/google`,
     },
     async (accessToken, refreshToken, profile, done) => {
-      // 'done' is passed here as the callback
       try {
-        // console.log("Google Profile: ", profile);
         const email = profile.emails[0].value;
 
-        // First, check if the user already exists in the database using Google ID or email
+        // Check if the user already exists in the database
         let user = await User.findOne({
           $or: [{ googleId: profile.id }, { email: email }],
         });
 
-        // If the user exists, we update their information
+        // If the user exists, update their information
         if (user) {
           user.googleId = profile.id;
           user.firstName = user.firstName;
           user.lastName = user.lastName;
-          user.image = user.image ? user.image : profile.photos[0].value;
+          user.image = user.image ? user.image : profile.photos[0]?.value;
           user.isEmailVerified = true;
 
           await user.save();
           return done(null, user);
         }
 
+        // Handle missing profile name using optional chaining
         let userName =
-          profile.name.givenName.toLowerCase() +
-          profile.name.familyName.toLowerCase();
+          (profile.name?.givenName?.toLowerCase() || "") +
+          (profile.name?.familyName?.toLowerCase() || "");
 
-        // If the user does not exist, create a new user  /// user = await User.create
+        // Fallback to email as userName if no name available
+        if (!userName) {
+          userName = email.split("@")[0]; // Fallback to email username
+        }
+
+        // Check for required fields
+        const firstName = profile.name?.givenName || "Unknown"; // Fallback to "Unknown"
+        const lastName = profile.name?.familyName || "Unknown"; // Fallback to "Unknown"
+
+        // If the user doesn't exist, create a new one
         user = new User({
           googleId: profile.id,
           userName,
           email,
-          firstName: profile.name.givenName,
-          lastName: profile.name.familyName,
-          image: profile.photos
-            ? profile.photos[0].value
-            : "default-avatar.jpg",
+          firstName,
+          lastName,
+          image: profile.photos?.[0]?.value || "default-avatar.jpg",
           isEmailVerified: true,
         });
 
