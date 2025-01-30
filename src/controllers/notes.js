@@ -48,6 +48,8 @@ module.exports = {
             }
         */
 
+    req.body.userId = req.user._id
+    
     const data = await Notes.create(req.body);
 
     res.status(201).send({
