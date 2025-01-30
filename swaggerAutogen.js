@@ -44,6 +44,8 @@ const documents = {
    
     definitions: {
 
+        Blog: require('./src/models/blog').schema.obj, 
+
         Category: require('./src/models/category').schema.obj,
 
         Feedback: require('./src/models/feedback').schema.obj,
