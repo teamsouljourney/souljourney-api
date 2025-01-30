@@ -15,7 +15,7 @@ const BlogSchema = new mongoose.Schema(
     categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true },
     likes: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  {collection:"blog", timestamps: true }
 );
 
-module.exports = mongoose.models.Blog || mongoose.model("Blog", BlogSchema);
+module.exports = mongoose.model("Blog", BlogSchema);
