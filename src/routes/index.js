@@ -33,6 +33,9 @@ router.use("/documents", require("./document"));
 // Feedbacks:
 router.use("/feedbacks", require("./feedback"));
 
+// Notes:
+router.use("/notes", require("./notes"))
+
 
 /* ------------------------------------------------- */
 
