@@ -15,13 +15,6 @@ const uniqueValidator = require("mongoose-unique-validator");
 
 const TherapistSchema = new mongoose.Schema(
     {
-        userName: {
-            type: String,
-            required: true,
-            trim: true,
-            unique: true,
-            required: true
-        },
         firstName: {
             type: String,
             required: true,
@@ -77,6 +70,10 @@ const TherapistSchema = new mongoose.Schema(
         isActive: {
             type: Boolean,
             default: true
+        },
+        isTherapist: {
+            type: Boolean,
+            default: true,
         },
         passwordResetToken: String,
         passwordResetExpires: Date,
