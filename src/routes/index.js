@@ -21,6 +21,9 @@ router.use("/users", require("./user"));
 
 /* OTHER ROUTES */
 
+// Appointments:
+router.use("/appointments", require("./appointment"));
+
 // Blogs:
 router.use("/blogs", require("./blog"));
 
@@ -34,8 +37,7 @@ router.use("/documents", require("./document"));
 router.use("/feedbacks", require("./feedback"));
 
 // Notes:
-router.use("/notes", require("./notes"))
-
+router.use("/notes", require("./notes"));
 
 /* ------------------------------------------------- */
 
