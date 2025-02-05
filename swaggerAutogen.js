@@ -49,6 +49,8 @@ const documents = {
         Category: require('./src/models/category').schema.obj,
 
         Feedback: require('./src/models/feedback').schema.obj,
+
+        Notes: require('./src/models/notes').schema.obj,
         
         Therapist: require('./src/models/therapist').schema.obj,
 
