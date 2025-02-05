@@ -100,7 +100,7 @@ module.exports = {
     });
   },
 
-  delete: async (req, res) => {
+  deleteAppointment: async (req, res) => {
     /*
             #swagger.tags = ['Appointment']
             #swagger.summary = 'Delete appointment by ID'
