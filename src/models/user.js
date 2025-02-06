@@ -94,6 +94,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isTherapist: {
+      type: Boolean,
+      default: false,
+    },
     isStaff: {
       type: Boolean,
       default: false,
