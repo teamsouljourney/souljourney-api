@@ -39,6 +39,9 @@ router.use("/feedbacks", require("./feedback"));
 // Notes:
 router.use("/notes", require("./notes"));
 
+// Therapists:
+router.use("/therapists", require("./therapist"));
+
 /* ------------------------------------------------- */
 
 module.exports = router;
