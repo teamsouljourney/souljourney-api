@@ -1,23 +1,25 @@
-"use strict"
- 
-const router = require('express').Router()
-/* ------------------------------------------------------- */
-// routes/category:
+"use strict";
 
-const category = require('../controllers/category') 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
+const router = require("express").Router();
+
+const category = require("../controllers/category");
+const permission = require("../middlewares/permission");
 
 // URL: /categories
 
-router.route('/')
-    .get(category.list)
-    .post(category.create)
+router.route("/").get(category.list).post(permission.isAdmin, category.create);
 
-router.route('/:id')
-    .get(category.read)
-    .put(category.update)
-    .patch(category.update)
-    .delete(category.delete)
+router
+  .route("/:id")
+  .get(category.read)
+  .put(permission.isAdmin, category.update)
+  .patch(permission.isAdmin, category.update)
+  .delete(permission.isAdmin, category.delete);
 
 /* ------------------------------------------------------- */
 // Exports:
-module.exports = router
+module.exports = router;
