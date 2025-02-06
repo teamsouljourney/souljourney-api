@@ -11,10 +11,20 @@ const TokenSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: [true, "User ID is required"],
+      default: null,
       index: true,
     },
-
+    therapistId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Therapist",
+      default: null,
+      index: true,
+    },
+    userType: {
+      type: String,
+      enum: ["User", "Therapist"],
+      required: true,
+    },
     token: {
       type: String,
       trim: true,

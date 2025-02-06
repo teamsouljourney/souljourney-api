@@ -10,6 +10,7 @@ const validatePassword = require("../helpers/validatePassword");
 const bcrypt = require("bcryptjs");
 const resetTokenHash = require("../helpers/resetTokenHash");
 const uniqueValidator = require("mongoose-unique-validator");
+const comparePassword = require("../helpers/comparePassword");
 
 /* ------------------------------------------------------- *
 User Model requirements
@@ -113,7 +114,7 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.plugin(uniqueValidator, {
-    message: "This {PATH} is exist",
+  message: "This {PATH} is exist",
 });
 
 // Hash the password before saving the user to the database
@@ -131,12 +132,7 @@ UserSchema.methods.markAsVerified = async function () {
 };
 
 // Method to check if the provided password matches the hashed password in the database
-UserSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword
-) {
-  return await bcrypt.compare(candidatePassword, userPassword);
-};
+UserSchema.methods.correctPassword = comparePassword;
 
 /*
  * This method generates a password reset token for a user.

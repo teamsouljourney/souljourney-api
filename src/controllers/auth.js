@@ -21,9 +21,9 @@ const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
+const Therapist = require("../models/therapist");
 
 module.exports = {
-  
   signup: async (req, res) => {
     /*
         #swagger.tags = ["Authentication"]
@@ -146,36 +146,55 @@ module.exports = {
       throw new CustomError("Please provide email and password!", 400);
     }
 
-    // 2) Check if user exists && password is correct
-    const user = await User.findOne({ email });
+    // 2) Check if user exists in either collection
+    let user = await User.findOne({ email });
+    let userType = "User";
 
-    if (user && !user.isEmailVerified) {
+    if (!user) {
+      user = await Therapist.findOne({ email });
+      userType = "Therapist";
+    }
+
+    if (!user) {
+      throw new CustomError("Incorrect email or password", 401);
+    }
+
+    // 3) If user is from User model, check email verification
+    if (userType === "User" && !user.isEmailVerified) {
       throw new CustomError("Please verify your email before logging in", 401);
     }
 
-    // 3) Check if user isActive
-    if (user && !user.isActive) {
+    // 4) Check if user is active
+    if (!user.isActive) {
       throw new CustomError(
         "This account is not active. Please contact support for assistance.",
         401
       );
     }
 
-    // 4) Compare  Password
-    if (!user || !(await user.correctPassword(password, user.password))) {
+    // 5) Compare Password using correctPassword method
+    const isPasswordCorrect = await user.correctPassword(
+      password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
       throw new CustomError("Incorrect email or password", 401);
     }
 
-    // 5) If everything ok, send token to client
-    // TOKEN:
-    let tokenData = await Token.findOne({ userId: user._id });
-    if (!tokenData)
+    // 6) Token Kaydetme İşlemi Güncellendi
+    let tokenData = await Token.findOne({
+      $or: [{ userId: user._id }, { therapistId: user._id }],
+    });
+
+    if (!tokenData) {
       tokenData = await Token.create({
-        userId: user._id,
+        userId: userType === "User" ? user._id : null,
+        therapistId: userType === "Therapist" ? user._id : null,
+        userType,
         token: passwordEncrypt(user._id + Date.now()),
       });
+    }
 
-    // JWT:
     createSendToken(user, 200, tokenData, res);
   },
 
@@ -190,6 +209,7 @@ module.exports = {
     if (!tokenData)
       tokenData = await Token.create({
         userId: user._id,
+        userType: "User",
         token: passwordEncrypt(user._id + Date.now()),
       });
 
