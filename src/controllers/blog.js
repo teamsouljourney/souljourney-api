@@ -1,6 +1,8 @@
 "use strict"
 
 const Blog = require("../models/blog")
+const Therapist = require("../models/therapist");
+const Category = require("../models/category");
 
 module.exports = {
     list: async(req, res) => {
@@ -38,6 +40,8 @@ module.exports = {
         */
         // Set therapistId from logged in therapist
         // console.log(req.user);
+
+        
         
         req.body.therapistId = req.user._id
         const data = await Blog.create(req.body)
@@ -46,6 +50,58 @@ module.exports = {
             data
         })
     },
+    // create: async (req, res) => {
+    //     /* 
+    //       #swagger.tags = ["Blogs"]
+    //       #swagger.summary = "Create Blog"
+    //       #swagger.parameters['body'] = {
+    //           in: 'body',
+    //           required: true,
+    //           schema: {
+    //               $ref:"#/definitions/Blog"
+    //           }
+    //       }
+    //     */
+    
+    //     // Therapist ve Category ID'lerini kontrol etme
+    //     const { therapistId, categoryId, title, content, image } = req.body;
+    
+    //     // Eğer therapistId veya categoryId eksikse hata döndür
+    //     if (!therapistId || !categoryId) {
+    //       return res.status(400).json({
+    //         error: true,
+    //         message: "Therapist ID and Category ID are required",
+    //       });
+    //     }
+    
+    //     // Therapist ve Category'nin varlığını kontrol et
+    //     const therapist = await Therapist.findById(therapistId);
+    //     const category = await Category.findById(categoryId);
+    
+    //     if (!therapist) {
+    //       return res.status(400).json({
+    //         error: true,
+    //         message: "Therapist not found",
+    //       });
+    //     }
+    
+    //     if (!category) {
+    //       return res.status(400).json({
+    //         error: true,
+    //         message: "Category not found",
+    //       });
+    //     }
+    
+    //     // Logged-in user's therapistId'yi kullanarak blogu oluştur
+    //     req.body.therapistId = req.user._id;  // req.user, JWT token veya session'dan geliyor.
+    
+    //     const data = await Blog.create(req.body);
+    //     res.status(201).send({
+    //       error: false,
+    //       message: "Blog created successfully",
+    //       data,
+    //     });
+    //   },
     read: async(req, res) => {
         /*
             #swagger.tags = ["Blogs"]

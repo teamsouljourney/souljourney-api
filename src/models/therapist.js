@@ -60,8 +60,8 @@ const TherapistSchema = new mongoose.Schema(
         },
         feedbackId:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Feedback",
-            required: true,
+            ref: "Feedback"
+            
         },
         isEmailVerified: {
             type: Boolean,

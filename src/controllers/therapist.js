@@ -22,14 +22,18 @@ module.exports = {
         */
 
 
-    let customFilter = {}
-    if (!req.user.isAdmin) customFilter = { isAdmin: false }
+    // let customFilter = {}
+    // if (!req.user.isAdmin) customFilter = { isAdmin: false }
 
-    const data = await res.getModelList(User, customFilter);
+    const data = await res.getModelList(Therapist);
+    // const data = await res.getModelList(Therapist, customFilter);
+
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(User, customFilter),
+      details: await res.getModelListDetails(Therapist),
+      // details: await res.getModelListDetails(Therapist, customFilter),
+
       data,
     });
   },
@@ -47,7 +51,7 @@ module.exports = {
             }
         */
 
-    req.body.isAdmin = false;
+    // req.body.isAdmin = false;
 
     const data = await Therapist.create(req.body);
 
