@@ -4,14 +4,17 @@
 /*                  SOULJOURNEY API                  */
 /* ------------------------------------------------- */
 
-const crypto = require("crypto");
 const { mongoose } = require("../configs/dbConnection");
 const validator = require("validator");
 const validatePassword = require("../helpers/validatePassword");
 const bcrypt = require("bcryptjs");
-const resetTokenHash = require("../helpers/resetTokenHash");
 const uniqueValidator = require("mongoose-unique-validator");
-const comparePassword = require("../helpers/comparePassword");
+const {
+  markAsVerified,
+  comparePassword,
+  createPasswordResetToken,
+  createVerificationCode,
+} = require("../helpers/methdodHelper");
 
 const TherapistSchema = new mongoose.Schema(
   {
@@ -73,6 +76,7 @@ const TherapistSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
 TherapistSchema.plugin(uniqueValidator, {
   message: "This {PATH} is exist",
 });
@@ -84,37 +88,9 @@ TherapistSchema.pre("save", async function (next) {
   next();
 });
 
-// Method to mark the user's email as verified
-TherapistSchema.methods.markAsVerified = async function () {
-  this.isEmailVerified = true;
-  await this.save({ validateBeforeSave: false });
-};
-
-// Method to check if the provided password matches the hashed password in the database
+TherapistSchema.methods.markAsVerified = markAsVerified;
 TherapistSchema.methods.correctPassword = comparePassword;
-
-TherapistSchema.methods.createPasswordResetToken = function () {
-  // Generates a random 32-byte reset token and converts it to a hexadecimal string
-  const resetToken = crypto.randomBytes(32).toString("hex");
-
-  // Hashes the reset token and stores it in the database for security
-  this.passwordResetToken = resetTokenHash(resetToken);
-
-  // Sets an expiration time for the reset token (10 minutes from now)
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-
-  // Returns the raw reset token (not hashed) to be sent to the user
-  return resetToken;
-};
-
-TherapistSchema.methods.createVerificationCode = function () {
-  const verificationCode = Math.floor(100000 + Math.random() * 900000);
-
-  this.verificationCode = verificationCode;
-
-  this.verificationCodeExpires = Date.now() + 10 * 60 * 1000;
-
-  return verificationCode;
-};
+TherapistSchema.methods.createPasswordResetToken = createPasswordResetToken;
+TherapistSchema.methods.createVerificationCode = createVerificationCode;
 
 module.exports = mongoose.model("Therapist", TherapistSchema);
