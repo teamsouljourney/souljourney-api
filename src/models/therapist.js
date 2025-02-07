@@ -117,4 +117,4 @@ TherapistSchema.methods.createVerificationCode = function () {
   return verificationCode;
 };
 
-module.exports = mongoose.model("Therapist ", TherapistSchema);
+module.exports = mongoose.model("Therapist", TherapistSchema);
