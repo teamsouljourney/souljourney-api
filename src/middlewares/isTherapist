@@ -1,0 +1,7 @@
+const isTherapist = async (req, res, next) => {
+    if (req.user?.role !== "therapist") {
+        res.errorStatusCode = 403;
+        throw new Error("Only therapists can perform this action");
+    }
+    next();
+};

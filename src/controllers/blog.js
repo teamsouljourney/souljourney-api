@@ -3,6 +3,13 @@
 const Blog = require("../models/blog")
 const Therapist = require("../models/therapist");
 const Category = require("../models/category");
+const uploadImage = require('multer')({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 5 // 5 MB
+    },
+    fileFilter: fileFilter
+})
 
 module.exports = {
     list: async(req, res) => {
@@ -206,5 +213,7 @@ module.exports = {
             data,
         })
     },
+    
+    
    
 }
