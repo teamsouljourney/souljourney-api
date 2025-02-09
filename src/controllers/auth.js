@@ -14,6 +14,8 @@ const {
   signVerificationToken,
   createSendToken,
   signResetToken,
+  signAccessToken,
+  signRefreshToken,
 } = require("../helpers/jwtFunctions");
 const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
@@ -21,25 +23,25 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 
 module.exports = {
-  /*
-            #swagger.tags = ["Authentication"]
-            #swagger.summary = "Signup"
-            #swagger.description = 'Create a new user account and send a verification email.'
-            #swagger.parameters["body"] = {
-                in: "body",
-                required: true,
-                schema: {
-                    "username": "testUser",
-                    "firstName": "John",
-                    "lastName": "Doe",
-                    "email": "test@example.com",
-                    "password": "password123"
-                }
-            }
-          
-        */
-
+  
   signup: async (req, res) => {
+    /*
+        #swagger.tags = ["Authentication"]
+        #swagger.summary = "Signup"
+        #swagger.description = 'Create a new user account and send a verification email.'
+        #swagger.parameters["body"] = {
+            in: "body",
+            required: true,
+            schema: {
+                "username": "testUser",
+                "firstName": "John",
+                "lastName": "Doe",
+                "email": "test@example.com",
+                "password": "password123"
+            }
+        }
+            
+    */
     const newUser = await User.create({
       userName: req.body.userName,
       firstName: req.body.firstName,
@@ -50,7 +52,6 @@ module.exports = {
     });
 
     const verificationToken = signVerificationToken(newUser._id);
-    console.log("Verification Token:", verificationToken);
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
@@ -84,7 +85,7 @@ module.exports = {
 
     if (!token) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=missing-token`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=error&status=missing-token`
       );
     }
 
@@ -96,7 +97,7 @@ module.exports = {
       );
     } catch (error) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=invalid-token`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=error&status=invalid-token`
       );
     }
 
@@ -106,20 +107,20 @@ module.exports = {
 
     if (!user) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=user-not-found`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=error&status=user-not-found`
       );
     }
 
     if (user.isVerified) {
       return res.redirect(
-        `${process.env.CLIENT_URL}/auth/verify-email/success?status=already-verified`
+        `${process.env.CLIENT_URL}/auth/verify-email?statusType=warning&status=already-verified`
       );
     }
 
     await user.markAsVerified();
 
     return res.redirect(
-      `${process.env.CLIENT_URL}/auth/verify-email/success?status=success`
+      `${process.env.CLIENT_URL}/auth/verify-email?statusType=success&status=success`
     );
   },
 
@@ -132,7 +133,7 @@ module.exports = {
                 in: "body",
                 required: true,
                 schema: {
-                    "username": "testUser",
+                    "email": "testUser",
                     "password": "password123"
                 }
             }
@@ -148,12 +149,12 @@ module.exports = {
     // 2) Check if user exists && password is correct
     const user = await User.findOne({ email });
 
-    if (!user.isEmailVerified) {
+    if (user && !user.isEmailVerified) {
       throw new CustomError("Please verify your email before logging in", 401);
     }
 
     // 3) Check if user isActive
-    if (!user.isActive) {
+    if (user && !user.isActive) {
       throw new CustomError(
         "This account is not active. Please contact support for assistance.",
         401
@@ -176,6 +177,42 @@ module.exports = {
 
     // JWT:
     createSendToken(user, 200, tokenData, res);
+  },
+
+  authSuccess: async (req, res) => {
+    const user = req.user;
+
+    if (!user) {
+      return res.redirect(`${process.env.CLIENT_URL}/auth/failure`);
+    }
+    // TOKEN:
+    let tokenData = await Token.findOne({ userId: user._id });
+    if (!tokenData)
+      tokenData = await Token.create({
+        userId: user._id,
+        token: passwordEncrypt(user._id + Date.now()),
+      });
+
+    // JWT:
+    const accessToken = signAccessToken(user);
+    const refreshToken = signRefreshToken(user);
+
+    const data = {
+      error: false,
+      message: "You are successfully logged in!",
+      token: tokenData.token,
+      bearer: {
+        access: accessToken,
+        refresh: refreshToken,
+      },
+      user,
+    };
+
+    res.redirect(
+      `${process.env.CLIENT_URL}/auth/success?user=${encodeURIComponent(
+        JSON.stringify(data)
+      )}`
+    );
   },
 
   logout: async (req, res) => {

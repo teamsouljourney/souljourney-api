@@ -10,18 +10,11 @@ const validator = require("validator");
 const validatePassword = require("../helpers/validatePassword");
 const bcrypt = require("bcryptjs");
 const resetTokenHash = require("../helpers/resetTokenHash");
-// const uniqueValidator = require("mongoose-unique-validator");
+const uniqueValidator = require("mongoose-unique-validator");
 
 
 const TherapistSchema = new mongoose.Schema(
     {
-        userName: {
-            type: String,
-            required: true,
-            trim: true,
-            unique: true,
-            required: true
-        },
         firstName: {
             type: String,
             required: true,
@@ -67,8 +60,8 @@ const TherapistSchema = new mongoose.Schema(
         },
         feedbackId:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "Feedback",
-            required: true,
+            ref: "Feedback"
+            
         },
         isEmailVerified: {
             type: Boolean,
@@ -77,6 +70,10 @@ const TherapistSchema = new mongoose.Schema(
         isActive: {
             type: Boolean,
             default: true
+        },
+        isTherapist: {
+            type: Boolean,
+            default: true,
         },
         passwordResetToken: String,
         passwordResetExpires: Date,
@@ -88,9 +85,9 @@ const TherapistSchema = new mongoose.Schema(
         timestamps: true,
       }
 );
-// TherapistSchema.plugin(uniqueValidator, {
-//     message: "This {PATH} is exist",
-//   });
+TherapistSchema.plugin(uniqueValidator, {
+    message: "This {PATH} is exist",
+});
 
 
 TherapistSchema.pre("save", async function (next) {

@@ -25,9 +25,9 @@ const FeedbackSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    doctorId: {
+    therapistId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Doctor",
+      ref: "Therapist",
       required: true,
     },
   },
