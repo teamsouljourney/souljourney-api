@@ -30,6 +30,14 @@ const TherapistSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    fullName:{
+
+      type: String,
+      required: true,
+      trim: true,
+      required: true,
+    },
+
     email: {
       type: String,
       required: true,
@@ -61,6 +69,12 @@ const TherapistSchema = new mongoose.Schema(
     feedbackId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Feedback",
+    },
+    description:{
+      type: String,
+      required: true,
+      trim: true,
+      required: true,
     },
     isActive: {
       type: Boolean,
