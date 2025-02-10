@@ -1,13 +1,16 @@
-"use strict"
- 
+"use strict";
+
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 // Category Controllers:
 
-const Category = require('../models/category')
+const Category = require("../models/category");
 
 module.exports = {
-    list: async (req, res) => {
-
-        /* 
+  list: async (req, res) => {
+    /* 
             #swagger.tags = ["Category"]
             #swagger.summary = "List Categories"
             #swagger.description = `
@@ -21,17 +24,16 @@ module.exports = {
             `
         */
 
-        const data = await res.getModelList(Category)
+    const data = await res.getModelList(Category);
 
-        res.status(200).send({
-            error: false,
-            details: await res.getModelListDetails(Category),
-            data
-        })
-    },
-    create: async (req, res) => {
-
-        /* 
+    res.status(200).send({
+      error: false,
+      details: await res.getModelListDetails(Category),
+      data,
+    });
+  },
+  create: async (req, res) => {
+    /* 
             #swagger.tags = ["Category"]
             #swagger.summary = "Create Category"
             #swagger.parameters['body'] = {
@@ -43,33 +45,31 @@ module.exports = {
             }
         */
 
-        const data = await Category.create(req.body)
+    const data = await Category.create(req.body);
 
-        res.status(201).send({
-            error: false,
-            body: req.body,
-            data
-        })
-    },
+    res.status(201).send({
+      error: false,
+      body: req.body,
+      data,
+    });
+  },
 
-    read: async (req, res) => {
-
-        /* 
+  read: async (req, res) => {
+    /* 
             #swagger.tags = ["Category"]
             #swagger.summary = "Read Category"
         */
 
-        const data = await Category.findOne({ _id: req.params.id })
+    const data = await Category.findOne({ _id: req.params.id });
 
-        res.status(200).send({
-            error: false,
-            data
-        })
-    },
+    res.status(200).send({
+      error: false,
+      data,
+    });
+  },
 
-    update: async (req, res) => {
-
-        /* 
+  update: async (req, res) => {
+    /* 
             #swagger.tags = ["Category"]
             #swagger.summary = "Update Category"
             #swagger.parameters['body'] = {
@@ -81,28 +81,29 @@ module.exports = {
             }
         */
 
-        const data = await Category.updateOne({ _id: req.params.id }, req.body, { runValidators: true })
+    const data = await Category.updateOne({ _id: req.params.id }, req.body, {
+      runValidators: true,
+    });
 
-        res.status(200).send({
-            error: false,
-            body: req.body,
-            data,
-            new: await Category.findOne({ _id: req.params.id })
-        })
-    },
+    res.status(200).send({
+      error: false,
+      body: req.body,
+      data,
+      new: await Category.findOne({ _id: req.params.id }),
+    });
+  },
 
-    delete: async (req, res) => {
-
-        /* 
+  deleteCategory: async (req, res) => {
+    /* 
             #swagger.tags = ["Category"]
             #swagger.summary = "Delete Category"
         */
 
-        const data = await Category.deleteOne({ _id: req.params.id })
+    const data = await Category.deleteOne({ _id: req.params.id });
 
-        res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,
-            data
-        })
-    },
-}
+    res.status(data.deletedCount ? 204 : 404).send({
+      error: !data.deletedCount,
+      data,
+    });
+  },
+};

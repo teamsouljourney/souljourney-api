@@ -21,9 +21,9 @@ const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
+const Therapist = require("../models/therapist");
 
 module.exports = {
-  
   signup: async (req, res) => {
     /*
         #swagger.tags = ["Authentication"]
@@ -146,36 +146,55 @@ module.exports = {
       throw new CustomError("Please provide email and password!", 400);
     }
 
-    // 2) Check if user exists && password is correct
-    const user = await User.findOne({ email });
+    // 2) Check if user exists in either collection
+    let user = await User.findOne({ email });
+    let userType = "User";
 
-    if (user && !user.isEmailVerified) {
+    if (!user) {
+      user = await Therapist.findOne({ email });
+      userType = "Therapist";
+    }
+
+    if (!user) {
+      throw new CustomError("Incorrect email or password", 401);
+    }
+
+    // 3) If user is from User model, check email verification
+    if (userType === "User" && !user.isEmailVerified) {
       throw new CustomError("Please verify your email before logging in", 401);
     }
 
-    // 3) Check if user isActive
-    if (user && !user.isActive) {
+    // 4) Check if user is active
+    if (!user.isActive) {
       throw new CustomError(
         "This account is not active. Please contact support for assistance.",
         401
       );
     }
 
-    // 4) Compare  Password
-    if (!user || !(await user.correctPassword(password, user.password))) {
+    // 5) Compare Password using correctPassword method
+    const isPasswordCorrect = await user.correctPassword(
+      password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
       throw new CustomError("Incorrect email or password", 401);
     }
 
-    // 5) If everything ok, send token to client
-    // TOKEN:
-    let tokenData = await Token.findOne({ userId: user._id });
-    if (!tokenData)
+    // 6) Token Kaydetme İşlemi Güncellendi
+    let tokenData = await Token.findOne({
+      $or: [{ userId: user._id }, { therapistId: user._id }],
+    });
+
+    if (!tokenData) {
       tokenData = await Token.create({
-        userId: user._id,
+        userId: userType === "User" ? user._id : null,
+        therapistId: userType === "Therapist" ? user._id : null,
+        userType,
         token: passwordEncrypt(user._id + Date.now()),
       });
+    }
 
-    // JWT:
     createSendToken(user, 200, tokenData, res);
   },
 
@@ -190,6 +209,7 @@ module.exports = {
     if (!tokenData)
       tokenData = await Token.create({
         userId: user._id,
+        userType: "User",
         token: passwordEncrypt(user._id + Date.now()),
       });
 
@@ -292,19 +312,27 @@ module.exports = {
     const { email } = req.body;
 
     // 1) Get user based on POSTed email
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new CustomError("There is no user with email address.", 404);
+    let account = await User.findOne({ email });
+
+    if (!account) {
+      account = await Therapist.findOne({ email });
+    }
+
+    if (!account) {
+      throw new CustomError(
+        "There is no user or therapist with this email address.",
+        404
+      );
     }
 
     // 2) Generate resetToken and verificationCode
-    const resetToken = user.createPasswordResetToken();
-    const verificationCode = user.createVerificationCode();
-    await user.save({ validateBeforeSave: false });
+    const resetToken = account.createPasswordResetToken();
+    const verificationCode = account.createVerificationCode();
+    await account.save({ validateBeforeSave: false });
 
     // Generate JWT token with resetToken and verificationCode
     const jwtResetToken = signResetToken(
-      user._id,
+      account._id,
       resetToken,
       verificationCode
     );
@@ -313,7 +341,7 @@ module.exports = {
     const resetURL = `${process.env.CLIENT_URL}/auth/reset-password/${jwtResetToken}`;
 
     const message = `
-    Hi ${user.username},
+    Hi ${account.username},
   
     You requested to reset your password. Please use the verification code below to proceed:
   
@@ -326,11 +354,11 @@ module.exports = {
   
     Best regards,
     The Team
-  `;
+    `;
 
     try {
       await sendEmail({
-        email: user.email,
+        email: account.email,
         subject: "Your password reset token (valid for 10 min)",
         message,
       });
@@ -343,11 +371,11 @@ module.exports = {
     } catch (err) {
       console.error("Error in forgotPassword:", err);
 
-      user.passwordResetToken = undefined;
-      user.passwordResetExpires = undefined;
-      user.verificationCode = undefined;
-      user.verificationCodeExpires = undefined;
-      await user.save({ validateBeforeSave: false });
+      account.passwordResetToken = undefined;
+      account.passwordResetExpires = undefined;
+      account.verificationCode = undefined;
+      account.verificationCodeExpires = undefined;
+      await account.save({ validateBeforeSave: false });
 
       throw new CustomError(
         "There was an error sending the reset token and verification code. Try again later!",
@@ -399,28 +427,35 @@ module.exports = {
       throw new CustomError("Passwords do not match", 400);
     }
 
-    // 3) Find user by decoded token id and check if the verification code is correct
-    const user = await User.findOne({
+    // 3) Find user or therapist by decoded token id and check if the verification code is correct
+    let account = await User.findOne({
       _id: decodedToken.id,
       passwordResetExpires: { $gt: Date.now() },
     });
 
-    if (!user) {
+    if (!account) {
+      account = await Therapist.findOne({
+        _id: decodedToken.id,
+        passwordResetExpires: { $gt: Date.now() },
+      });
+    }
+
+    if (!account) {
       throw new CustomError("Token is invalid or has expired", 400);
     }
 
-    if (user.verificationCode != verificationCode) {
+    if (account.verificationCode != verificationCode) {
       throw new CustomError("Invalid verification code", 400);
     }
 
-    // 4) Update user's password
-    user.password = password;
-    user.confirmPassword = confirmPassword;
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    user.verificationCode = undefined;
-    user.verificationCodeExpires = undefined;
-    await user.save();
+    // 4) Update password and clear reset fields
+    account.password = password;
+    account.confirmPassword = confirmPassword;
+    account.passwordResetToken = undefined;
+    account.passwordResetExpires = undefined;
+    account.verificationCode = undefined;
+    account.verificationCodeExpires = undefined;
+    await account.save();
 
     // 5) Send response
     res.status(200).json({
