@@ -34,15 +34,34 @@ module.exports = {
                   userId: 'string',
                   therapistId: 'string',
                   appointmentDate: 'date',
+                  startTime: 'date',
                   endTime: 'date',
               },
           }
     */
-    const data = await Appointment.create(req.body);
-    res.status(201).send({
-      error: false,
-      data,
+
+    const { therapistId, appointmentDate, startTime, endTime } = req.body;
+
+    const existingAppointment = await Appointment.findOne({
+      therapistId,
+      appointmentDate,
+      $or: [
+        { startTime: { $lt: endTime, $gte: startTime } },
+        { endTime: { $gt: startTime, $lte: endTime } },
+        { startTime: { $lte: startTime }, endTime: { $gte: endTime } },
+      ],
     });
+
+    if (existingAppointment) {
+      return res.status(400).json({
+        error: true,
+        message:
+          "This time slot is already booked. Please select another time.",
+      });
+    }
+
+    const data = await Appointment.create(req.body);
+    res.status(201).send({ error: false, data });
   },
 
   read: async (req, res) => {
