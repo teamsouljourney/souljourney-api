@@ -44,6 +44,8 @@ const documents = {
    
     definitions: {
 
+        Appointment: require('./src/models/appointment').schema.obj,
+
         Blog: require('./src/models/blog').schema.obj, 
 
         Category: require('./src/models/category').schema.obj,
