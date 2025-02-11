@@ -10,6 +10,8 @@ const Category = require("../models/category");
 
 module.exports = {
   list: async (req, res) => {
+    console.log("Blog list API called");
+    
     /* 
             #swagger.tags = ["Blogs"]
             #swagger.summary = "List Blogs"
@@ -27,6 +29,8 @@ module.exports = {
       "therapistId",
       "categoryId",
     ]);
+    console.log("Fetched Blogs:", data)
+    
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Blog),
@@ -48,13 +52,16 @@ module.exports = {
     // Set therapistId from logged in therapist
     // console.log(req.user);
 
-    req.body.therapistId = req.user._id;
+    // req.body.therapistId = req.user._id;
+    
     const data = await Blog.create(req.body);
     res.status(201).send({
       error: false,
       data,
     });
   },
+  // console.log("Fetched Blogs:", data);
+  
   // create: async (req, res) => {
   //     /*
   //       #swagger.tags = ["Blogs"]
@@ -124,25 +131,33 @@ module.exports = {
     });
   },
   update: async (req, res) => {
-    /* 
-            #swagger.tags = ["Blogs"]
-            #swagger.summary = "Update Blog"
-            #swagger.parameters['body'] = {
-                in: 'body',
-                required: true,
-                schema: {
-                    $ref:"#/definitions/Blog"
+   /* 
+        #swagger.tags = ["Blogs"]
+        #swagger.summary = "Update an existing blog post"
+        #swagger.description = "Updates the blog post. Only the therapist who created the post can update it."
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                type: 'object',
+                properties: {
+                    title: { type: 'string', example: 'Updated Blog Title' },
+                    content: { type: 'string', example: 'Updated blog content' },
+                    image: { type: 'string', example: 'https://example.com/updated-image.jpg' },
+                    categoryId: { type: 'string', example: '5f50c31b2b8f07c1f1e6e89c' }
                 }
             }
-        */
+        }
+        
+    */
     const blogData = await Blog.findOne({ _id: req.params.id });
     // console.log(blogData);
     // console.log(req.user);
 
-    if (blogData.therapistId.toString() != req.user._id) {
-      res.errorStatusCode = 401;
-      throw new Error("You cannot update someone else's blog post");
-    }
+    // if (blogData.therapistId.toString() != req.user._id) {
+    //   res.errorStatusCode = 401;
+    //   throw new Error("You cannot update someone else's blog post");
+    // }
     const data = await Blog.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
