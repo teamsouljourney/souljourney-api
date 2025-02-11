@@ -109,7 +109,7 @@ module.exports = {
     });
   },
 
-  delete: async (req, res) => {
+  deleteTimeTable: async (req, res) => {
     /*
         #swagger.tags = ['TherapistTimeTable']
         #swagger.summary = 'Delete therapist time table by ID'
