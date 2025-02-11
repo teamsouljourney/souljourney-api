@@ -216,27 +216,26 @@ module.exports = {
             #swagger.tags = ["Blogs"]
             #swagger.summary = "Add/Remove Like"
         */
-        const data = await Blog.findOne({_id: req.params.id})
-        // console.log(data);
-        
-        let likes = data?.likes.map((id)=>id.toString()) || []
-        const userId = req.user._id.toString()
-        
-        // console.log(likes);
-        if (likes.includes(userId)) {
-            // console.log("hello");            
-            likes = likes.filter((id) => id !== userId)            
-            console.log(likes);
-        } else {
-            likes.push(userId)
-        }
-        
-        data.likes = likes
-        await data.save()
-        res.status(200).send({
-            error: false,
-            data,
-        })
-    },
-   
-}
+    const data = await Blog.findOne({ _id: req.params.id });
+    // console.log(data);
+
+    let likes = data?.likes.map((id) => id.toString()) || [];
+    const userId = req.user._id.toString();
+
+    // console.log(likes);
+    if (likes.includes(userId)) {
+      // console.log("hello");
+      likes = likes.filter((id) => id !== userId);
+      console.log(likes);
+    } else {
+      likes.push(userId);
+    }
+
+    data.likes = likes;
+    await data.save();
+    res.status(200).send({
+      error: false,
+      data,
+    });
+  },
+};
