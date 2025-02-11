@@ -5,6 +5,7 @@
 /* ------------------------------------------------- */
 
 const Appointment = require("../models/appointment");
+const TherapistTimeTable = require("../models/therapistTimeTable");
 
 module.exports = {
   list: async (req, res) => {
@@ -34,14 +35,73 @@ module.exports = {
                   userId: 'string',
                   therapistId: 'string',
                   appointmentDate: 'date',
+                  startTime: 'date',
                   endTime: 'date',
               },
           }
     */
-    const data = await Appointment.create(req.body);
-    res.status(201).send({
-      error: false,
-      data,
+
+    const { therapistId, appointmentDate, startTime, endTime } = req.body;
+
+    const existingAppointment = await Appointment.findOne({
+      therapistId,
+      appointmentDate,
+      $or: [
+        { startTime: { $lt: endTime, $gte: startTime } },
+        { endTime: { $gt: startTime, $lte: endTime } },
+        { startTime: { $lte: startTime }, endTime: { $gte: endTime } },
+      ],
+    });
+
+    if (existingAppointment) {
+      return res.status(400).json({
+        error: true,
+        message:
+          "This time slot is already booked. Please select another time.",
+      });
+    }
+
+    const newAppointment = await Appointment.create(req.body);
+
+    // Check if therapist's timetable already exists
+    const therapistTimeTable = await TherapistTimeTable.findOne({
+      therapistId,
+    });
+
+    if (therapistTimeTable) {
+      // If timetable exists, update the unavailableDate array
+      therapistTimeTable.unavailableDates.push({
+        date: appointmentDate,
+        startTime: startTime,
+        endTime: endTime,
+      });
+      await therapistTimeTable.save();
+    } else {
+      // If timetable doesn't exist, create a new one
+      const newUnavailableDate = {
+        therapistId,
+        unavailableDates: [
+          {
+            date: appointmentDate,
+            startTime: startTime,
+            endTime: endTime,
+          },
+        ],
+      };
+      await TherapistTimeTable.create(newUnavailableDate);
+    }
+
+    if (newAppointment) {
+      return res.status(201).json({
+        error: false,
+        message: "Appointment created successfully.",
+        data: newAppointment,
+      });
+    }
+
+    return res.status(500).json({
+      error: true,
+      message: "Failed to create appointment.",
     });
   },
 

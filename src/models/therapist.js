@@ -30,8 +30,7 @@ const TherapistSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    fullName:{
-
+    fullName: {
       type: String,
       required: true,
       trim: true,
@@ -70,7 +69,7 @@ const TherapistSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Feedback",
     },
-    description:{
+    description: {
       type: String,
       required: true,
       trim: true,
