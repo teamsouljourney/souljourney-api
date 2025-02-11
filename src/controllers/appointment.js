@@ -60,8 +60,33 @@ module.exports = {
       });
     }
 
-    const data = await Appointment.create(req.body);
-    res.status(201).send({ error: false, data });
+    const newAppointment = await Appointment.create(req.body);
+
+    await TherapistTimeTable.updateOne(
+      { therapistId },
+      {
+        $push: {
+          unavailableDates: {
+            date: appointmentDate,
+            startTime,
+            endTime,
+          },
+        },
+      }
+    );
+
+    if (newAppointment) {
+      return res.status(201).json({
+        error: false,
+        message: "Appointment created successfully.",
+        data: newAppointment,
+      });
+    }
+
+    return res.status(500).json({
+      error: true,
+      message: "Failed to create appointment.",
+    });
   },
 
   read: async (req, res) => {
