@@ -63,20 +63,35 @@ module.exports = {
 
     const newAppointment = await Appointment.create(req.body);
 
-    const newUnavailableDate = {
+    // Check if therapist's timetable already exists
+    const therapistTimeTable = await TherapistTimeTable.findOne({
       therapistId,
-      unavailableDate: [
-        {
-          date: appointmentDate,
-          startTime: startTime,
-          endTime: endTime,
-        },
-      ],
-    };
+    });
 
-    const newTimeTable = await TherapistTimeTable.create(newUnavailableDate);
+    if (therapistTimeTable) {
+      // If timetable exists, update the unavailableDate array
+      therapistTimeTable.unavailableDates.push({
+        date: appointmentDate,
+        startTime: startTime,
+        endTime: endTime,
+      });
+      await therapistTimeTable.save();
+    } else {
+      // If timetable doesn't exist, create a new one
+      const newUnavailableDate = {
+        therapistId,
+        unavailableDates: [
+          {
+            date: appointmentDate,
+            startTime: startTime,
+            endTime: endTime,
+          },
+        ],
+      };
+      await TherapistTimeTable.create(newUnavailableDate);
+    }
 
-    if (newAppointment && newTimeTable) {
+    if (newAppointment) {
       return res.status(201).json({
         error: false,
         message: "Appointment created successfully.",
