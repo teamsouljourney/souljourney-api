@@ -5,6 +5,7 @@
 /* ------------------------------------------------- */
 
 const Appointment = require("../models/appointment");
+const TherapistTimeTable = require("../models/therapistTimeTable");
 
 module.exports = {
   list: async (req, res) => {
@@ -62,20 +63,20 @@ module.exports = {
 
     const newAppointment = await Appointment.create(req.body);
 
-    await TherapistTimeTable.updateOne(
-      { therapistId },
-      {
-        $push: {
-          unavailableDates: {
-            date: appointmentDate,
-            startTime,
-            endTime,
-          },
+    const newUnavailableDate = {
+      therapistId,
+      unavailableDate: [
+        {
+          date: appointmentDate,
+          startTime: startTime,
+          endTime: endTime,
         },
-      }
-    );
+      ],
+    };
 
-    if (newAppointment) {
+    const newTimeTable = await TherapistTimeTable.create(newUnavailableDate);
+
+    if (newAppointment && newTimeTable) {
       return res.status(201).json({
         error: false,
         message: "Appointment created successfully.",

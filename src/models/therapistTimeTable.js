@@ -15,7 +15,7 @@ const TherapistTimeTableSchema = new mongoose.Schema(
       ref: "Therapist",
       required: true,
     },
-    unavailableDates: [
+    unavailableDate: [
       {
         date: { type: Date, required: true },
         startTime: { type: Date, required: true },
