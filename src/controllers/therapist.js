@@ -21,13 +21,11 @@ module.exports = {
             `
         */
 
-
     // let customFilter = {}
     // if (!req.user.isAdmin) customFilter = { isAdmin: false }
 
-    const data = await res.getModelList(Therapist);
+    const data = await res.getModelList(Therapist, {}, "categoryId");
     // const data = await res.getModelList(Therapist, customFilter);
-
 
     res.status(200).send({
       error: false,
@@ -40,17 +38,28 @@ module.exports = {
 
   create: async (req, res) => {
     /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "Create Therapists"
-            #swagger.parameters['body'] = {
-                in: 'body',
-                required: true,
-                schema: {
-                   $ref:"#/definitions/Therapist"
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Create Therapist"
+        #swagger.description = "Create a new therapist entry with their details."
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                type: 'object',
+                properties: {
+                    firstName: { type: 'string', example: 'Mehmet' },
+                    lastName: { type: 'string', example: 'Yılmaz' },
+                    fullName: { type: 'string', example: 'Mehmet Yılmaz' },
+                    email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
+                    password: { type: 'string', example: 'Password123!' },
+                    image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
+                    categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
+                    description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
+                    isActive: { type: 'boolean', example: true },
                 }
             }
-        */
-
+        }
+    */
     // req.body.isAdmin = false;
 
     const data = await Therapist.create(req.body);
@@ -75,17 +84,36 @@ module.exports = {
   },
 
   update: async (req, res) => {
-    /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "Update Therapist"
-            #swagger.parameters['body'] = {
-                in: 'body',
-                required: true,
-                schema: {
-                   $ref:"#/definitions/Therapist"
-                }
-            }
-        */
+  /*
+    #swagger.tags = ["Therapists"]
+    #swagger.summary = "Update Therapist"
+    #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
+    #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'The ID of the therapist to be updated',
+        required: true,
+        type: 'string',
+    }
+    #swagger.parameters['body'] = {
+        in: 'body',
+        required: true,
+        schema: {
+            type: 'object',
+            properties: {
+                firstName: { type: 'string', example: 'Mehmet' },
+                lastName: { type: 'string', example: 'Yılmaz' },
+                fullName: { type: 'string', example: 'Mehmet Yılmaz' },
+                email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
+                password: { type: 'string', example: 'Password123!' },
+                image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
+                categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
+                description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
+                isActive: { type: 'boolean', example: true },
+            },
+        },
+    }
+*/
+
 
     const data = await Therapist.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
