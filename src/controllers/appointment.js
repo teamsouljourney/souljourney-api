@@ -14,11 +14,52 @@ module.exports = {
         #swagger.summary = 'Get all appointments'
         #swagger.description = 'Fetch a list of all appointments, with optional userId and therapistId population.'
     */
-    const data = await res.getModelList(Appointment, {}, "userId therapistId");
+    const data = await res.getModelList(Appointment, {}, [
+      "userId therapistId",
+    ]);
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Appointment),
       data,
+    });
+  },
+
+  getUserAppointments: async (req, res) => {
+    /*
+          #swagger.tags = ['Appointment']
+          #swagger.summary = 'Get user or therapist appointments'
+          #swagger.description = 'Fetch a list of appointments for a specific user or therapist, based on their role.'
+          #swagger.parameters['id'] = {
+              in: 'path',
+              required: true,
+              description: 'ID of the user or therapist to fetch appointments for.',
+              type: 'string',
+          }
+    */
+
+    const { id } = req.params;
+    const { isTherapist } = req.user;
+
+    console.log(isTherapist, id);
+
+    if (isTherapist) {
+      const appointments = await Appointment.find({ therapistId: id }).populate(
+        "userId therapistId"
+      );
+
+      return res.status(200).json({
+        error: false,
+        data: appointments,
+      });
+    }
+
+    const appointments = await Appointment.find({ userId: id }).populate(
+      "userId therapistId"
+    );
+
+    res.status(200).json({
+      error: false,
+      data: appointments,
     });
   },
 
