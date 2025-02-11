@@ -16,7 +16,6 @@ router.route("/:id")
     .patch(user.update)
     .delete(user.delete)
 
-router.get('/:userId/liked-blogs', blog.getLikedBlogs) //by erkan
 
 
 module.exports = router

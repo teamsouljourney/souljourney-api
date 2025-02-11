@@ -9,14 +9,13 @@ const blog = require("../controllers/blog")
 
 router.route("/")
     .get(blog.list)
-    .post(isTherapist, blog.create)
+    .post( blog.create)
 router.route("/:id")
     .get(blog.read)
-    .put(isTherapist, blog.update)
-    .patch(isTherapist, blog.update)
-    .delete(isTherapist, blog.delete)
+    .put( blog.update)
+    .patch( blog.update)
+    .delete( blog.delete)
 
-    router.get("/liked", blog.listLiked)
 
 
 module.exports = router
