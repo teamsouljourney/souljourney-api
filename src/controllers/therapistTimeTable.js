@@ -62,8 +62,8 @@ module.exports = {
         }
     */
     const data = await TherapistTimeTable.findOne({
-      _id: req.params.id,
-    }).populate("therapistId");
+      therapistId: req.params.id,
+    });
     res.status(200).send({
       error: false,
       data,
