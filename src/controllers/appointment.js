@@ -6,6 +6,7 @@
 
 const Appointment = require("../models/appointment");
 const TherapistTimeTable = require("../models/therapistTimeTable");
+const CustomError = require("../errors/customError");
 
 module.exports = {
   list: async (req, res) => {
@@ -63,27 +64,39 @@ module.exports = {
     });
   },
 
-  create: async (req, res) => {
+  create: async (req, res, next) => {
     /*
-            #swagger.tags = ['Appointment']
-            #swagger.summary = 'Create a new appointment'
-            #swagger.description = 'Create and save a new appointment in the database.'
-            #swagger.parameters['body'] = {
-                in: 'body',
-                required: true,
-                description: 'Appointment data to create.',
-                schema: {
-                  userId: 'string',
-                  therapistId: 'string',
-                  appointmentDate: 'date',
-                  startTime: 'date',
-                  endTime: 'date',
-              },
-          }
+        #swagger.tags = ['Appointment']
+        #swagger.summary = 'Create a new appointment'
+        #swagger.description = 'Create and save a new appointment in the database.'
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            description: 'Appointment data to create.',
+            schema: {
+              userId: 'string',
+              therapistId: 'string',
+              appointmentDate: 'date',
+              startTime: 'date',
+              endTime: 'date',
+          },
+      }
     */
 
     const { userId, therapistId, appointmentDate, startTime, endTime } =
       req.body;
+
+    const now = new Date();
+    const selectedDateTime = new Date(startTime);
+
+    const nowUTC = new Date(now.toISOString());
+
+    if (selectedDateTime < nowUTC) {
+      throw new CustomError(
+        "You cannot create an appointment for past dates or times.",
+        400
+      );
+    }
 
     const userExistingAppointment = await Appointment.findOne({
       userId,
@@ -96,11 +109,10 @@ module.exports = {
     });
 
     if (userExistingAppointment) {
-      return res.status(400).json({
-        error: true,
-        message:
-          "You already have an appointment at this time with another therapist.",
-      });
+      throw new CustomError(
+        "You already have an appointment at this time with another therapist.",
+        400
+      );
     }
 
     const existingAppointment = await Appointment.findOne({
@@ -114,54 +126,40 @@ module.exports = {
     });
 
     if (existingAppointment) {
-      return res.status(400).json({
-        error: true,
-        message:
-          "This time slot is already booked. Please select another time.",
-      });
+      throw new CustomError(
+        "This time slot is already booked. Please select another time.",
+        400
+      );
     }
 
     const newAppointment = await Appointment.create(req.body);
 
-    // Check if therapist's timetable already exists
     const therapistTimeTable = await TherapistTimeTable.findOne({
       therapistId,
     });
 
     if (therapistTimeTable) {
-      // If timetable exists, update the unavailableDate array
       therapistTimeTable.unavailableDates.push({
         date: appointmentDate,
-        startTime: startTime,
-        endTime: endTime,
+        startTime,
+        endTime,
       });
       await therapistTimeTable.save();
     } else {
-      // If timetable doesn't exist, create a new one
-      const newUnavailableDate = {
+      await TherapistTimeTable.create({
         therapistId,
-        unavailableDates: [
-          {
-            date: appointmentDate,
-            startTime: startTime,
-            endTime: endTime,
-          },
-        ],
-      };
-      await TherapistTimeTable.create(newUnavailableDate);
-    }
-
-    if (newAppointment) {
-      return res.status(201).json({
-        error: false,
-        message: "Appointment created successfully.",
-        data: newAppointment,
+        unavailableDates: [{ date: appointmentDate, startTime, endTime }],
       });
     }
 
-    return res.status(500).json({
-      error: true,
-      message: "Failed to create appointment.",
+    if (!newAppointment) {
+      throw new CustomError("Failed to create appointment.", 500);
+    }
+
+    res.status(201).json({
+      error: false,
+      message: "Appointment created successfully.",
+      data: newAppointment,
     });
   },
 
