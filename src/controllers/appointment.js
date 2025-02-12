@@ -82,7 +82,8 @@ module.exports = {
           }
     */
 
-    const { therapistId, appointmentDate, startTime, endTime } = req.body;
+    const { userId, therapistId, appointmentDate, startTime, endTime } =
+      req.body;
 
     const userExistingAppointment = await Appointment.findOne({
       userId,
@@ -231,11 +232,46 @@ module.exports = {
                 type: 'string',
             }
     */
-    const data = await Appointment.deleteOne({ _id: req.params.id });
 
-    res.status(data.deletedCount ? 204 : 404).send({
-      error: !data.deletedCount,
-      data,
+    const appointment = await Appointment.findById(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({
+        error: true,
+        message: "Appointment not found.",
+      });
+    }
+
+    const data = await Appointment.deleteOne({ _id: req.params.id });
+    if (!data.deletedCount) {
+      return res.status(500).json({
+        error: true,
+        message: "Failed to delete appointment.",
+      });
+    }
+
+    const therapistTimeTable = await TherapistTimeTable.findOne({
+      therapistId: appointment.therapistId,
+    });
+
+    if (therapistTimeTable) {
+      therapistTimeTable.unavailableDates =
+        therapistTimeTable.unavailableDates.filter(
+          (date) =>
+            !(
+              date.date.toISOString() ===
+                appointment.appointmentDate.toISOString() &&
+              date.startTime.toISOString() ===
+                appointment.startTime.toISOString() &&
+              date.endTime.toISOString() === appointment.endTime.toISOString()
+            )
+        );
+
+      await therapistTimeTable.save();
+    }
+
+    return res.status(200).json({
+      error: false,
+      message: "Appointment deleted successfully.",
     });
   },
 };
