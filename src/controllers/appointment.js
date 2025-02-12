@@ -40,7 +40,7 @@ module.exports = {
     const { id } = req.params;
     const { isTherapist } = req.user;
 
-    console.log(isTherapist, id);
+    // console.log(isTherapist, id);
 
     if (isTherapist) {
       const appointments = await Appointment.find({ therapistId: id }).populate(
@@ -83,6 +83,24 @@ module.exports = {
     */
 
     const { therapistId, appointmentDate, startTime, endTime } = req.body;
+
+    const userExistingAppointment = await Appointment.findOne({
+      userId,
+      appointmentDate,
+      $or: [
+        { startTime: { $lt: endTime, $gte: startTime } },
+        { endTime: { $gt: startTime, $lte: endTime } },
+        { startTime: { $lte: startTime }, endTime: { $gte: endTime } },
+      ],
+    });
+
+    if (userExistingAppointment) {
+      return res.status(400).json({
+        error: true,
+        message:
+          "You already have an appointment at this time with another therapist.",
+      });
+    }
 
     const existingAppointment = await Appointment.findOne({
       therapistId,
