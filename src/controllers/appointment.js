@@ -219,32 +219,14 @@ module.exports = {
   },
 
   deleteAppointment: async (req, res) => {
-    /*
-            #swagger.tags = ['Appointment']
-            #swagger.summary = 'Delete appointment by ID'
-            #swagger.description = 'Delete an appointment from the database by its unique ID.'
-            #swagger.parameters['id'] = {
-                in: 'path',
-                required: true,
-                description: 'ID of the appointment to delete.',
-                type: 'string',
-            }
-    */
-
     const appointment = await Appointment.findById(req.params.id);
     if (!appointment) {
-      return res.status(404).json({
-        error: true,
-        message: "Appointment not found.",
-      });
+      throw new CustomError("Appointment not found.", 404);
     }
 
     const data = await Appointment.deleteOne({ _id: req.params.id });
     if (!data.deletedCount) {
-      return res.status(500).json({
-        error: true,
-        message: "Failed to delete appointment.",
-      });
+      throw new CustomError("Failed to delete appointment.", 500);
     }
 
     const therapistTimeTable = await TherapistTimeTable.findOne({
@@ -252,17 +234,22 @@ module.exports = {
     });
 
     if (therapistTimeTable) {
+      const formatDateTime = (date) => date.toISOString().slice(0, 16);
+
       therapistTimeTable.unavailableDates =
-        therapistTimeTable.unavailableDates.filter(
-          (date) =>
-            !(
-              date.date.toISOString() ===
-                appointment.appointmentDate.toISOString() &&
-              date.startTime.toISOString() ===
-                appointment.startTime.toISOString() &&
-              date.endTime.toISOString() === appointment.endTime.toISOString()
-            )
-        );
+        therapistTimeTable.unavailableDates.filter((date) => {
+          const isSameDate =
+            date.date.toISOString().slice(0, 10) ===
+            appointment.appointmentDate.toISOString().slice(0, 10);
+          const isSameStartTime =
+            formatDateTime(date.startTime) ===
+            formatDateTime(appointment.startTime);
+          const isSameEndTime =
+            formatDateTime(date.endTime) ===
+            formatDateTime(appointment.endTime);
+
+          return !(isSameDate && isSameStartTime && isSameEndTime);
+        });
 
       await therapistTimeTable.save();
     }
