@@ -56,6 +56,8 @@ const documents = {
         
         Therapist: require('./src/models/therapist').schema.obj,
 
+        TherapistTimeTable: require('./src/models/therapistTimeTable').schema.obj,
+
         Token: require('./src/models/token').schema.obj,
         
         User: require('./src/models/user').schema.obj,
