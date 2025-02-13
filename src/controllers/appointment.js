@@ -186,35 +186,102 @@ module.exports = {
 
   update: async (req, res) => {
     /*
-            #swagger.tags = ['Appointment']
-            #swagger.summary = 'Update appointment by ID'
-            #swagger.description = 'Update an appointment\'s details by its unique ID.'
-            #swagger.parameters['id'] = {
-                in: 'path',
-                required: true,
-                description: 'ID of the appointment to update.',
-                type: 'string',
-            }
-            #swagger.parameters['body'] = {
-                in: 'body',
-                required: true,
-                description: 'Updated appointment data.',
-                schema: {
-                  userId: 'string',
-                  therapistId: 'string',
-                  appointmentDate: 'date',
-                  endTime: 'date',
-              },
+          #swagger.tags = ['Appointment']
+          #swagger.summary = 'Update appointment by ID'
+          #swagger.description = 'Update an appointment\'s details by its unique ID.'
+          #swagger.parameters['id'] = {
+              in: 'path',
+              required: true,
+              description: 'ID of the appointment to update.',
+              type: 'string',
           }
+          #swagger.parameters['body'] = {
+              in: 'body',
+              required: true,
+              description: 'Updated appointment data.',
+              schema: {
+                userId: 'string',
+                therapistId: 'string',
+                appointmentDate: 'date',
+                endTime: 'date',
+            },
+        }
     */
 
-    const data = await Appointment.updateOne({ _id: req.params.id }, req.body, {
-      runValidators: true,
+    const { id } = req.params;
+    const { userId, therapistId, appointmentDate, startTime, endTime } =
+      req.body;
+
+    // appointmentDate, startTime ve endTime'in Date objesi olduğundan emin olalım
+    const appointmentDateObj = new Date(appointmentDate);
+    const startTimeObj = new Date(startTime);
+    const endTimeObj = new Date(endTime);
+
+    // Existing appointment check (for update)
+    const existingAppointment = await Appointment.findOne({
+      userId,
+      appointmentDate,
+      _id: { $ne: id }, // Exclude the current appointment (update scenario)
+      $or: [
+        { startTime: { $lt: endTime, $gte: startTime } },
+        { endTime: { $gt: startTime, $lte: endTime } },
+        { startTime: { $lte: startTime }, endTime: { $gte: endTime } },
+      ],
     });
+
+    if (existingAppointment) {
+      return res.status(400).send({
+        error: true,
+        message:
+          "You already have an appointment at this time with another therapist.",
+      });
+    }
+
+    const updatedAppointment = await Appointment.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedAppointment) {
+      return res
+        .status(404)
+        .send({ error: true, message: "Appointment not found." });
+    }
+
+    const therapistTimeTable = await TherapistTimeTable.findOne({
+      therapistId: therapistId,
+    });
+
+    if (therapistTimeTable) {
+      const formatDateTime = (date) => date.toISOString().slice(0, 16);
+
+      therapistTimeTable.unavailableDates =
+        therapistTimeTable.unavailableDates.filter((date) => {
+          const isSameDate =
+            date.date.toISOString().slice(0, 10) ===
+            appointmentDateObj.toISOString().slice(0, 10);
+          const isSameStartTime =
+            formatDateTime(date.startTime) === formatDateTime(startTimeObj);
+          const isSameEndTime =
+            formatDateTime(date.endTime) === formatDateTime(endTimeObj);
+
+          return !(isSameDate && isSameStartTime && isSameEndTime);
+        });
+
+      therapistTimeTable.unavailableDates.push({
+        date: appointmentDateObj,
+        startTime: startTimeObj,
+        endTime: endTimeObj,
+      });
+
+      await therapistTimeTable.save();
+    }
+
     res.status(202).send({
       error: false,
-      data,
-      new: await Appointment.findOne({ _id: req.params.id }),
+      data: updatedAppointment,
+      new: await Appointment.findById(id),
     });
   },
 
