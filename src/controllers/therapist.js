@@ -52,7 +52,7 @@ module.exports = {
                     email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
                     password: { type: 'string', example: 'Password123!' },
                     image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
-                    categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
+                    categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' '67a47634b6da7c1f21194632' },
                     description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
                     isActive: { type: 'boolean', example: true },
                 }

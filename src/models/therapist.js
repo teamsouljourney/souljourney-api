@@ -73,6 +73,10 @@ const TherapistSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isTherapist: {
+      type: Boolean,
+      default: true,
+    },
     passwordResetToken: String,
     passwordResetExpires: Date,
     verificationCode: Number,
