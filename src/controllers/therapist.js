@@ -48,8 +48,7 @@ module.exports = {
                 type: 'object',
                 properties: {
                     firstName: { type: 'string', example: 'Mehmet' },
-                    lastName: { type: 'string', example: 'Yılmaz' },
-                    fullName: { type: 'string', example: 'Mehmet Yılmaz' },
+                    lastName: { type: 'string', example: 'Yılmaz' },         
                     email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
                     password: { type: 'string', example: 'Password123!' },
                     image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
@@ -102,7 +101,6 @@ module.exports = {
             properties: {
                 firstName: { type: 'string', example: 'Mehmet' },
                 lastName: { type: 'string', example: 'Yılmaz' },
-                fullName: { type: 'string', example: 'Mehmet Yılmaz' },
                 email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
                 password: { type: 'string', example: 'Password123!' },
                 image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
