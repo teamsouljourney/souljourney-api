@@ -8,6 +8,7 @@ const router = require("express").Router();
 
 const {
   list,
+  getUserAppointments,
   create,
   read,
   update,
@@ -22,6 +23,8 @@ router
   .put(update)
   .patch(update)
   .delete(deleteAppointment);
+
+router.route("/user/:id").get(getUserAppointments);
 
 /* ------------------------------------------------- */
 
