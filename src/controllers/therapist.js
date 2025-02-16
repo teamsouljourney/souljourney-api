@@ -74,7 +74,7 @@ module.exports = {
             #swagger.tags = ["Therapists"]
             #swagger.summary = "Get Single Therapist"
         */
-    const data = await Therapist.findOne({ _id: req.params.id });
+    const data = await Therapist.findOne({ _id: req.params.id }).populate(["categoryId", "feedbackId"]);
 
     res.status(200).send({
       error: false,
