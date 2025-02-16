@@ -29,8 +29,7 @@ const TherapistSchema = new mongoose.Schema(
       required: true,
       trim: true,
       required: true,
-    },
-  
+    },  
     email: {
       type: String,
       required: true,
