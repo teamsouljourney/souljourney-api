@@ -14,21 +14,10 @@ router.post('/', async (req, res) => {
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
-         price: priceId, //"price_1QsAUOP6ONB2IDlqrxmCfsS3",
+         price: priceId,
          quantity: 1,
        }
-    //   {
-    //      price: "price_1QsATcP6ONB2IDlq8IPG3Ubl",
-    //      quantity: 1,
-    //    },
-    //   {
-    //      price: "price_1QsAQkP6ONB2IDlqiMwUcvQS",
-    //      quantity: 1,
-    //    },
-    //   {
-    //      price: "price_1QsAPGP6ONB2IDlqFgbc5PMm",
-    //      quantity: 1,
-    //    },
+    
     ],
     mode: 'subscription',
     success_url: 'http://localhost:5173/success',
