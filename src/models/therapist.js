@@ -29,8 +29,7 @@ const TherapistSchema = new mongoose.Schema(
       required: true,
       trim: true,
       required: true,
-    },
-  
+    },  
     email: {
       type: String,
       required: true,
@@ -54,11 +53,13 @@ const TherapistSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    categoryId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
-    },
+    categoryId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+        required: true,
+      }
+    ],
     feedbackId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Feedback",
