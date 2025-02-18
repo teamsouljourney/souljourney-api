@@ -24,12 +24,12 @@ module.exports = {
     // let customFilter = {}
     // if (!req.user.isAdmin) customFilter = { isAdmin: false }
 
-    const data = await res.getModelList(Therapist, {}, "categoryId");
+    const data = await res.getModelList(Therapist, customFilter, "categoryId");
     // const data = await res.getModelList(Therapist, customFilter);
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Therapist),
+      details: await res.getModelListDetails(Therapist,customFilter),
       // details: await res.getModelListDetails(Therapist, customFilter),
 
       data,
