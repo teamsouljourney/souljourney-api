@@ -54,6 +54,8 @@ module.exports = {
                     image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
                     categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' '67a47634b6da7c1f21194632' },
                     description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
+                    experince: { type: 'string', example: '7 yrs in practice Stress, Anxiety, Addictions, Family conflicts,Self esteem, Motivation, Additional areas of focus: Grief, Intimacy-related issues, Eating disorders, Sleeping disorders, Parenting issues, Anger management, ADHD, Clinical approaches: Client-Centered Therapy' },
+                    graduation: { type: 'string', example: 'Marmara University' },
                     isActive: { type: 'boolean', example: true },
                 }
             }
