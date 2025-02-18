@@ -70,19 +70,16 @@ const TherapistSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      required: true,
     },
     experience: {
       type: String,
       required: true,
       trim: true,
-      required: true,
     },
     graduation: {
       type: String,
       required: true,
       trim: true,
-      required: true,
     },
     isActive: {
       type: Boolean,
