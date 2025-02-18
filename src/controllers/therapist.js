@@ -24,7 +24,7 @@ module.exports = {
     // let customFilter = {}
     // if (!req.user.isAdmin) customFilter = { isAdmin: false }
 
-    const data = await res.getModelList(Therapist, customFilter, "categoryId");
+    const data = await res.getModelList(Therapist, {}, ["categoryId", "feedbackId"]);
     // const data = await res.getModelList(Therapist, customFilter);
 
     res.status(200).send({
@@ -74,7 +74,7 @@ module.exports = {
             #swagger.tags = ["Therapists"]
             #swagger.summary = "Get Single Therapist"
         */
-    const data = await Therapist.findOne({ _id: req.params.id });
+    const data = await Therapist.findOne({ _id: req.params.id }).populate(["categoryId", "feedbackId"]);
 
     res.status(200).send({
       error: false,

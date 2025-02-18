@@ -10,6 +10,9 @@ const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const app = express();
 const cors = require("cors");
+const i18n =require("i18next")
+
+
 
 /* ----------------------------------- */
 // Required Modules:
@@ -18,6 +21,7 @@ const cors = require("cors");
 require("dotenv").config();
 const HOST = process.env?.HOST || "127.0.0.1";
 const PORT = process.env?.PORT || 8000;
+
 
 // asyncErrors to errorHandler:
 require("express-async-errors");
@@ -93,6 +97,8 @@ app.all("/", (req, res) => {
 // Routes:
 app.use(require("./src/routes/index"));
 
+app.use("/checkout",require("./src/routes/payment"))
+
 // Not Found
 app.use("*", (req, res) => {
   res.status(404).json({
@@ -107,6 +113,9 @@ app.use("*", (req, res) => {
 app.use(require("./src/middlewares/errorHandler"));
 
 /* ------------------------------------------------------- */
+
+// Stripe:
+
 
 // RUN SERVER:
 app.listen(PORT, () => {

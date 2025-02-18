@@ -22,6 +22,9 @@
     "express": "^4.21.2",
     "express-async-errors": "^3.1.1",
     "express-session": "^1.18.1",
+    "i18next": "^24.2.2",
+    "i18next-fs-backend": "^2.6.0",
+    "i18next-http-middleware": "^3.7.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.5",
     "mongoose-unique-validator": "^5.0.1",
@@ -30,6 +33,7 @@
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "redoc-express": "^2.1.0",
+    "stripe": "^17.6.0",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1",
     "validator": "^13.12.0"
