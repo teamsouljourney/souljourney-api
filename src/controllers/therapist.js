@@ -29,7 +29,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Therapist),
+      details: await res.getModelListDetails(Therapist,customFilter),
       // details: await res.getModelListDetails(Therapist, customFilter),
 
       data,
