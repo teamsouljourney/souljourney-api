@@ -21,17 +21,18 @@ module.exports = {
             `
         */
 
-    // let customFilter = {}
-    // if (!req.user.isAdmin) customFilter = { isAdmin: false }
+    let customFilter = {}
+    if (req.query?.category) {
+      customFilter = {categoryId:req.query.category}
+  }
 
-    const data = await res.getModelList(Therapist, {}, ["categoryId", "feedbackId"]);
-    // const data = await res.getModelList(Therapist, customFilter);
+    const data = await res.getModelList(Therapist, customFilter, ["categoryId", "feedbackId"]);
+  //  console.log(customFilter);
+   
 
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Therapist,customFilter),
-      // details: await res.getModelListDetails(Therapist, customFilter),
-
       data,
     });
   },
