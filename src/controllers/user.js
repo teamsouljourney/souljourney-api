@@ -3,13 +3,13 @@
 SOULJOURNEY API  
 ------------------------------------------------------- */
 const User = require("../models/user");
-const Token = require("../models/token")
+const Token = require("../models/token");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const { createSendToken } = require("../helpers/jwtFunctions");
 
 module.exports = {
-    list: async (req, res) => {
-        /* 
+  list: async (req, res) => {
+    /* 
             #swagger.tags = ["Users"]
             #swagger.summary = "List Users"
             #swagger.description = `
@@ -22,15 +22,20 @@ module.exports = {
                 </ul>
             `
         */
-        const data = await res.getModelList(User)
-        res.status(200).send({
-            error: false,
-            details: await res.getModelListDetails(User),
-            data
-        })
-    },
-    create: async (req, res) => {
-        /* 
+
+    let customFilter = {};
+
+    customFilter = { isAdmin: false };
+
+    const data = await res.getModelList(User, customFilter);
+    res.status(200).send({
+      error: false,
+      details: await res.getModelListDetails(User, customFilter),
+      data,
+    });
+  },
+  create: async (req, res) => {
+    /* 
             #swagger.tags = ["Users"]
             #swagger.summary = "Create User"
             #swagger.parameters['body'] = {
@@ -45,34 +50,33 @@ module.exports = {
                 }
             }
         */
-        const user = await User.create(req.body)
-        // console.log(user);
-        
-        //* Simple Token
-        const tokenData = await Token.create({
-            userId: user._id,
-            // token: crypto.randomBytes(32).toString('hex')
-            token: passwordEncrypt(user._id + Date.now())
-        })
-        // console.log(tokenData);
+    const user = await User.create(req.body);
+    // console.log(user);
 
-        //* JWT    
-        createSendToken(user, 202, tokenData, res)
-        
-    },
-    read: async (req, res) => {
-        /* 
+    //* Simple Token
+    const tokenData = await Token.create({
+      userId: user._id,
+      // token: crypto.randomBytes(32).toString('hex')
+      token: passwordEncrypt(user._id + Date.now()),
+    });
+    // console.log(tokenData);
+
+    //* JWT
+    createSendToken(user, 202, tokenData, res);
+  },
+  read: async (req, res) => {
+    /* 
             #swagger.tags = ["Users"]
             #swagger.summary = "Read User"
         */
-        const data = await User.findOne({_id: req.params.id})
-        res.status(200).send({
-            error: false,
-            data
-        })
-    },
-    update: async (req, res) => {
-        /* 
+    const data = await User.findOne({ _id: req.params.id });
+    res.status(200).send({
+      error: false,
+      data,
+    });
+  },
+  update: async (req, res) => {
+    /* 
             #swagger.tags = ["Users"]
             #swagger.summary = "Update User"
             #swagger.parameters['body'] = {
@@ -87,61 +91,65 @@ module.exports = {
                 }
             }
         */
-        const data = await User.updateOne({_id: req.params.id}, req.body, {runValidators: true})        
-        res.status(201).send({
-            error: false,
-            message: "User updated successfully!",
-            data,
-            new: await User.findOne({_id: req.params.id})
-        })
-    },
-    delete: async (req, res) => {
-        /* 
+    const data = await User.updateOne({ _id: req.params.id }, req.body, {
+      runValidators: true,
+    });
+    res.status(201).send({
+      error: false,
+      message: "User updated successfully!",
+      data,
+      new: await User.findOne({ _id: req.params.id }),
+    });
+  },
+  delete: async (req, res) => {
+    /* 
             #swagger.tags = ["Users"]
             #swagger.summary = "Delete User"
         */
-        const data = await User.deleteOne({_id: req.params.id})
-        res.status(data.deletedCount ? 204 : 404).send({
-            error: !data.deletedCount,
-            message: data.deletedCount ? "User deleted successfully!" : "User not found!",
-            data
-        })
-    },
-    // updateMe: async (req, res) => {
-    //     /* 
-    //         #swagger.tags = ["Users"]
-    //         #swagger.summary = "Update User"
-    //         #swagger.parameters['body'] = {
-    //             in: 'body',
-    //             required: true,
-    //             schema: {
-    //                 "userName": "test",
-    //                 "password": "aA!123456",
-    //                 "email": "test@site.com",
-    //                 "firstName": "test",
-    //                 "lastName": "test",
-    //             }
-    //         }
-    //     */
-    //     req.body.userId = req.user._id
-    //     const data = await User.updateOne({_id: req.params.id}, req.body, {runValidators: true})        
-    //     res.status(201).send({
-    //         error: false,
-    //         message: "User updated successfully!",
-    //         data,
-    //         new: await User.findOne({_id: req.params.id})
-    //     })
-    // },
-    // deleteMe: async (req, res) => {
-    //     /* 
-    //         #swagger.tags = ["Users"]
-    //         #swagger.summary = "Delete User"
-    //     */
-    //     const data = await User.deleteOne({_id: req.params.id})
-    //     res.status(data.deletedCount ? 204 : 404).send({
-    //         error: !data.deletedCount,
-    //         message: data.deletedCount ? "User deleted successfully!" : "User not found!",
-    //         data
-    //     })
-    // },
-}
+    const data = await User.deleteOne({ _id: req.params.id });
+    res.status(data.deletedCount ? 204 : 404).send({
+      error: !data.deletedCount,
+      message: data.deletedCount
+        ? "User deleted successfully!"
+        : "User not found!",
+      data,
+    });
+  },
+  // updateMe: async (req, res) => {
+  //     /*
+  //         #swagger.tags = ["Users"]
+  //         #swagger.summary = "Update User"
+  //         #swagger.parameters['body'] = {
+  //             in: 'body',
+  //             required: true,
+  //             schema: {
+  //                 "userName": "test",
+  //                 "password": "aA!123456",
+  //                 "email": "test@site.com",
+  //                 "firstName": "test",
+  //                 "lastName": "test",
+  //             }
+  //         }
+  //     */
+  //     req.body.userId = req.user._id
+  //     const data = await User.updateOne({_id: req.params.id}, req.body, {runValidators: true})
+  //     res.status(201).send({
+  //         error: false,
+  //         message: "User updated successfully!",
+  //         data,
+  //         new: await User.findOne({_id: req.params.id})
+  //     })
+  // },
+  // deleteMe: async (req, res) => {
+  //     /*
+  //         #swagger.tags = ["Users"]
+  //         #swagger.summary = "Delete User"
+  //     */
+  //     const data = await User.deleteOne({_id: req.params.id})
+  //     res.status(data.deletedCount ? 204 : 404).send({
+  //         error: !data.deletedCount,
+  //         message: data.deletedCount ? "User deleted successfully!" : "User not found!",
+  //         data
+  //     })
+  // },
+};
