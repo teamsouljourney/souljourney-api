@@ -7,7 +7,8 @@
 const User = require("../models/user");
 const Token = require("../models/token");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
-const { createSendToken } = require("../helpers/jwtFunctions");
+const { signVerificationToken } = require("../helpers/jwtFunctions");
+const sendEmail = require("../helpers/sendEmail");
 
 module.exports = {
   list: async (req, res) => {
@@ -54,19 +55,32 @@ module.exports = {
                 }
             }
         */
-    const user = await User.create(req.body);
-    // console.log(user);
 
-    //* Simple Token
-    const tokenData = await Token.create({
-      userId: user._id,
-      // token: crypto.randomBytes(32).toString('hex')
-      token: passwordEncrypt(user._id + Date.now()),
+    const newUser = await User.create({
+      userName: req.body.userName,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      email: req.body.email,
+      password: req.body.password,
+      isVerified: false,
     });
-    // console.log(tokenData);
 
-    //* JWT
-    createSendToken(user, 202, tokenData, res);
+    const verificationToken = signVerificationToken(newUser._id);
+
+    const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
+
+    const message = `Click the following link to verify your email address: ${verificationUrl}`;
+
+    await sendEmail({
+      email: newUser.email,
+      subject: "Verify Your Email",
+      message,
+    });
+
+    res.status(200).send({
+      error: false,
+      message: "A verification email has been sent to user's email address.",
+    });
   },
   read: async (req, res) => {
     /* 
