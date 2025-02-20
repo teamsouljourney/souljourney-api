@@ -68,10 +68,21 @@ module.exports = {
   },
   read: async (req, res) => {
     /* 
-            #swagger.tags = ["Users"]
-            #swagger.summary = "Read User"
-        */
-    const data = await User.findOne({ _id: req.params.id });
+        #swagger.tags = ["Users"]
+        #swagger.summary = "Read User"
+    */
+
+    const userId = req.user.isAdmin ? req.params.id : req.user._id;
+
+    const data = await User.findOne({ _id: userId });
+
+    if (!data) {
+      return res.status(404).send({
+        error: true,
+        message: "User not found.",
+      });
+    }
+
     res.status(200).send({
       error: false,
       data,
