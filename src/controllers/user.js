@@ -1,7 +1,9 @@
 "use strict";
-/* -------------------------------------------------------
-SOULJOURNEY API  
-------------------------------------------------------- */
+
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const User = require("../models/user");
 const Token = require("../models/token");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
@@ -128,6 +130,30 @@ module.exports = {
       data,
     });
   },
+  changeUserStatus: async (req, res) => {
+    /* 
+            #swagger.tags = ["Users"]
+            #swagger.summary = "Change User Status"
+        */
+    const user = await User.findOne({ _id: req.params.id });
+
+    if (!user) {
+      return res.status(404).send({
+        error: true,
+        message: "User not found.",
+      });
+    }
+
+    user.isActive = !user.isActive;
+    await user.save();
+
+    res.status(200).send({
+      error: false,
+      message: `User is now ${user.isActive ? "active" : "disabled"}.`,
+      data: user,
+    });
+  },
+
   // updateMe: async (req, res) => {
   //     /*
   //         #swagger.tags = ["Users"]
