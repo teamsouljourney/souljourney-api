@@ -110,7 +110,6 @@ module.exports = {
                 firstName: { type: 'string', example: 'Mehmet' },
                 lastName: { type: 'string', example: 'Yılmaz' },
                 email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
-                password: { type: 'string', example: 'Password123!' },
                 image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
                 categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
                 description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
@@ -120,9 +119,15 @@ module.exports = {
     }
 */
 
-    const data = await Therapist.updateOne({ _id: req.params.id }, req.body, {
-      runValidators: true,
-    });
+    const { _id, password, ...updatedData } = req.body;
+
+    const data = await Therapist.updateOne(
+      { _id: req.params.id },
+      updatedData,
+      {
+        runValidators: true,
+      }
+    );
 
     res.status(202).send({
       error: false,
