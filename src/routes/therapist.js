@@ -12,8 +12,9 @@ router
   .route("/:id")
   .get(therapist.read)
   .put(therapist.update)
-  // .patch(therapist.update)
-  .patch(therapist.changeTherapistStatus)
+  .patch(therapist.update)
   .delete(therapist.delete);
+
+router.route("/:id/status").patch(therapist.changeTherapistStatus);
 
 module.exports = router;

@@ -120,9 +120,13 @@ module.exports = {
                 }
             }
         */
-    const data = await User.updateOne({ _id: req.params.id }, req.body, {
+
+    const { _id, password, ...updatedData } = req.body;
+
+    const data = await User.updateOne({ _id: req.params.id }, updatedData, {
       runValidators: true,
     });
+
     res.status(201).send({
       error: false,
       message: "User updated successfully!",

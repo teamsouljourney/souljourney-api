@@ -12,8 +12,9 @@ router
   .route("/:id")
   .get(user.read)
   .put(user.update)
-  //   .patch(user.update)
-  .patch(user.changeUserStatus)
+  .patch(user.update)
   .delete(user.delete);
+
+router.route("/:id/status").patch(user.changeUserStatus);
 
 module.exports = router;
