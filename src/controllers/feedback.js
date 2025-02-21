@@ -1,6 +1,9 @@
 "use strict";
 
+const CustomError = require("../errors/customError");
+const Appointment = require("../models/appointment");
 const Feedback = require("../models/feedback");
+const Therapist = require("../models/therapist");
 
 module.exports = {
   list: async (req, res) => {
@@ -17,7 +20,10 @@ module.exports = {
         </ul>
       `
     */
-    const data = await res.getModelList(Feedback, {}, ["userId", "therapistId"]);
+    const data = await res.getModelList(Feedback, {}, [
+      "userId",
+      "therapistId",
+    ]);
 
     res.status(200).send({
       error: false,
@@ -39,9 +45,38 @@ module.exports = {
     */
 
     //Set userId from logged in user:
-    req.body.userId = req.user._id;
+    const userId = req.user._id
+    req.body.userId = userId;
+
+    const currentDate = new Date()
+
+    const userEndedAppointment = await Appointment.findOne({
+      userId,
+      endTime: { $lte: currentDate }
+    });
+
+    // console.log(userEndedAppointment);
+
+    if (!userEndedAppointment) {
+      throw new CustomError('You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it.', 400);
+    }
 
     const data = await Feedback.create(req.body);
+
+    // Pushing the feedbackId to the feedbackId array of the Therapist model
+
+    const therapistData = await Therapist.findOne({
+      _id: req.body.therapistId,
+    });
+    // console.log(therapistData);
+
+    let feedbackId = therapistData?.feedbackId;
+    // console.log(feedbackId);
+
+    feedbackId.push(data._id);
+
+    await therapistData.save();
+    // console.log("therapistData-->", therapistData);
 
     res.status(201).send({
       error: false,
@@ -97,6 +132,23 @@ module.exports = {
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
+      data,
+    });
+  },
+  getSingleTherapistFeedbacks: async (req, res) => {
+    // console.log(req.params);
+
+    const { therapistId } = req.params;
+
+    const data = await Feedback.find({ therapistId }).populate([
+      "userId",
+      "therapistId",
+    ]);
+
+    // console.log(data);
+
+    res.status(200).send({
+      error: false,
       data,
     });
   },

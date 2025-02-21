@@ -86,34 +86,34 @@ module.exports = {
   },
 
   update: async (req, res) => {
-  /*
-    #swagger.tags = ["Therapists"]
-    #swagger.summary = "Update Therapist"
-    #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
-    #swagger.parameters['id'] = {
+    /*
+      #swagger.tags = ["Therapists"]
+      #swagger.summary = "Update Therapist"
+      #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
+      #swagger.parameters['id'] = {
         in: 'path',
         description: 'The ID of the therapist to be updated',
         required: true,
         type: 'string',
-    }
-    #swagger.parameters['body'] = {
+      }
+      #swagger.parameters['body'] = {
         in: 'body',
         required: true,
         schema: {
-            type: 'object',
-            properties: {
-                firstName: { type: 'string', example: 'Mehmet' },
-                lastName: { type: 'string', example: 'Yılmaz' },
-                email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
-                password: { type: 'string', example: 'Password123!' },
-                image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
-                categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
-                description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
-                isActive: { type: 'boolean', example: true },
+          type: 'object',
+          properties: {
+            firstName: { type: 'string', example: 'Mehmet' },
+            lastName: { type: 'string', example: 'Yılmaz' },
+            email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
+            password: { type: 'string', example: 'Password123!' },
+            image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
+            categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
+            description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
+            isActive: { type: 'boolean', example: true },
             },
         },
-    }
-*/
+      }
+    */
 
 
     const data = await Therapist.updateOne({ _id: req.params.id }, req.body, {
@@ -129,9 +129,9 @@ module.exports = {
 
   delete: async (req, res) => {
     /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "Delete Therapist"
-        */
+      #swagger.tags = ["Therapists"]
+      #swagger.summary = "Delete Therapist"
+    */
 
     const data = await Therapist.deleteOne({ _id: req.params.id });
 
