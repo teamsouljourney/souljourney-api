@@ -21,17 +21,18 @@ module.exports = {
             `
         */
 
-    // let customFilter = {}
-    // if (!req.user.isAdmin) customFilter = { isAdmin: false }
+    let customFilter = {}
+    if (req.query?.category) {
+      customFilter = {categoryId:req.query.category}
+  }
 
-    const data = await res.getModelList(Therapist, {}, ["categoryId", "feedbackId"]);
-    // const data = await res.getModelList(Therapist, customFilter);
+    const data = await res.getModelList(Therapist, customFilter, ["categoryId", "feedbackId"]);
+  //  console.log(customFilter);
+   
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Therapist),
-      // details: await res.getModelListDetails(Therapist, customFilter),
-
+      details: await res.getModelListDetails(Therapist,customFilter),
       data,
     });
   },
@@ -54,6 +55,8 @@ module.exports = {
                     image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
                     categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' '67a47634b6da7c1f21194632' },
                     description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
+                    experince: { type: 'string', example: '7 yrs in practice Stress, Anxiety, Addictions, Family conflicts,Self esteem, Motivation, Additional areas of focus: Grief, Intimacy-related issues, Eating disorders, Sleeping disorders, Parenting issues, Anger management, ADHD, Clinical approaches: Client-Centered Therapy' },
+                    graduation: { type: 'string', example: 'Marmara University' },
                     isActive: { type: 'boolean', example: true },
                 }
             }

@@ -60,15 +60,26 @@ const TherapistSchema = new mongoose.Schema(
         required: true,
       }
     ],
-    feedbackId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Feedback",
-    },
+    feedbackId: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Feedback",
+      }
+    ],
     description: {
       type: String,
       required: true,
       trim: true,
+    },
+    experience: {
+      type: String,
       required: true,
+      trim: true,
+    },
+    graduation: {
+      type: String,
+      required: true,
+      trim: true,
     },
     isActive: {
       type: Boolean,

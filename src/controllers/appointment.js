@@ -209,8 +209,7 @@ module.exports = {
     */
 
     const { id } = req.params;
-    const { userId, therapistId, appointmentDate, startTime, endTime } =
-      req.body;
+    const { userId, therapistId, appointmentDate, startTime, endTime } = req.body;
 
     // appointmentDate, startTime ve endTime'in Date objesi olduğundan emin olalım
     const appointmentDateObj = new Date(appointmentDate);
@@ -286,6 +285,10 @@ module.exports = {
   },
 
   deleteAppointment: async (req, res) => {
+    /* 
+        #swagger.tags = ["Appointment"]
+        #swagger.summary = "Delete Appointment"
+    */
     const appointment = await Appointment.findById(req.params.id);
     if (!appointment) {
       throw new CustomError("Appointment not found.", 404);

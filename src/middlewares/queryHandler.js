@@ -22,6 +22,8 @@ module.exports = (req, res, next) => {
 
     let skip = Number(req.query?.skip)
     skip = skip > 0 ? skip : (page * limit)
+
+   
     
     res.getModelList = async (Model, customFilter = {}, populate = null) => {
         return await Model.find({ ...filter, ...search, ...customFilter }).sort(sort).skip(skip).limit(limit).populate(populate)
