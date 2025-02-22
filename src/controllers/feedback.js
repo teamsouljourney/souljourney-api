@@ -136,6 +136,17 @@ module.exports = {
     });
   },
   getSingleTherapistFeedbacks: async (req, res) => {
+    /*
+      #swagger.tags = ["Feedbacks"]
+      #swagger.summary = "Get Single Therapist Feedbacks"
+      #swagger.description = "Fetch all feedback/reviews for a specific therapist."
+      #swagger.parameters['therapistId'] = {
+          in: 'path',
+          required: true,
+          description: 'ID of the therapist to fetch feedbacks for.',
+          type: 'string',
+        }
+    */
     // console.log(req.params);
 
     const { therapistId } = req.params;
