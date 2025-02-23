@@ -21,18 +21,20 @@ module.exports = {
             `
         */
 
-    let customFilter = {}
+    let customFilter = {};
     if (req.query?.category) {
-      customFilter = {categoryId:req.query.category}
-  }
+      customFilter = { categoryId: req.query.category };
+    }
 
-    const data = await res.getModelList(Therapist, customFilter, ["categoryId", "feedbackId"]);
-  //  console.log(customFilter);
-   
+    const data = await res.getModelList(Therapist, customFilter, [
+      "categoryId",
+      "feedbackId",
+    ]);
+    //  console.log(customFilter);
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Therapist,customFilter),
+      details: await res.getModelListDetails(Therapist, customFilter),
       data,
     });
   },
@@ -77,7 +79,10 @@ module.exports = {
             #swagger.tags = ["Therapists"]
             #swagger.summary = "Get Single Therapist"
         */
-    const data = await Therapist.findOne({ _id: req.params.id }).populate(["categoryId", "feedbackId"]);
+    const data = await Therapist.findOne({ _id: req.params.id }).populate([
+      "categoryId",
+      "feedbackId",
+    ]);
 
     res.status(200).send({
       error: false,
@@ -87,15 +92,15 @@ module.exports = {
 
   update: async (req, res) => {
     /*
+
       #swagger.tags = ["Therapists"]
       #swagger.summary = "Update Therapist"
       #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
       #swagger.parameters['id'] = {
-        in: 'path',
-        description: 'The ID of the therapist to be updated',
-        required: true,
-        type: 'string',
-      }
+    #swagger.tags = ["Therapists"]
+    #swagger.summary = "Update Therapist"
+    #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
+    #swagger.parameters['id'] = {
       #swagger.parameters['body'] = {
         in: 'body',
         required: true,
@@ -115,10 +120,15 @@ module.exports = {
       }
     */
 
+    const { _id, password, ...updatedData } = req.body;
 
-    const data = await Therapist.updateOne({ _id: req.params.id }, req.body, {
-      runValidators: true,
-    });
+    const data = await Therapist.updateOne(
+      { _id: req.params.id },
+      updatedData,
+      {
+        runValidators: true,
+      }
+    );
 
     res.status(202).send({
       error: false,
@@ -138,6 +148,29 @@ module.exports = {
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
       data,
+    });
+  },
+  changeTherapistStatus: async (req, res) => {
+    /* 
+              #swagger.tags = ["Users"]
+              #swagger.summary = "Change Therapist Status"
+          */
+    const therapist = await Therapist.findOne({ _id: req.params.id });
+
+    if (!therapist)
+      return res
+        .status(404)
+        .send({ error: true, message: "Therapist not found" });
+
+    therapist.isActive = !therapist.isActive;
+    await therapist.save();
+
+    res.status(200).send({
+      error: false,
+      message: `Therapist ${
+        therapist.isActive ? "activated" : "disabled"
+      } successfully`,
+      data: therapist,
     });
   },
 };
