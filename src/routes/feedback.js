@@ -12,9 +12,15 @@ const {
   getSingleTherapistFeedbacks
 } = require("../controllers/feedback");
 
-router.route("/").get(list).post(create);
+router.route("/")
+  .get(list)
+  .post(create);
 
-router.route("/:id").get(read).put(update).patch(update).delete(deleteFeedback);
+router.route("/:id")
+  .get(read)
+  .put(update)
+  .patch(update)
+  .delete(deleteFeedback);
 
 router.route("/therapists/:therapistId").get(getSingleTherapistFeedbacks)
 
