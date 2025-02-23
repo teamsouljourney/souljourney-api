@@ -48,7 +48,7 @@ module.exports = {
         "userId therapistId"
       );
 
-      return res.status(200).json({
+      return res.status(200).send({
         error: false,
         data: appointments,
       });
@@ -58,7 +58,7 @@ module.exports = {
       "userId therapistId"
     );
 
-    res.status(200).json({
+    res.status(200).send({
       error: false,
       data: appointments,
     });
@@ -156,7 +156,7 @@ module.exports = {
       throw new CustomError("Failed to create appointment.", 500);
     }
 
-    res.status(201).json({
+    res.status(201).send({
       error: false,
       message: "Appointment created successfully.",
       data: newAppointment,
@@ -324,7 +324,7 @@ module.exports = {
       await therapistTimeTable.save();
     }
 
-    return res.status(200).json({
+    return res.status(200).send({
       error: false,
       message: "Appointment deleted successfully.",
     });
