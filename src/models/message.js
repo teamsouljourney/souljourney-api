@@ -4,18 +4,32 @@ const { mongoose } = require("../configs/dbConnection");
 
 const MessageSchema = new mongoose.Schema(
   {
-    sender: {
+    senderId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
+    },
+    senderType: {
+      type: String,
+      enum: ["therapist", "patient"],
+      required: true,
+    },
+    recieverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    recieverType: {
+      type: String,
+      enum: ["therapist", "patient"],
+      required: true,
     },
     content: {
       type: String,
       trim: true,
+      required: true,
     },
-    chat: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Chat",
-    },
+    seen: { type: Boolean, default: false },
   },
   {
     collection: "messages",
