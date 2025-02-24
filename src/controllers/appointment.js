@@ -15,9 +15,7 @@ module.exports = {
         #swagger.summary = 'Get all appointments'
         #swagger.description = 'Fetch a list of all appointments, with optional userId and therapistId population.'
     */
-    const data = await res.getModelList(Appointment, {}, [
-      "userId therapistId",
-    ]);
+    const data = await res.getModelList(Appointment, {}, "userId therapistId");
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Appointment),
@@ -209,7 +207,8 @@ module.exports = {
     */
 
     const { id } = req.params;
-    const { userId, therapistId, appointmentDate, startTime, endTime } = req.body;
+    const { userId, therapistId, appointmentDate, startTime, endTime } =
+      req.body;
 
     // appointmentDate, startTime ve endTime'in Date objesi olduğundan emin olalım
     const appointmentDateObj = new Date(appointmentDate);
