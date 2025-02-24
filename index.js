@@ -10,9 +10,10 @@ const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const app = express();
 const cors = require("cors");
-const i18n =require("i18next")
-
-
+const i18n = require("i18next");
+const http = require("http");
+const initializeSocket = require("./src/configs/socket");
+const server = http.createServer(app);
 
 /* ----------------------------------- */
 // Required Modules:
@@ -21,7 +22,6 @@ const i18n =require("i18next")
 require("dotenv").config();
 const HOST = process.env?.HOST || "127.0.0.1";
 const PORT = process.env?.PORT || 8000;
-
 
 // asyncErrors to errorHandler:
 require("express-async-errors");
@@ -32,6 +32,9 @@ require("express-async-errors");
 // Connect to DB:
 const { dbConnection } = require("./src/configs/dbConnection");
 dbConnection();
+
+// Connect to socket.io
+const io = initializeSocket(server);
 
 /* ------------------------------------------------------- */
 // Middlewares:
@@ -97,7 +100,7 @@ app.all("/", (req, res) => {
 // Routes:
 app.use(require("./src/routes/index"));
 
-app.use("/checkout",require("./src/routes/payment"))
+app.use("/checkout", require("./src/routes/payment"));
 
 // Not Found
 app.use("*", (req, res) => {
@@ -115,7 +118,6 @@ app.use(require("./src/middlewares/errorHandler"));
 /* ------------------------------------------------------- */
 
 // Stripe:
-
 
 // RUN SERVER:
 app.listen(PORT, () => {
