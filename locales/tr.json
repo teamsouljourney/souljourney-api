@@ -1,0 +1,23 @@
+{
+  "signupSuccess": "Hesabınızın doğrulama e-postası adresinize gönderildi",
+  "provideEmailAndPassword": "Lütfen e-posta ve şifrenizi girin!",
+  "incorrectEmailOrPassword": "Hatalı e-posta veya şifre",
+  "verifyEmail": "Giriş yapmadan önce e-postanızı doğrulayın",
+  "accountNotActive": "Bu hesap aktif değil. Yardım için destek ile iletişime geçin.",
+  "authorizationHeaderMissing": "Yetkilendirme başlığı eksik. Lütfen geçerli bir token sağlayın.",
+  "tokenValueMissing": "Token değeri eksik. Formatın 'Token <değer>' veya 'Bearer <değer>' olduğundan emin olun.",
+  "logoutSuccess": "Başarıyla çıkış yapıldı.",
+  "tokenNotFound": "Basit token bulunamadı. Zaten çıkış yapılmış olabilir.",
+  "jwtBlacklistedSuccess": "JWT başarıyla kara listeye alındı. Başarıyla çıkış yapıldı.",
+  "unsupportedTokenType": "Desteklenmeyen token türü '{tokenType}'. 'Token' veya 'Bearer' kullanın.",
+  "forgotUserNotFound": "Bu e-posta adresiyle herhangi bir kullanıcı veya terapist bulunamadı.",
+  "resetTokenSuccess": "Şifre sıfırlama token'ı ve doğrulama kodu e-postanıza gönderildi!",
+  "resetTokenError": "Şifre sıfırlama token'ı ve doğrulama kodu gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin!",
+  "resetPasswordSubject": "Şifre sıfırlama token'ınız (10 dakika geçerlidir)",
+  "invalidToken": "Geçersiz veya süresi dolmuş token",
+  "missingFields": "Şifre, şifre onayı ve doğrulama kodu gereklidir",
+  "passwordMismatch": "Şifreler uyuşmuyor",
+  "tokenExpired": "Token geçersiz veya süresi dolmuş",
+  "invalidVerificationCode": "Geçersiz doğrulama kodu",
+  "passwordResetSuccess": "Şifre başarıyla sıfırlandı!"
+}

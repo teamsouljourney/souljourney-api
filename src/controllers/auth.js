@@ -22,6 +22,7 @@ const CustomError = require("../errors/customError");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 const Therapist = require("../models/therapist");
+const translations = require("../../locales/translations");
 
 module.exports = {
   signup: async (req, res) => {
@@ -156,7 +157,10 @@ module.exports = {
     }
 
     if (!user) {
-      throw new CustomError("Incorrect email or password", 401);
+      throw new CustomError(
+        req.t(translations.login.incorrectEmailOrPassword),
+        401
+      );
     }
 
     // 3) If user is from User model, check email verification

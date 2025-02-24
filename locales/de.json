@@ -1,0 +1,23 @@
+{
+  "signupSuccess": "Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet",
+  "provideEmailAndPassword": "Bitte geben Sie E-Mail und Passwort an!",
+  "incorrectEmailOrPassword": "Falsche E-Mail oder Passwort",
+  "verifyEmail": "Bitte verifizieren Sie Ihre E-Mail, bevor Sie sich einloggen",
+  "accountNotActive": "Dieses Konto ist nicht aktiv. Bitte kontaktieren Sie den Support für Hilfe.",
+  "authorizationHeaderMissing": "Authorization-Header fehlt. Bitte stellen Sie ein gültiges Token bereit.",
+  "tokenValueMissing": "Token-Wert fehlt. Stellen Sie sicher, dass das Format 'Token <Wert>' oder 'Bearer <Wert>' lautet.",
+  "logoutSuccess": "Erfolgreich abgemeldet.",
+  "tokenNotFound": "Einfaches Token nicht gefunden. Es wurde möglicherweise bereits abgemeldet.",
+  "jwtBlacklistedSuccess": "JWT erfolgreich auf die Blacklist gesetzt. Abmeldung erfolgreich.",
+  "unsupportedTokenType": "Nicht unterstützter Token-Typ '{tokenType}'. Verwenden Sie 'Token' oder 'Bearer'.",
+  "forgotUserNotFound": "Es gibt keinen Benutzer oder Therapeuten mit dieser E-Mail-Adresse.",
+  "resetTokenSuccess": "Zurücksetzen-Token und Bestätigungscode wurden an die E-Mail gesendet!",
+  "resetTokenError": "Es gab einen Fehler beim Senden des Zurücksetzen-Tokens und des Bestätigungscodes. Versuchen Sie es später noch einmal!",
+  "resetPasswordSubject": "Ihr Zurücksetzen-Token für das Passwort (gültig für 10 Minuten)",
+  "invalidToken": "Ungültiges oder abgelaufenes Token",
+  "missingFields": "Passwort, Passwortbestätigung und Bestätigungscode sind erforderlich",
+  "passwordMismatch": "Passwörter stimmen nicht überein",
+  "tokenExpired": "Token ist ungültig oder abgelaufen",
+  "invalidVerificationCode": "Ungültiger Bestätigungscode",
+  "passwordResetSuccess": "Passwort wurde erfolgreich zurückgesetzt!"
+}
