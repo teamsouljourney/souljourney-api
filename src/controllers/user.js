@@ -155,7 +155,11 @@ module.exports = {
         #swagger.tags = ["Users"]
         #swagger.summary = "Change User Status"
     */
-    const user = await User.findOne({ _id: req.params.id });
+
+    const userId = req.user.isAdmin ? req.params.id : req.user._id
+    
+    const user = await User.findOne({ _id: userId });
+    
 
     if (!user) {
       return res.status(404).send({
@@ -206,7 +210,7 @@ module.exports = {
     });
 
     res.status(201).send({
-      error: false,
+      error: !data.modifiedCount,
       message: "User updated successfully!",
       data,
       new: await User.findOne({ _id: req.params.id }),
