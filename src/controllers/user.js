@@ -217,6 +217,21 @@ module.exports = {
   },
   changeMyPassword: async (req, res) => {
 
+    /* 
+        #swagger.tags = ["Users"]
+        #swagger.summary = "Update User"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                "userName": "test",
+                "email": "test@site.com",
+                "firstName": "test",
+                "lastName": "test",
+            }
+        }
+    */
+
     const {currentPassword, newPassword, retypePassword} = req.body
 
     if (!currentPassword || !newPassword || !retypePassword) {
@@ -229,11 +244,26 @@ module.exports = {
       throw new CustomError("User not found", 404)
     }
 
+    // console.log(user);
+
+    const isPasswordCorrect = await user.correctPassword(currentPassword, user?.password)
     
+    if (!isPasswordCorrect) {
+      throw new CustomError("Your current password is not correct", 401)
+    }
+
+    if (newPassword !== retypePassword) {
+      throw new CustomError("Passwords don't match!", 401)
+    }
+    
+    user.password = newPassword
+
+    await user.save()
 
     res.status(201).send({
       error: false,
       message: "Password changed successfully",
+      data: user
     })
   }
 };
