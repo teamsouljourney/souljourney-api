@@ -154,10 +154,10 @@ module.exports = {
     // console.log(blogData);
     // console.log(req.user);
 
-    // if (blogData.therapistId.toString() != req.user._id) {
-    //   res.errorStatusCode = 401;
-    //   throw new Error("You cannot update someone else's blog post");
-    // }
+    if (blogData.therapistId.toString() != req.user._id) {
+      res.errorStatusCode = 401;
+      throw new Error("You cannot update someone else's blog post");
+    }
     const data = await Blog.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
@@ -178,7 +178,7 @@ module.exports = {
     // console.log(blogData.therapistId._id);
     // console.log(req.user);
 
-    if (blogData.therapistId.email !== req.user.email) {
+    if (!req.user.isAdmin && blogData.therapistId.email !== req.user.email) {
       res.errorStatusCode = 401;
       throw new Error("You cannot delete someone else's blog post");
     }

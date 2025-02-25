@@ -115,7 +115,6 @@ module.exports = {
             required: true,
             schema: {
                 "userName": "test",
-                "password": "aA!123456",
                 "email": "test@site.com",
                 "firstName": "test",
                 "lastName": "test",
