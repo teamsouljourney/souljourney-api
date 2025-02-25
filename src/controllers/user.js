@@ -215,5 +215,25 @@ module.exports = {
       new: await User.findOne({ _id: req.params.id }),
     });
   },
-  
+  changeMyPassword: async (req, res) => {
+
+    const {currentPassword, newPassword, retypePassword} = req.body
+
+    if (!currentPassword || !newPassword || !retypePassword) {
+      throw new CustomError("currentPassword, newPassword and retypePassword are required! ")
+    }
+
+    const user = await User.findOne({_id: req.user._id})
+
+    if (!user) {
+      throw new CustomError("User not found", 404)
+    }
+
+    
+
+    res.status(201).send({
+      error: false,
+      message: "Password changed successfully",
+    })
+  }
 };
