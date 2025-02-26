@@ -19,5 +19,13 @@
   "passwordMismatch": "Passwörter stimmen nicht überein",
   "tokenExpired": "Token ist ungültig oder abgelaufen",
   "invalidVerificationCode": "Ungültiger Bestätigungscode",
-  "passwordResetSuccess": "Passwort wurde erfolgreich zurückgesetzt!"
+  "passwordResetSuccess": "Passwort wurde erfolgreich zurückgesetzt!",
+  "category": {
+    "listSuccess": "Kategorien erfolgreich aufgelistet",
+    "createSuccess": "Kategorie erfolgreich erstellt",
+    "readSuccess": "Kategoriedetails erfolgreich abgerufen",
+    "updateSuccess": "Kategorie erfolgreich aktualisiert",
+    "deleteSuccess": "Kategorie erfolgreich gelöscht",
+    "notFound": "Kategorie nicht gefunden"
+  }
 }

@@ -38,6 +38,15 @@ const translations = {
     invalidVerificationCode: "invalidVerificationCode",
     passwordResetSuccess: "passwordResetSuccess",
   },
+
+  category: {
+    listSuccess: "listSuccess",
+    createSuccess: "createSuccess",
+    readSuccess: "readSuccess",
+    updateSuccess: "updateSuccess",
+    deleteSuccess: "deleteSuccess",
+    notFound: "notFound",
+  },
 };
 
 module.exports = translations;

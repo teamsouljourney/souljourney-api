@@ -19,5 +19,13 @@
   "passwordMismatch": "Şifreler uyuşmuyor",
   "tokenExpired": "Token geçersiz veya süresi dolmuş",
   "invalidVerificationCode": "Geçersiz doğrulama kodu",
-  "passwordResetSuccess": "Şifre başarıyla sıfırlandı!"
+  "passwordResetSuccess": "Şifre başarıyla sıfırlandı!",
+  "category": {
+    "listSuccess": "Kategoriler başarıyla listelendi",
+    "createSuccess": "Kategori başarıyla oluşturuldu",
+    "readSuccess": "Kategori detayları başarıyla alındı",
+    "updateSuccess": "Kategori başarıyla güncellendi",
+    "deleteSuccess": "Kategori başarıyla silindi",
+    "notFound": "Kategori bulunamadı"
+  }
 }
