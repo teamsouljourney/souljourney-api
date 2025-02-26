@@ -33,20 +33,20 @@ module.exports = {
       $or: [
         {
           senderId: userId,
-          senderModel: userModel,
-          receiverId: chatWithId,
-          receiverModel: chatWithModel,
+          senderModel: userModel.toString(),
+          recieverId: chatWithId,
+          recieverModel: chatWithModel.toString(),
         },
         {
           senderId: chatWithId,
-          senderModel: chatWithModel,
-          receiverId: userId,
-          receiverModel: userModel,
+          senderModel: chatWithModel.toString(),
+          recieverId: userId,
+          recieverModel: userModel.toString(),
         },
       ],
     })
       .populate("senderId")
-      .populate("receiverId");
+      .populate("recieverId");
 
     res.status(200).send({
       error: false,
