@@ -28,5 +28,13 @@
     "updateSuccess": "Category updated successfully",
     "deleteSuccess": "Category deleted successfully",
     "notFound": "Category not found"
+  },
+  "token": {
+    "notFound": "Token not found",
+    "listSuccess": "Tokens listed successfully",
+    "createSuccess": "Token created successfully",
+    "readSuccess": "Token retrieved successfully",
+    "updateSuccess": "Token updated successfully",
+    "deleteSuccess": "Token deleted successfully"
   }
 }

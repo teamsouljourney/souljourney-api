@@ -7,6 +7,7 @@
 // Category Controllers:
 
 const Category = require("../models/category");
+const translations = require("../../locales/translations");
 const CustomError = require("../errors/customError");
 
 module.exports = {

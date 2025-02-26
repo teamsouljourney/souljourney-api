@@ -27,5 +27,13 @@
     "updateSuccess": "Kategori başarıyla güncellendi",
     "deleteSuccess": "Kategori başarıyla silindi",
     "notFound": "Kategori bulunamadı"
+  },
+  "token": {
+    "notFound": "Token bulunamadı",
+    "listSuccess": "Tokenlar başarıyla listelendi",
+    "createSuccess": "Token başarıyla oluşturuldu",
+    "readSuccess": "Token başarıyla alındı",
+    "updateSuccess": "Token başarıyla güncellendi",
+    "deleteSuccess": "Token başarıyla silindi"
   }
 }

@@ -27,5 +27,13 @@
     "updateSuccess": "Kategorie erfolgreich aktualisiert",
     "deleteSuccess": "Kategorie erfolgreich gelöscht",
     "notFound": "Kategorie nicht gefunden"
+  },
+  "token": {
+    "notFound": "Token nicht gefunden",
+    "listSuccess": "Tokens erfolgreich aufgelistet",
+    "createSuccess": "Token erfolgreich erstellt",
+    "readSuccess": "Token erfolgreich abgerufen",
+    "updateSuccess": "Token erfolgreich aktualisiert",
+    "deleteSuccess": "Token erfolgreich gelöscht"
   }
 }

@@ -47,6 +47,15 @@ const translations = {
     deleteSuccess: "deleteSuccess",
     notFound: "notFound",
   },
+
+  token: {
+    notFound: "notFound",
+    listSuccess: "listSuccess",
+    createSuccess: "createSuccess",
+    readSuccess: "readSuccess",
+    updateSuccess: "updateSuccess",
+    deleteSuccess: "deleteSuccess",
+  },
 };
 
 module.exports = translations;
