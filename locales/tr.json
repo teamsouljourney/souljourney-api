@@ -35,5 +35,19 @@
     "readSuccess": "Token başarıyla alındı",
     "updateSuccess": "Token başarıyla güncellendi",
     "deleteSuccess": "Token başarıyla silindi"
+  },
+  "appointment": {
+    "listSuccess": "Randevular başarıyla listelendi",
+    "getUserAppointmentsSuccess": "Kullanıcı randevuları başarıyla alındı",
+    "pastDateError": "Geçmiş tarihler veya saatler için randevu oluşturamazsınız.",
+    "userConflictError": "Bu saatte başka bir terapistle zaten randevunuz var.",
+    "therapistConflictError": "Bu zaman dilimi zaten rezerve edilmiş. Lütfen başka bir zaman seçin.",
+    "createError": "Randevu oluşturulamadı.",
+    "createSuccess": "Randevu başarıyla oluşturuldu.",
+    "readSuccess": "Randevu detayları başarıyla alındı",
+    "notFound": "Randevu bulunamadı.",
+    "updateSuccess": "Randevu başarıyla güncellendi",
+    "deleteError": "Randevu silinemedi.",
+    "deleteSuccess": "Randevu başarıyla silindi."
   }
 }

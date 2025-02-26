@@ -35,5 +35,19 @@
     "readSuccess": "Token erfolgreich abgerufen",
     "updateSuccess": "Token erfolgreich aktualisiert",
     "deleteSuccess": "Token erfolgreich gelöscht"
+  },
+  "appointment": {
+    "listSuccess": "Termine erfolgreich aufgelistet",
+    "getUserAppointmentsSuccess": "Benutzertermine erfolgreich abgerufen",
+    "pastDateError": "Sie können keinen Termin für vergangene Daten oder Zeiten erstellen.",
+    "userConflictError": "Sie haben zu dieser Zeit bereits einen Termin bei einem anderen Therapeuten.",
+    "therapistConflictError": "Dieser Zeitslot ist bereits gebucht. Bitte wählen Sie eine andere Zeit.",
+    "createError": "Termin konnte nicht erstellt werden.",
+    "createSuccess": "Termin erfolgreich erstellt.",
+    "readSuccess": "Termindetails erfolgreich abgerufen",
+    "notFound": "Termin nicht gefunden.",
+    "updateSuccess": "Termin erfolgreich aktualisiert",
+    "deleteError": "Termin konnte nicht gelöscht werden.",
+    "deleteSuccess": "Termin erfolgreich gelöscht."
   }
 }

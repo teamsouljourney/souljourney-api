@@ -36,5 +36,19 @@
     "readSuccess": "Token retrieved successfully",
     "updateSuccess": "Token updated successfully",
     "deleteSuccess": "Token deleted successfully"
+  },
+  "appointment": {
+    "listSuccess": "Appointments listed successfully",
+    "getUserAppointmentsSuccess": "User appointments retrieved successfully",
+    "pastDateError": "You cannot create an appointment for past dates or times.",
+    "userConflictError": "You already have an appointment at this time with another therapist.",
+    "therapistConflictError": "This time slot is already booked. Please select another time.",
+    "createError": "Failed to create appointment.",
+    "createSuccess": "Appointment created successfully.",
+    "readSuccess": "Appointment details retrieved successfully",
+    "notFound": "Appointment not found.",
+    "updateSuccess": "Appointment updated successfully",
+    "deleteError": "Failed to delete appointment.",
+    "deleteSuccess": "Appointment deleted successfully."
   }
 }
