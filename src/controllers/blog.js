@@ -11,7 +11,7 @@ const Category = require("../models/category");
 module.exports = {
   list: async (req, res) => {
     console.log("Blog list API called");
-    
+
     /* 
             #swagger.tags = ["Blogs"]
             #swagger.summary = "List Blogs"
@@ -25,17 +25,17 @@ module.exports = {
                 </ul>
             `
         */
-            const data = await res.getModelList(
-              Blog,
-              {},
-              ["therapistId", "categoryId"],
-              { sort: { createdAt: -1 }, limit:4},
-              
-               // createdAt'e göre en günceli önce getir
-            );
-            
-    console.log("Fetched Blogs:", data)
-    
+    const data = await res.getModelList(
+      Blog,
+      {},
+      ["therapistId", "categoryId"],
+      { sort: { createdAt: -1 }, limit: 4 }
+
+      // createdAt'e göre en günceli önce getir
+    );
+
+    console.log("Fetched Blogs:", data);
+
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Blog),
@@ -58,67 +58,14 @@ module.exports = {
     // console.log(req.user);
 
     // req.body.therapistId = req.user._id;
-    
+
     const data = await Blog.create(req.body);
     res.status(201).send({
       error: false,
       data,
     });
   },
-  // console.log("Fetched Blogs:", data);
-  
-  // create: async (req, res) => {
-  //     /*
-  //       #swagger.tags = ["Blogs"]
-  //       #swagger.summary = "Create Blog"
-  //       #swagger.parameters['body'] = {
-  //           in: 'body',
-  //           required: true,
-  //           schema: {
-  //               $ref:"#/definitions/Blog"
-  //           }
-  //       }
-  //     */
 
-  //     // Therapist ve Category ID'lerini kontrol etme
-  //     const { therapistId, categoryId, title, content, image } = req.body;
-
-  //     // Eğer therapistId veya categoryId eksikse hata döndür
-  //     if (!therapistId || !categoryId) {
-  //       return res.status(400).json({
-  //         error: true,
-  //         message: "Therapist ID and Category ID are required",
-  //       });
-  //     }
-
-  //     // Therapist ve Category'nin varlığını kontrol et
-  //     const therapist = await Therapist.findById(therapistId);
-  //     const category = await Category.findById(categoryId);
-
-  //     if (!therapist) {
-  //       return res.status(400).json({
-  //         error: true,
-  //         message: "Therapist not found",
-  //       });
-  //     }
-
-  //     if (!category) {
-  //       return res.status(400).json({
-  //         error: true,
-  //         message: "Category not found",
-  //       });
-  //     }
-
-  //     // Logged-in user's therapistId'yi kullanarak blogu oluştur
-  //     req.body.therapistId = req.user._id;  // req.user, JWT token veya session'dan geliyor.
-
-  //     const data = await Blog.create(req.body);
-  //     res.status(201).send({
-  //       error: false,
-  //       message: "Blog created successfully",
-  //       data,
-  //     });
-  //   },
   read: async (req, res) => {
     /*
             #swagger.tags = ["Blogs"]
@@ -136,7 +83,7 @@ module.exports = {
     });
   },
   update: async (req, res) => {
-   /* 
+    /* 
         #swagger.tags = ["Blogs"]
         #swagger.summary = "Update an existing blog post"
         #swagger.description = "Updates the blog post. Only the therapist who created the post can update it."
@@ -156,13 +103,7 @@ module.exports = {
         
     */
     const blogData = await Blog.findOne({ _id: req.params.id });
-    // console.log(blogData);
-    // console.log(req.user);
 
-    // if (blogData.therapistId.toString() != req.user._id) {
-    //   res.errorStatusCode = 401;
-    //   throw new Error("You cannot update someone else's blog post");
-    // }
     const data = await Blog.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
@@ -215,14 +156,11 @@ module.exports = {
             #swagger.summary = "Add/Remove Like"
         */
     const data = await Blog.findOne({ _id: req.params.id });
-    // console.log(data);
 
     let likes = data?.likes.map((id) => id.toString()) || [];
     const userId = req.user._id.toString();
 
-    // console.log(likes);
     if (likes.includes(userId)) {
-      // console.log("hello");
       likes = likes.filter((id) => id !== userId);
       console.log(likes);
     } else {
