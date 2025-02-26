@@ -7,6 +7,7 @@
 const Appointment = require("../models/appointment");
 const TherapistTimeTable = require("../models/therapistTimeTable");
 const CustomError = require("../errors/customError");
+const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
@@ -18,6 +19,7 @@ module.exports = {
     const data = await res.getModelList(Appointment, {}, "userId therapistId");
     res.status(200).send({
       error: false,
+      message: req.t(translations.appointment.listSuccess),
       details: await res.getModelListDetails(Appointment),
       data,
     });
@@ -39,8 +41,6 @@ module.exports = {
     const { id } = req.params;
     const { isTherapist } = req.user;
 
-    // console.log(isTherapist, id);
-
     if (isTherapist) {
       const appointments = await Appointment.find({ therapistId: id }).populate(
         "userId therapistId"
@@ -48,6 +48,7 @@ module.exports = {
 
       return res.status(200).send({
         error: false,
+        message: req.t(translations.appointment.getUserAppointmentsSuccess),
         data: appointments,
       });
     }
@@ -58,6 +59,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.appointment.getUserAppointmentsSuccess),
       data: appointments,
     });
   },
@@ -90,10 +92,7 @@ module.exports = {
     const nowUTC = new Date(now.toISOString());
 
     if (selectedDateTime < nowUTC) {
-      throw new CustomError(
-        "You cannot create an appointment for past dates or times.",
-        400
-      );
+      throw new CustomError(req.t(translations.appointment.pastDateError), 400);
     }
 
     const userExistingAppointment = await Appointment.findOne({
@@ -108,7 +107,7 @@ module.exports = {
 
     if (userExistingAppointment) {
       throw new CustomError(
-        "You already have an appointment at this time with another therapist.",
+        req.t(translations.appointment.userConflictError),
         400
       );
     }
@@ -125,7 +124,7 @@ module.exports = {
 
     if (existingAppointment) {
       throw new CustomError(
-        "This time slot is already booked. Please select another time.",
+        req.t(translations.appointment.therapistConflictError),
         400
       );
     }
@@ -151,12 +150,12 @@ module.exports = {
     }
 
     if (!newAppointment) {
-      throw new CustomError("Failed to create appointment.", 500);
+      throw new CustomError(req.t(translations.appointment.createError), 500);
     }
 
     res.status(201).send({
       error: false,
-      message: "Appointment created successfully.",
+      message: req.t(translations.appointment.createSuccess),
       data: newAppointment,
     });
   },
@@ -178,6 +177,7 @@ module.exports = {
     );
     res.status(200).send({
       error: false,
+      message: req.t(translations.appointment.readSuccess),
       data,
     });
   },
@@ -210,16 +210,14 @@ module.exports = {
     const { userId, therapistId, appointmentDate, startTime, endTime } =
       req.body;
 
-    // appointmentDate, startTime ve endTime'in Date objesi olduğundan emin olalım
     const appointmentDateObj = new Date(appointmentDate);
     const startTimeObj = new Date(startTime);
     const endTimeObj = new Date(endTime);
 
-    // Existing appointment check (for update)
     const existingAppointment = await Appointment.findOne({
       userId,
       appointmentDate,
-      _id: { $ne: id }, // Exclude the current appointment (update scenario)
+      _id: { $ne: id },
       $or: [
         { startTime: { $lt: endTime, $gte: startTime } },
         { endTime: { $gt: startTime, $lte: endTime } },
@@ -230,8 +228,7 @@ module.exports = {
     if (existingAppointment) {
       return res.status(400).send({
         error: true,
-        message:
-          "You already have an appointment at this time with another therapist.",
+        message: req.t(translations.appointment.userConflictError),
       });
     }
 
@@ -242,9 +239,10 @@ module.exports = {
     );
 
     if (!updatedAppointment) {
-      return res
-        .status(404)
-        .send({ error: true, message: "Appointment not found." });
+      return res.status(404).send({
+        error: true,
+        message: req.t(translations.appointment.notFound),
+      });
     }
 
     const therapistTimeTable = await TherapistTimeTable.findOne({
@@ -278,6 +276,7 @@ module.exports = {
 
     res.status(202).send({
       error: false,
+      message: req.t(translations.appointment.updateSuccess),
       data: updatedAppointment,
       new: await Appointment.findById(id),
     });
@@ -290,12 +289,12 @@ module.exports = {
     */
     const appointment = await Appointment.findById(req.params.id);
     if (!appointment) {
-      throw new CustomError("Appointment not found.", 404);
+      throw new CustomError(req.t(translations.appointment.notFound), 404);
     }
 
     const data = await Appointment.deleteOne({ _id: req.params.id });
     if (!data.deletedCount) {
-      throw new CustomError("Failed to delete appointment.", 500);
+      throw new CustomError(req.t(translations.appointment.deleteError), 500);
     }
 
     const therapistTimeTable = await TherapistTimeTable.findOne({
@@ -325,7 +324,7 @@ module.exports = {
 
     return res.status(200).send({
       error: false,
-      message: "Appointment deleted successfully.",
+      message: req.t(translations.appointment.deleteSuccess),
     });
   },
 };
