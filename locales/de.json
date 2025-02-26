@@ -49,5 +49,13 @@
     "updateSuccess": "Termin erfolgreich aktualisiert",
     "deleteError": "Termin konnte nicht gelöscht werden.",
     "deleteSuccess": "Termin erfolgreich gelöscht."
+  },
+  "therapistTimeTable": {
+    "listSuccess": "Therapeuten-Zeitpläne erfolgreich aufgelistet",
+    "createSuccess": "Therapeuten-Zeitplan erfolgreich erstellt",
+    "readSuccess": "Therapeuten-Zeitplan erfolgreich abgerufen",
+    "updateSuccess": "Therapeuten-Zeitplan erfolgreich aktualisiert",
+    "deleteSuccess": "Therapeuten-Zeitplan erfolgreich gelöscht",
+    "notFound": "Therapeuten-Zeitplan nicht gefunden"
   }
 }

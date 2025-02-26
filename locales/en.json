@@ -50,5 +50,13 @@
     "updateSuccess": "Appointment updated successfully",
     "deleteError": "Failed to delete appointment.",
     "deleteSuccess": "Appointment deleted successfully."
+  },
+  "therapistTimeTable": {
+    "listSuccess": "Therapist time tables listed successfully",
+    "createSuccess": "Therapist time table created successfully",
+    "readSuccess": "Therapist time table retrieved successfully",
+    "updateSuccess": "Therapist time table updated successfully",
+    "deleteSuccess": "Therapist time table deleted successfully",
+    "notFound": "Therapist time table not found"
   }
 }

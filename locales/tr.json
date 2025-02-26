@@ -49,5 +49,13 @@
     "updateSuccess": "Randevu başarıyla güncellendi",
     "deleteError": "Randevu silinemedi.",
     "deleteSuccess": "Randevu başarıyla silindi."
+  },
+  "therapistTimeTable": {
+    "listSuccess": "Terapist zaman çizelgeleri başarıyla listelendi",
+    "createSuccess": "Terapist zaman çizelgesi başarıyla oluşturuldu",
+    "readSuccess": "Terapist zaman çizelgesi başarıyla alındı",
+    "updateSuccess": "Terapist zaman çizelgesi başarıyla güncellendi",
+    "deleteSuccess": "Terapist zaman çizelgesi başarıyla silindi",
+    "notFound": "Terapist zaman çizelgesi bulunamadı"
   }
 }
