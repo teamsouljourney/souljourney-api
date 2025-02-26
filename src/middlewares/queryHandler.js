@@ -25,7 +25,8 @@ module.exports = (req, res, next) => {
 
    
     
-    res.getModelList = async (Model, customFilter = {}, populate = null) => {
+    res.getModelList = async (Model, customFilter = {}, populate = null, options={}) => {
+        const { limit , sort } = options;
         return await Model.find({ ...filter, ...search, ...customFilter }).sort(sort).skip(skip).limit(limit).populate(populate)
     }
 

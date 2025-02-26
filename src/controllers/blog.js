@@ -25,10 +25,15 @@ module.exports = {
                 </ul>
             `
         */
-    const data = await res.getModelList(Blog, {}, [
-      "therapistId",
-      "categoryId",
-    ]);
+            const data = await res.getModelList(
+              Blog,
+              {},
+              ["therapistId", "categoryId"],
+              { sort: { createdAt: -1 }, limit:4},
+              
+               // createdAt'e göre en günceli önce getir
+            );
+            
     console.log("Fetched Blogs:", data)
     
     res.status(200).send({
