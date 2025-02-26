@@ -1,5 +1,6 @@
 "use strict";
 
+const filterObj = require("../helpers/allowedFields");
 /* ------------------------------------------------- */
 /*                  SOULJOURNEY API                  */
 /* ------------------------------------------------- */
@@ -9,19 +10,20 @@ const Therapist = require("../models/therapist");
 module.exports = {
   list: async (req, res) => {
     /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "List Therapists"
-            #swagger.description = `
-                You can send query with endpoint for search[], sort[], page and limit.
-                <ul> Examples:
-                    <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
-                    <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
-                    <li>URL/?<b>page=2&limit=1</b></li>
-                </ul>
-            `
-        */
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "List Therapists"
+        #swagger.description = `
+            You can send query with endpoint for search[], sort[], page and limit.
+            <ul> Examples:
+                <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
+                <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
+                <li>URL/?<b>page=2&limit=1</b></li>
+            </ul>
+        `
+    */
 
     let customFilter = {};
+
     if (req.query?.category) {
       customFilter = { categoryId: req.query.category };
     }
@@ -30,7 +32,6 @@ module.exports = {
       "categoryId",
       "feedbackId",
     ]);
-    //  console.log(customFilter);
 
     res.status(200).send({
       error: false,
@@ -38,7 +39,6 @@ module.exports = {
       data,
     });
   },
-
   create: async (req, res) => {
     /*
         #swagger.tags = ["Therapists"]
@@ -64,7 +64,6 @@ module.exports = {
             }
         }
     */
-    // req.body.isAdmin = false;
 
     const data = await Therapist.create(req.body);
 
@@ -73,12 +72,11 @@ module.exports = {
       data,
     });
   },
-
   read: async (req, res) => {
     /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "Get Single Therapist"
-        */
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Get Single Therapist"
+    */
     const data = await Therapist.findOne({ _id: req.params.id }).populate([
       "categoryId",
       "feedbackId",
@@ -89,7 +87,6 @@ module.exports = {
       data,
     });
   },
-
   update: async (req, res) => {
     /*
 
@@ -97,10 +94,10 @@ module.exports = {
       #swagger.summary = "Update Therapist"
       #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
       #swagger.parameters['id'] = {
-    #swagger.tags = ["Therapists"]
-    #swagger.summary = "Update Therapist"
-    #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
-    #swagger.parameters['id'] = {
+      #swagger.tags = ["Therapists"]
+      #swagger.summary = "Update Therapist"
+      #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
+      #swagger.parameters['id'] = {
       #swagger.parameters['body'] = {
         in: 'body',
         required: true,
@@ -136,7 +133,6 @@ module.exports = {
       new: await Therapist.findOne({ _id: req.params.id }),
     });
   },
-
   delete: async (req, res) => {
     /*
       #swagger.tags = ["Therapists"]
@@ -152,9 +148,9 @@ module.exports = {
   },
   changeTherapistStatus: async (req, res) => {
     /* 
-              #swagger.tags = ["Users"]
-              #swagger.summary = "Change Therapist Status"
-          */
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Change Therapist Status"
+    */
     const therapist = await Therapist.findOne({ _id: req.params.id });
 
     if (!therapist)
@@ -173,4 +169,90 @@ module.exports = {
       data: therapist,
     });
   },
+  updateMe: async (req, res) => {
+    /*
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Update Therapist"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                "firstName": "test",
+                "lastName": "test",
+                "image": "test",
+                "description": "test",
+                "experience": "test",
+                "graduation": "test"
+            }
+        }
+    */
+    
+    const filteredObj = filterObj(req.body, 
+      'firstName', 
+      'lastName', 
+      'image', 
+      'description', 
+      'experience', 
+      'graduation',
+    );
+    
+    const data = await Therapist.updateOne({ _id: req.params.id }, filteredObj, {
+      runValidators: true,
+    });
+
+    res.status(201).send({
+      error: !data.modifiedCount,
+      message: data.modifiedCount ? "Therapist updated successfully!" : "Therapist update failed!",
+      data,
+      new: await Therapist.findOne({ _id: req.params.id }),
+    });
+  },
+  changeMyPassword: async (req, res) => {
+
+    /* 
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Update Therapist"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                "currentPassword": "***",
+                "newPassword": "***",
+                "retypePassword": "***",
+            }
+        }
+    */
+
+    const {currentPassword, newPassword, retypePassword} = req.body
+
+    if (!currentPassword || !newPassword || !retypePassword) {
+      throw new CustomError("currentPassword, newPassword and retypePassword are required! ")
+    }
+
+    const therapist = await Therapist.findOne({_id: req.user._id})
+
+    if (!therapist) {
+      throw new CustomError("Therapist not found", 404)
+    }
+
+    const isPasswordCorrect = await therapist.correctPassword(currentPassword, therapist?.password)
+    
+    if (!isPasswordCorrect) {
+      throw new CustomError("Your current password is not correct", 401)
+    }
+
+    if (newPassword !== retypePassword) {
+      throw new CustomError("Passwords don't match!", 401)
+    }
+    
+    therapist.password = newPassword
+
+    await therapist.save()
+
+    res.status(201).send({
+      error: false,
+      message: "Password changed successfully",
+      data: therapist
+    })
+  }
 };
