@@ -16,5 +16,7 @@ router
   .delete(user.delete);
 
 router.route("/:id/status").patch(user.changeUserStatus);
+router.route("/:id/updateMe").patch(user.updateMe);
+router.route("/:id/changeMyPassword").patch(user.changeMyPassword);
 
 module.exports = router;

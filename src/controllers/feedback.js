@@ -55,8 +55,6 @@ module.exports = {
       endTime: { $lte: currentDate }
     });
 
-    // console.log(userEndedAppointment);
-
     if (!userEndedAppointment) {
       throw new CustomError('You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it.', 400);
     }
@@ -64,19 +62,15 @@ module.exports = {
     const data = await Feedback.create(req.body);
 
     // Pushing the feedbackId to the feedbackId array of the Therapist model
-
     const therapistData = await Therapist.findOne({
       _id: req.body.therapistId,
     });
-    // console.log(therapistData);
 
     let feedbackId = therapistData?.feedbackId;
-    // console.log(feedbackId);
 
     feedbackId.push(data._id);
 
     await therapistData.save();
-    // console.log("therapistData-->", therapistData);
 
     res.status(201).send({
       error: false,
@@ -147,16 +141,12 @@ module.exports = {
           type: 'string',
         }
     */
-    // console.log(req.params);
-
     const { therapistId } = req.params;
 
     const data = await Feedback.find({ therapistId }).populate([
       "userId",
       "therapistId",
     ]);
-
-    // console.log(data);
 
     res.status(200).send({
       error: false,
