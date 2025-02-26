@@ -71,6 +71,15 @@ const translations = {
     deleteError: "deleteError",
     deleteSuccess: "deleteSuccess",
   },
+
+  therapistTimeTable: {
+    listSuccess: "listSuccess",
+    createSuccess: "createSuccess",
+    readSuccess: "readSuccess",
+    updateSuccess: "updateSuccess",
+    deleteSuccess: "deleteSuccess",
+    notFound: "notFound",
+  },
 };
 
 module.exports = translations;
