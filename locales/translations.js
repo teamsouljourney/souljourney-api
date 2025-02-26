@@ -56,6 +56,21 @@ const translations = {
     updateSuccess: "updateSuccess",
     deleteSuccess: "deleteSuccess",
   },
+
+  appointment: {
+    listSuccess: "listSuccess",
+    getUserAppointmentsSuccess: "getUserAppointmentsSuccess",
+    pastDateError: "pastDateError",
+    userConflictError: "userConflictError",
+    therapistConflictError: "therapistConflictError",
+    createError: "createError",
+    createSuccess: "createSuccess",
+    readSuccess: "readSuccess",
+    notFound: "notFound",
+    updateSuccess: "updateSuccess",
+    deleteError: "deleteError",
+    deleteSuccess: "deleteSuccess",
+  },
 };
 
 module.exports = translations;
