@@ -20,42 +20,37 @@
   "tokenExpired": "Token geçersiz veya süresi dolmuş",
   "invalidVerificationCode": "Geçersiz doğrulama kodu",
   "passwordResetSuccess": "Şifre başarıyla sıfırlandı!",
-  "category": {
-    "listSuccess": "Kategoriler başarıyla listelendi",
-    "createSuccess": "Kategori başarıyla oluşturuldu",
-    "readSuccess": "Kategori detayları başarıyla alındı",
-    "updateSuccess": "Kategori başarıyla güncellendi",
-    "deleteSuccess": "Kategori başarıyla silindi",
-    "notFound": "Kategori bulunamadı"
-  },
-  "token": {
-    "notFound": "Token bulunamadı",
-    "listSuccess": "Tokenlar başarıyla listelendi",
-    "createSuccess": "Token başarıyla oluşturuldu",
-    "readSuccess": "Token başarıyla alındı",
-    "updateSuccess": "Token başarıyla güncellendi",
-    "deleteSuccess": "Token başarıyla silindi"
-  },
-  "appointment": {
-    "listSuccess": "Randevular başarıyla listelendi",
-    "getUserAppointmentsSuccess": "Kullanıcı randevuları başarıyla alındı",
-    "pastDateError": "Geçmiş tarihler veya saatler için randevu oluşturamazsınız.",
-    "userConflictError": "Bu saatte başka bir terapistle zaten randevunuz var.",
-    "therapistConflictError": "Bu zaman dilimi zaten rezerve edilmiş. Lütfen başka bir zaman seçin.",
-    "createError": "Randevu oluşturulamadı.",
-    "createSuccess": "Randevu başarıyla oluşturuldu.",
-    "readSuccess": "Randevu detayları başarıyla alındı",
-    "notFound": "Randevu bulunamadı.",
-    "updateSuccess": "Randevu başarıyla güncellendi",
-    "deleteError": "Randevu silinemedi.",
-    "deleteSuccess": "Randevu başarıyla silindi."
-  },
-  "therapistTimeTable": {
-    "listSuccess": "Terapist zaman çizelgeleri başarıyla listelendi",
-    "createSuccess": "Terapist zaman çizelgesi başarıyla oluşturuldu",
-    "readSuccess": "Terapist zaman çizelgesi başarıyla alındı",
-    "updateSuccess": "Terapist zaman çizelgesi başarıyla güncellendi",
-    "deleteSuccess": "Terapist zaman çizelgesi başarıyla silindi",
-    "notFound": "Terapist zaman çizelgesi bulunamadı"
-  }
+
+  "categoryListSuccess": "Kategoriler başarıyla listelendi",
+  "categoryCreateSuccess": "Kategori başarıyla oluşturuldu",
+  "categoryReadSuccess": "Kategori detayları başarıyla alındı",
+  "categoryUpdateSuccess": "Kategori başarıyla güncellendi",
+  "categoryDeleteSuccess": "Kategori başarıyla silindi",
+  "categoryNotFound": "Kategori bulunamadı",
+
+  "tokenListSuccess": "Tokenlar başarıyla listelendi",
+  "tokenCreateSuccess": "Token başarıyla oluşturuldu",
+  "tokenReadSuccess": "Token başarıyla alındı",
+  "tokenUpdateSuccess": "Token başarıyla güncellendi",
+  "tokenDeleteSuccess": "Token başarıyla silindi",
+
+  "appointmentListSuccess": "Randevular başarıyla listelendi",
+  "appointmentGetUserAppointmentsSuccess": "Kullanıcı randevuları başarıyla alındı",
+  "appointmentPastDateError": "Geçmiş tarihler veya saatler için randevu oluşturamazsınız.",
+  "appointmentUserConflictError": "Bu saatte başka bir terapistle zaten randevunuz var.",
+  "appointmentTherapistConflictError": "Bu zaman dilimi zaten rezerve edilmiş. Lütfen başka bir zaman seçin.",
+  "appointmentCreateError": "Randevu oluşturulamadı.",
+  "appointmentCreateSuccess": "Randevu başarıyla oluşturuldu.",
+  "appointmentReadSuccess": "Randevu detayları başarıyla alındı",
+  "appointmentNotFound": "Randevu bulunamadı.",
+  "appointmentUpdateSuccess": "Randevu başarıyla güncellendi",
+  "appointmentDeleteError": "Randevu silinemedi.",
+  "appointmentDeleteSuccess": "Randevu başarıyla silindi.",
+
+  "therapistTimeTableListSuccess": "Terapist zaman çizelgeleri başarıyla listelendi",
+  "therapistTimeTableCreateSuccess": "Terapist zaman çizelgesi başarıyla oluşturuldu",
+  "therapistTimeTableReadSuccess": "Terapist zaman çizelgesi başarıyla alındı",
+  "therapistTimeTableUpdateSuccess": "Terapist zaman çizelgesi başarıyla güncellendi",
+  "therapistTimeTableDeleteSuccess": "Terapist zaman çizelgesi başarıyla silindi",
+  "therapistTimeTableNotFound": "Terapist zaman çizelgesi bulunamadı"
 }
