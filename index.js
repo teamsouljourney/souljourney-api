@@ -10,6 +10,10 @@ const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const app = express();
 const cors = require("cors");
+const i18n = require("i18next");
+const http = require("http");
+const initializeSocket = require("./src/configs/socket");
+const server = http.createServer(app);
 
 /* ----------------------------------- */
 // Required Modules:
@@ -29,8 +33,8 @@ require("express-async-errors");
 const { dbConnection } = require("./src/configs/dbConnection");
 dbConnection();
 
-//  i18next
-app.use(require("./i18n"));
+// Connect to socket.io
+const io = initializeSocket(server);
 
 /* ------------------------------------------------------- */
 // Middlewares:

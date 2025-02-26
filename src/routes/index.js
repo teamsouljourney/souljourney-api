@@ -45,6 +45,9 @@ router.use("/therapists", require("./therapist"));
 // Therapist Time Tables:
 router.use("/therapist-time-tables", require("./therapistTimeTable"));
 
+// Messages
+router.use("/messages", require("./message"));
+
 /* ------------------------------------------------- */
 
 module.exports = router;
