@@ -5,8 +5,6 @@
 /* ------------------------------------------------- */
 
 const User = require("../models/user");
-const Token = require("../models/token");
-const passwordEncrypt = require("../helpers/passwordEncrypt");
 const { signVerificationToken } = require("../helpers/jwtFunctions");
 const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
@@ -210,7 +208,7 @@ module.exports = {
 
     res.status(201).send({
       error: !data.modifiedCount,
-      message: "User updated successfully!",
+      message: data.modifiedCount ? "User updated successfully!" : "User update failed!",
       data,
       new: await User.findOne({ _id: req.params.id }),
     });
@@ -224,10 +222,9 @@ module.exports = {
             in: 'body',
             required: true,
             schema: {
-                "userName": "test",
-                "email": "test@site.com",
-                "firstName": "test",
-                "lastName": "test",
+                "currentPassword": "***",
+                "newPassword": "***",
+                "retypePassword": "***",
             }
         }
     */
