@@ -22,6 +22,8 @@ const CustomError = require("../errors/customError");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 const Therapist = require("../models/therapist");
+const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
+const { welcomeEmailTemplate } = require("../utils/emailTamplates/welcomeEmail");
 
 module.exports = {
   signup: async (req, res) => {
@@ -55,7 +57,7 @@ module.exports = {
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
-    const message = `Click the following link to verify your email address: ${verificationUrl}`;
+    const message = verificationEmail(newUser.userName, verificationUrl);
 
     await sendEmail({
       email: newUser.email,
@@ -118,6 +120,14 @@ module.exports = {
     }
 
     await user.markAsVerified();
+
+    const message = welcomeEmailTemplate(user.userName);
+
+    await sendEmail({
+      email: newUser.email,
+      subject: "Welcome to Soul Journey Team",
+      message,
+    });
 
     return res.redirect(
       `${process.env.CLIENT_URL}/auth/verify-email?statusType=success&status=success`
