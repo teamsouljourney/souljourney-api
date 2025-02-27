@@ -52,5 +52,23 @@
   "therapistTimeTableReadSuccess": "Terapist zaman çizelgesi başarıyla alındı",
   "therapistTimeTableUpdateSuccess": "Terapist zaman çizelgesi başarıyla güncellendi",
   "therapistTimeTableDeleteSuccess": "Terapist zaman çizelgesi başarıyla silindi",
-  "therapistTimeTableNotFound": "Terapist zaman çizelgesi bulunamadı"
+  "therapistTimeTableNotFound": "Terapist zaman çizelgesi bulunamadı",
+
+  "userListSuccess": "Kullanıcılar başarıyla listelendi",
+  "userCreateSuccess": "Kullanıcı başarıyla oluşturuldu",
+  "userReadSuccess": "Kullanıcı detayları başarıyla alındı",
+  "userUpdateSuccess": "Kullanıcı başarıyla güncellendi",
+  "userDeleteSuccess": "Kullanıcı başarıyla silindi",
+  "userNotFound": "Kullanıcı bulunamadı",
+  "userVerificationEmailSent": "Kullanıcının e-posta adresine bir doğrulama e-postası gönderildi",
+  "userVerificationEmailSubject": "E-postanızı Doğrulayın",
+  "userVerificationEmailMessage": "E-posta adresinizi doğrulamak için aşağıdaki bağlantıya tıklayın: {{verificationUrl}}",
+  "userStatusChanged": "Kullanıcı şimdi {{status}}",
+  "userStatusActive": "aktif",
+  "userStatusDisabled": "devre dışı",
+  "userUpdateFailed": "Kullanıcı güncellemesi başarısız oldu",
+  "userPasswordFieldsRequired": "Mevcut şifre, yeni şifre ve şifre tekrarı gereklidir",
+  "userCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
+  "userPasswordsDontMatch": "Şifreler eşleşmiyor",
+  "userPasswordChangeSuccess": "Şifre başarıyla değiştirildi"
 }

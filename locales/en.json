@@ -52,5 +52,23 @@
   "therapistTimeTableReadSuccess": "Therapist time table retrieved successfully",
   "therapistTimeTableUpdateSuccess": "Therapist time table updated successfully",
   "therapistTimeTableDeleteSuccess": "Therapist time table deleted successfully",
-  "therapistTimeTableNotFound": "Therapist time table not found"
+  "therapistTimeTableNotFound": "Therapist time table not found",
+
+  "userListSuccess": "Users listed successfully",
+  "userCreateSuccess": "User created successfully",
+  "userReadSuccess": "User details retrieved successfully",
+  "userUpdateSuccess": "User updated successfully",
+  "userDeleteSuccess": "User deleted successfully",
+  "userNotFound": "User not found",
+  "userVerificationEmailSent": "A verification email has been sent to user's email address",
+  "userVerificationEmailSubject": "Verify Your Email",
+  "userVerificationEmailMessage": "Click the following link to verify your email address: {{verificationUrl}}",
+  "userStatusChanged": "User is now {{status}}",
+  "userStatusActive": "active",
+  "userStatusDisabled": "disabled",
+  "userUpdateFailed": "User update failed",
+  "userPasswordFieldsRequired": "Current password, new password and retype password are required",
+  "userCurrentPasswordIncorrect": "Your current password is not correct",
+  "userPasswordsDontMatch": "Passwords don't match",
+  "userPasswordChangeSuccess": "Password changed successfully"
 }

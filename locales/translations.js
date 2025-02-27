@@ -79,6 +79,26 @@ const translations = {
     deleteSuccess: "therapistTimeTableDeleteSuccess",
     notFound: "therapistTimeTableNotFound",
   },
+
+  user: {
+    listSuccess: "userListSuccess",
+    createSuccess: "userCreateSuccess",
+    readSuccess: "userReadSuccess",
+    updateSuccess: "userUpdateSuccess",
+    deleteSuccess: "userDeleteSuccess",
+    notFound: "userNotFound",
+    verificationEmailSent: "userVerificationEmailSent",
+    verificationEmailSubject: "userVerificationEmailSubject",
+    verificationEmailMessage: "userVerificationEmailMessage",
+    statusChanged: "userStatusChanged",
+    statusActive: "userStatusActive",
+    statusDisabled: "userStatusDisabled",
+    updateFailed: "userUpdateFailed",
+    passwordFieldsRequired: "userPasswordFieldsRequired",
+    currentPasswordIncorrect: "userCurrentPasswordIncorrect",
+    passwordsDontMatch: "userPasswordsDontMatch",
+    passwordChangeSuccess: "userPasswordChangeSuccess",
+  },
 };
 
 module.exports = translations;

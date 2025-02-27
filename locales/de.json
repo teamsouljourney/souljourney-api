@@ -52,5 +52,23 @@
   "therapistTimeTableReadSuccess": "Therapeuten-Zeitplan erfolgreich abgerufen",
   "therapistTimeTableUpdateSuccess": "Therapeuten-Zeitplan erfolgreich aktualisiert",
   "therapistTimeTableDeleteSuccess": "Therapeuten-Zeitplan erfolgreich gelöscht",
-  "therapistTimeTableNotFound": "Therapeuten-Zeitplan nicht gefunden"
+  "therapistTimeTableNotFound": "Therapeuten-Zeitplan nicht gefunden",
+
+  "userListSuccess": "Benutzer erfolgreich aufgelistet",
+  "userCreateSuccess": "Benutzer erfolgreich erstellt",
+  "userReadSuccess": "Benutzerdetails erfolgreich abgerufen",
+  "userUpdateSuccess": "Benutzer erfolgreich aktualisiert",
+  "userDeleteSuccess": "Benutzer erfolgreich gelöscht",
+  "userNotFound": "Benutzer nicht gefunden",
+  "userVerificationEmailSent": "Eine Bestätigungs-E-Mail wurde an die E-Mail-Adresse des Benutzers gesendet",
+  "userVerificationEmailSubject": "Bestätigen Sie Ihre E-Mail",
+  "userVerificationEmailMessage": "Klicken Sie auf den folgenden Link, um Ihre E-Mail-Adresse zu bestätigen: {{verificationUrl}}",
+  "userStatusChanged": "Benutzer ist jetzt {{status}}",
+  "userStatusActive": "aktiv",
+  "userStatusDisabled": "deaktiviert",
+  "userUpdateFailed": "Benutzeraktualisierung fehlgeschlagen",
+  "userPasswordFieldsRequired": "Aktuelles Passwort, neues Passwort und Passwortwiederholung sind erforderlich",
+  "userCurrentPasswordIncorrect": "Ihr aktuelles Passwort ist nicht korrekt",
+  "userPasswordsDontMatch": "Passwörter stimmen nicht überein",
+  "userPasswordChangeSuccess": "Passwort erfolgreich geändert"
 }
