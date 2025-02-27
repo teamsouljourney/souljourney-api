@@ -3,8 +3,9 @@ const { Server } = require("socket.io");
 const initializeSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "*", // Gerekirse burayı frontend domaini ile değiştir
-      methods: ["GET", "POST"],
+      origin: "http://localhost:5173",
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      credentials: true,
     },
   });
 
@@ -14,7 +15,7 @@ const initializeSocket = (server) => {
     // Listen Message
     socket.on("message", (data) => {
       console.log("📩 New Message:", data);
-      io.emit("message", data); // Send the incoming message to everyone
+      io.emit("message", data);
     });
 
     //When the user leaves
