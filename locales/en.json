@@ -85,5 +85,14 @@
   "therapistPasswordFieldsRequired": "Current password, new password and retype password are required",
   "therapistCurrentPasswordIncorrect": "Your current password is not correct",
   "therapistPasswordsDontMatch": "Passwords don't match",
-  "therapistPasswordChangeSuccess": "Password changed successfully"
+  "therapistPasswordChangeSuccess": "Password changed successfully",
+
+  "feedbackListSuccess": "Feedbacks listed successfully",
+  "feedbackCreateSuccess": "Feedback created successfully",
+  "feedbackReadSuccess": "Feedback details retrieved successfully",
+  "feedbackUpdateSuccess": "Feedback updated successfully",
+  "feedbackDeleteSuccess": "Feedback deleted successfully",
+  "feedbackNotFound": "Feedback not found",
+  "feedbackNoAppointment": "You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it",
+  "feedbackGetSingleTherapistSuccess": "Therapist feedbacks retrieved successfully"
 }

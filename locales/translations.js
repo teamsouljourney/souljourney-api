@@ -116,6 +116,17 @@ const translations = {
     passwordsDontMatch: "therapistPasswordsDontMatch",
     passwordChangeSuccess: "therapistPasswordChangeSuccess",
   },
+
+  feedback: {
+    listSuccess: "feedbackListSuccess",
+    createSuccess: "feedbackCreateSuccess",
+    readSuccess: "feedbackReadSuccess",
+    updateSuccess: "feedbackUpdateSuccess",
+    deleteSuccess: "feedbackDeleteSuccess",
+    notFound: "feedbackNotFound",
+    noAppointment: "feedbackNoAppointment",
+    getSingleTherapistSuccess: "feedbackGetSingleTherapistSuccess",
+  },
 };
 
 module.exports = translations;

@@ -85,5 +85,14 @@
   "therapistPasswordFieldsRequired": "Aktuelles Passwort, neues Passwort und Passwortwiederholung sind erforderlich",
   "therapistCurrentPasswordIncorrect": "Ihr aktuelles Passwort ist nicht korrekt",
   "therapistPasswordsDontMatch": "Passwörter stimmen nicht überein",
-  "therapistPasswordChangeSuccess": "Passwort erfolgreich geändert"
+  "therapistPasswordChangeSuccess": "Passwort erfolgreich geändert",
+
+  "feedbackListSuccess": "Feedbacks erfolgreich aufgelistet",
+  "feedbackCreateSuccess": "Feedback erfolgreich erstellt",
+  "feedbackReadSuccess": "Feedback-Details erfolgreich abgerufen",
+  "feedbackUpdateSuccess": "Feedback erfolgreich aktualisiert",
+  "feedbackDeleteSuccess": "Feedback erfolgreich gelöscht",
+  "feedbackNotFound": "Feedback nicht gefunden",
+  "feedbackNoAppointment": "Sie können nur Feedback für diesen Therapeuten geben, wenn Sie zuvor einen Termin vereinbart und abgeschlossen haben",
+  "feedbackGetSingleTherapistSuccess": "Therapeuten-Feedbacks erfolgreich abgerufen"
 }

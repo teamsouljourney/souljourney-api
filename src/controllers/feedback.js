@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const CustomError = require("../errors/customError");
 const Appointment = require("../models/appointment");
 const Feedback = require("../models/feedback");
@@ -45,18 +49,21 @@ module.exports = {
     */
 
     //Set userId from logged in user:
-    const userId = req.user._id
+    const userId = req.user._id;
     req.body.userId = userId;
 
-    const currentDate = new Date()
+    const currentDate = new Date();
 
     const userEndedAppointment = await Appointment.findOne({
       userId,
-      endTime: { $lte: currentDate }
+      endTime: { $lte: currentDate },
     });
 
     if (!userEndedAppointment) {
-      throw new CustomError('You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it.', 400);
+      throw new CustomError(
+        "You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it.",
+        400
+      );
     }
 
     const data = await Feedback.create(req.body);

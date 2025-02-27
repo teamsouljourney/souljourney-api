@@ -85,5 +85,14 @@
   "therapistPasswordFieldsRequired": "Mevcut şifre, yeni şifre ve şifre tekrarı gereklidir",
   "therapistCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
   "therapistPasswordsDontMatch": "Şifreler eşleşmiyor",
-  "therapistPasswordChangeSuccess": "Şifre başarıyla değiştirildi"
+  "therapistPasswordChangeSuccess": "Şifre başarıyla değiştirildi",
+
+  "feedbackListSuccess": "Geri bildirimler başarıyla listelendi",
+  "feedbackCreateSuccess": "Geri bildirim başarıyla oluşturuldu",
+  "feedbackReadSuccess": "Geri bildirim detayları başarıyla alındı",
+  "feedbackUpdateSuccess": "Geri bildirim başarıyla güncellendi",
+  "feedbackDeleteSuccess": "Geri bildirim başarıyla silindi",
+  "feedbackNotFound": "Geri bildirim bulunamadı",
+  "feedbackNoAppointment": "Bu terapist için yalnızca daha önce bir randevu planladıysanız ve tamamladıysanız geri bildirim verebilirsiniz",
+  "feedbackGetSingleTherapistSuccess": "Terapist geri bildirimleri başarıyla alındı"
 }
