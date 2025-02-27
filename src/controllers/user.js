@@ -9,6 +9,7 @@ const { signVerificationToken } = require("../helpers/jwtFunctions");
 const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const filterObj = require("../helpers/allowedFields");
+const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
 
 module.exports = {
   list: async (req, res) => {
@@ -69,7 +70,8 @@ module.exports = {
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
-    const message = `Click the following link to verify your email address: ${verificationUrl}`;
+    const message = verificationEmail(newUser.userName, verificationUrl)
+    // `Click the following link to verify your email address: ${verificationUrl}`;
 
     await sendEmail({
       email: newUser.email,
