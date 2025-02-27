@@ -1,6 +1,6 @@
 "use strict";
 
-export const accountDeletionTemplate = (username) => {
+export const deleteAccountEmail = (username) => {
   return `
     <!DOCTYPE html>
     <html lang="en">

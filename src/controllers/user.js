@@ -10,6 +10,7 @@ const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const filterObj = require("../helpers/allowedFields");
 const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
+const { deleteAccountEmail } = require("../utils/emailTamplates/deleteAccountEmail");
 
 module.exports = {
   list: async (req, res) => {
@@ -169,6 +170,14 @@ module.exports = {
 
     user.isActive = !user.isActive;
     await user.save();
+
+    const message = deleteAccountEmail(user.userName)
+
+    await sendEmail({
+      email: user.email,
+      subject: "Verify Your Email",
+      message,
+    });
 
     res.status(200).send({
       error: false,
