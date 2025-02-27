@@ -127,6 +127,20 @@ const translations = {
     noAppointment: "feedbackNoAppointment",
     getSingleTherapistSuccess: "feedbackGetSingleTherapistSuccess",
   },
+
+  blog: {
+    listSuccess: "blogListSuccess",
+    createSuccess: "blogCreateSuccess",
+    readSuccess: "blogReadSuccess",
+    updateSuccess: "blogUpdateSuccess",
+    deleteSuccess: "blogDeleteSuccess",
+    notFound: "blogNotFound",
+    updateUnauthorized: "blogUpdateUnauthorized",
+    deleteUnauthorized: "blogDeleteUnauthorized",
+    deleteFailed: "blogDeleteFailed",
+    getLikeSuccess: "blogGetLikeSuccess",
+    postLikeSuccess: "blogPostLikeSuccess",
+  },
 };
 
 module.exports = translations;

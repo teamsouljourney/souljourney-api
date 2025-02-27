@@ -94,5 +94,17 @@
   "feedbackDeleteSuccess": "Geri bildirim başarıyla silindi",
   "feedbackNotFound": "Geri bildirim bulunamadı",
   "feedbackNoAppointment": "Bu terapist için yalnızca daha önce bir randevu planladıysanız ve tamamladıysanız geri bildirim verebilirsiniz",
-  "feedbackGetSingleTherapistSuccess": "Terapist geri bildirimleri başarıyla alındı"
+  "feedbackGetSingleTherapistSuccess": "Terapist geri bildirimleri başarıyla alındı",
+
+  "blogListSuccess": "Bloglar başarıyla listelendi",
+  "blogCreateSuccess": "Blog başarıyla oluşturuldu",
+  "blogReadSuccess": "Blog detayları başarıyla alındı",
+  "blogUpdateSuccess": "Blog başarıyla güncellendi",
+  "blogDeleteSuccess": "Blog başarıyla silindi",
+  "blogNotFound": "Blog bulunamadı",
+  "blogUpdateUnauthorized": "Başkasının blog gönderisini güncelleyemezsiniz",
+  "blogDeleteUnauthorized": "Başkasının blog gönderisini silemezsiniz",
+  "blogDeleteFailed": "Silme işlemi başarısız oldu. Gerekli izinlere sahip olduğunuzdan emin olun",
+  "blogGetLikeSuccess": "Blog beğenileri başarıyla alındı",
+  "blogPostLikeSuccess": "Blog beğeni durumu başarıyla güncellendi"
 }

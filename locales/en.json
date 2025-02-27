@@ -94,5 +94,17 @@
   "feedbackDeleteSuccess": "Feedback deleted successfully",
   "feedbackNotFound": "Feedback not found",
   "feedbackNoAppointment": "You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it",
-  "feedbackGetSingleTherapistSuccess": "Therapist feedbacks retrieved successfully"
+  "feedbackGetSingleTherapistSuccess": "Therapist feedbacks retrieved successfully",
+
+  "blogListSuccess": "Blogs listed successfully",
+  "blogCreateSuccess": "Blog created successfully",
+  "blogReadSuccess": "Blog details retrieved successfully",
+  "blogUpdateSuccess": "Blog updated successfully",
+  "blogDeleteSuccess": "The blog has been deleted successfully",
+  "blogNotFound": "Blog not found",
+  "blogUpdateUnauthorized": "You cannot update someone else's blog post",
+  "blogDeleteUnauthorized": "You cannot delete someone else's blog post",
+  "blogDeleteFailed": "Deletion failed. Make sure you have the necessary permissions",
+  "blogGetLikeSuccess": "Blog likes retrieved successfully",
+  "blogPostLikeSuccess": "Blog like status updated successfully"
 }
