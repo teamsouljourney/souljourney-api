@@ -8,6 +8,7 @@ const CustomError = require("../errors/customError");
 const Appointment = require("../models/appointment");
 const Feedback = require("../models/feedback");
 const Therapist = require("../models/therapist");
+const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
@@ -31,6 +32,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.listSuccess),
       details: await res.getModelListDetails(Feedback),
       data,
     });
@@ -60,10 +62,7 @@ module.exports = {
     });
 
     if (!userEndedAppointment) {
-      throw new CustomError(
-        "You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it.",
-        400
-      );
+      throw new CustomError(req.t(translations.feedback.noAppointment), 400);
     }
 
     const data = await Feedback.create(req.body);
@@ -73,7 +72,7 @@ module.exports = {
       _id: req.body.therapistId,
     });
 
-    let feedbackId = therapistData?.feedbackId;
+    const feedbackId = therapistData?.feedbackId;
 
     feedbackId.push(data._id);
 
@@ -81,6 +80,7 @@ module.exports = {
 
     res.status(201).send({
       error: false,
+      message: req.t(translations.feedback.createSuccess),
       data,
     });
   },
@@ -95,8 +95,13 @@ module.exports = {
       "therapistId",
     ]);
 
+    if (!data) {
+      throw new CustomError(req.t(translations.feedback.notFound), 404);
+    }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.readSuccess),
       data,
     });
   },
@@ -117,8 +122,13 @@ module.exports = {
       runValidators: true,
     });
 
-    res.status(202).send({
+    if (data.matchedCount === 0) {
+      throw new CustomError(req.t(translations.feedback.notFound), 404);
+    }
+
+    res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.updateSuccess),
       data,
       newFeedback: await Feedback.findOne({ _id: req.params.id }),
     });
@@ -133,6 +143,9 @@ module.exports = {
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
+      message: data.deletedCount
+        ? req.t(translations.feedback.deleteSuccess)
+        : req.t(translations.feedback.notFound),
       data,
     });
   },
@@ -157,6 +170,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.getSingleTherapistSuccess),
       data,
     });
   },
