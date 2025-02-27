@@ -1,6 +1,6 @@
 "use strict";
 
-export const forgotPasswordTemplate = (username, resetUrl) => {
+export const forgotPasswordEmail = (userName, resetURL, verificationCode) => {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -71,6 +71,27 @@ export const forgotPasswordTemplate = (username, resetUrl) => {
         .button:hover {
           background-color: #c2899e;
         }
+        .verification-code-box {
+          background-color: #F6F4F0;
+          border: 2px dashed #4DA1A9;
+          border-radius: 8px;
+          padding: 20px;
+          margin: 20px 0;
+          text-align: center;
+        }
+        .verification-code {
+          font-size: 32px;
+          letter-spacing: 4px;
+          color: #2E5077;
+          font-weight: bold;
+          margin: 10px 0;
+          font-family: monospace;
+        }
+        .code-label {
+          color: #8F5B8A;
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
         .security-notice {
           background-color: #fff3f3;
           border-left: 4px solid #D798B0;
@@ -82,6 +103,28 @@ export const forgotPasswordTemplate = (username, resetUrl) => {
           display: block;
           margin-bottom: 5px;
           color: #2E5077;
+        }
+        .method-divider {
+          text-align: center;
+          margin: 30px 0;
+          position: relative;
+        }
+        .method-divider::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background-color: #dddcd8;
+          z-index: 1;
+        }
+        .method-divider span {
+          background-color: white;
+          padding: 0 15px;
+          color: #6c757d;
+          position: relative;
+          z-index: 2;
         }
         .divider {
           height: 1px;
@@ -113,29 +156,40 @@ export const forgotPasswordTemplate = (username, resetUrl) => {
         <div class="content">
           <h2 class="greeting">Password Reset Request</h2>
           
-          <p>Hello ${username},</p>
+          <p>Hello ${userName},</p>
           
-          <p>We received a request to reset the password for your Soul Journey account. If you made this request, please click the button below to create a new password:</p>
+          <p>We received a request to reset the password for your Soul Journey account. You can reset your password using either the verification code or the button below:</p>
+
+          <div class="verification-code-box">
+            <div class="code-label">Your Verification Code</div>
+            <div class="verification-code">${verificationCode}</div>
+            <div style="font-size: 14px; color: #6c757d;">Enter this code on the password reset page</div>
+          </div>
           
+          <div class="method-divider">
+            <span>OR</span>
+          </div>
+
           <div class="button-container">
-            <a href="${resetUrl}" class="button">Reset Password</a>
+            <a href="${resetURL}" class="button">Reset Password</a>
           </div>
           
           <div class="security-notice">
             <strong>Important Security Information:</strong>
             <ul style="margin: 0; padding-left: 20px; color: #2f3132;">
-              <li>This link will expire in 10 minutes</li>
+              <li>Both the verification code and link will expire in 10 minutes</li>
               <li>If you didn't request this password reset, please ignore this email</li>
               <li>For additional security, consider changing your password regularly</li>
+              <li>Never share your verification code with anyone</li>
             </ul>
           </div>
 
           <div class="divider"></div>
           
           <p>If you're having trouble with the button above, copy and paste this URL into your browser:</p>
-          <p style="word-break: break-all; font-size: 14px; color: #4DA1A9;">${resetUrl}</p>
+          <p style="word-break: break-all; font-size: 14px; color: #4DA1A9;">${resetURL}</p>
           
-          <p>For your security, this password reset link can only be used once. If you need to reset your password again, please visit <a href="https://souljourney.com/forgot-password" style="color: #4DA1A9;">our forgot password page</a> and submit a new request.</p>
+          <p>For your security, this password reset link and code can only be used once. If you need to reset your password again, please visit <a href="https://souljourney.com/forgot-password" style="color: #4DA1A9;">our forgot password page</a> and submit a new request.</p>
 
           <p style="margin-top: 30px;">Best regards,<br>The Soul Journey Team</p>
         </div>
