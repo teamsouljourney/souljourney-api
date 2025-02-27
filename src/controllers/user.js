@@ -11,6 +11,7 @@ const CustomError = require("../errors/customError");
 const filterObj = require("../helpers/allowedFields");
 const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
 const { deleteAccountEmail } = require("../utils/emailTamplates/deleteAccountEmail");
+const { changePasswordEmail } = require("../utils/emailTamplates/changePasswordEmail");
 
 module.exports = {
   list: async (req, res) => {
@@ -267,6 +268,14 @@ module.exports = {
     user.password = newPassword
 
     await user.save()
+
+    const message = changePasswordEmail(user.userName)
+
+    await sendEmail({
+      email: user.email,
+      subject: "Verify Your Email",
+      message,
+    });
 
     res.status(201).send({
       error: false,
