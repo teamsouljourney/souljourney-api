@@ -70,5 +70,20 @@
   "userPasswordFieldsRequired": "Current password, new password and retype password are required",
   "userCurrentPasswordIncorrect": "Your current password is not correct",
   "userPasswordsDontMatch": "Passwords don't match",
-  "userPasswordChangeSuccess": "Password changed successfully"
+  "userPasswordChangeSuccess": "Password changed successfully",
+
+  "therapistListSuccess": "Therapists listed successfully",
+  "therapistCreateSuccess": "Therapist created successfully",
+  "therapistReadSuccess": "Therapist details retrieved successfully",
+  "therapistUpdateSuccess": "Therapist updated successfully",
+  "therapistDeleteSuccess": "Therapist deleted successfully",
+  "therapistNotFound": "Therapist not found",
+  "therapistStatusChanged": "Therapist is now {{status}}",
+  "therapistStatusActive": "active",
+  "therapistStatusDisabled": "disabled",
+  "therapistUpdateFailed": "Therapist update failed",
+  "therapistPasswordFieldsRequired": "Current password, new password and retype password are required",
+  "therapistCurrentPasswordIncorrect": "Your current password is not correct",
+  "therapistPasswordsDontMatch": "Passwords don't match",
+  "therapistPasswordChangeSuccess": "Password changed successfully"
 }

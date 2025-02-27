@@ -99,6 +99,23 @@ const translations = {
     passwordsDontMatch: "userPasswordsDontMatch",
     passwordChangeSuccess: "userPasswordChangeSuccess",
   },
+
+  therapist: {
+    listSuccess: "therapistListSuccess",
+    createSuccess: "therapistCreateSuccess",
+    readSuccess: "therapistReadSuccess",
+    updateSuccess: "therapistUpdateSuccess",
+    deleteSuccess: "therapistDeleteSuccess",
+    notFound: "therapistNotFound",
+    statusChanged: "therapistStatusChanged",
+    statusActive: "therapistStatusActive",
+    statusDisabled: "therapistStatusDisabled",
+    updateFailed: "therapistUpdateFailed",
+    passwordFieldsRequired: "therapistPasswordFieldsRequired",
+    currentPasswordIncorrect: "therapistCurrentPasswordIncorrect",
+    passwordsDontMatch: "therapistPasswordsDontMatch",
+    passwordChangeSuccess: "therapistPasswordChangeSuccess",
+  },
 };
 
 module.exports = translations;

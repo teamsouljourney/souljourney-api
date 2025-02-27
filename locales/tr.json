@@ -70,5 +70,20 @@
   "userPasswordFieldsRequired": "Mevcut şifre, yeni şifre ve şifre tekrarı gereklidir",
   "userCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
   "userPasswordsDontMatch": "Şifreler eşleşmiyor",
-  "userPasswordChangeSuccess": "Şifre başarıyla değiştirildi"
+  "userPasswordChangeSuccess": "Şifre başarıyla değiştirildi",
+
+  "therapistListSuccess": "Terapistler başarıyla listelendi",
+  "therapistCreateSuccess": "Terapist başarıyla oluşturuldu",
+  "therapistReadSuccess": "Terapist detayları başarıyla alındı",
+  "therapistUpdateSuccess": "Terapist başarıyla güncellendi",
+  "therapistDeleteSuccess": "Terapist başarıyla silindi",
+  "therapistNotFound": "Terapist bulunamadı",
+  "therapistStatusChanged": "Terapist şimdi {{status}}",
+  "therapistStatusActive": "aktif",
+  "therapistStatusDisabled": "devre dışı",
+  "therapistUpdateFailed": "Terapist güncellemesi başarısız oldu",
+  "therapistPasswordFieldsRequired": "Mevcut şifre, yeni şifre ve şifre tekrarı gereklidir",
+  "therapistCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
+  "therapistPasswordsDontMatch": "Şifreler eşleşmiyor",
+  "therapistPasswordChangeSuccess": "Şifre başarıyla değiştirildi"
 }

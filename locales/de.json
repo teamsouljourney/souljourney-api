@@ -70,5 +70,20 @@
   "userPasswordFieldsRequired": "Aktuelles Passwort, neues Passwort und Passwortwiederholung sind erforderlich",
   "userCurrentPasswordIncorrect": "Ihr aktuelles Passwort ist nicht korrekt",
   "userPasswordsDontMatch": "Passwörter stimmen nicht überein",
-  "userPasswordChangeSuccess": "Passwort erfolgreich geändert"
+  "userPasswordChangeSuccess": "Passwort erfolgreich geändert",
+
+  "therapistListSuccess": "Therapeuten erfolgreich aufgelistet",
+  "therapistCreateSuccess": "Therapeut erfolgreich erstellt",
+  "therapistReadSuccess": "Therapeutendetails erfolgreich abgerufen",
+  "therapistUpdateSuccess": "Therapeut erfolgreich aktualisiert",
+  "therapistDeleteSuccess": "Therapeut erfolgreich gelöscht",
+  "therapistNotFound": "Therapeut nicht gefunden",
+  "therapistStatusChanged": "Therapeut ist jetzt {{status}}",
+  "therapistStatusActive": "aktiv",
+  "therapistStatusDisabled": "deaktiviert",
+  "therapistUpdateFailed": "Therapeutenaktualisierung fehlgeschlagen",
+  "therapistPasswordFieldsRequired": "Aktuelles Passwort, neues Passwort und Passwortwiederholung sind erforderlich",
+  "therapistCurrentPasswordIncorrect": "Ihr aktuelles Passwort ist nicht korrekt",
+  "therapistPasswordsDontMatch": "Passwörter stimmen nicht überein",
+  "therapistPasswordChangeSuccess": "Passwort erfolgreich geändert"
 }
