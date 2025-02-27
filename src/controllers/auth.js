@@ -23,7 +23,7 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 const Therapist = require("../models/therapist");
 const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
-const { welcomeEmailTemplate } = require("../utils/emailTamplates/welcomeEmail");
+const { welcomeEmail } = require("../utils/emailTamplates/welcomeEmail");
 const { forgotPasswordEmail } = require("../utils/emailTamplates/forgotPasswordEmail");
 
 module.exports = {
@@ -122,7 +122,7 @@ module.exports = {
 
     await user.markAsVerified();
 
-    const message = welcomeEmailTemplate(user.userName);
+    const message = welcomeEmail(user.userName);
 
     await sendEmail({
       email: newUser.email,
