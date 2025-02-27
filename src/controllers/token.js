@@ -9,10 +9,8 @@ const Token = require("../models/token");
 module.exports = {
   list: async (req, res) => {
     /*
-            #swagger.tags = ['Token']
-            #swagger.summary = 'Get all tokens'
-            #swagger.description = 'Fetch a list of all tokens with optional userId population.'
-        */
+        #swagger.ignore = true
+    */
 
     const data = await res.getModelList(Token, {}, "userId");
 
@@ -25,19 +23,8 @@ module.exports = {
 
   create: async (req, res) => {
     /*
-            #swagger.tags = ['Token']
-            #swagger.summary = 'Create a new token'
-            #swagger.description = 'Create and save a new token in the database.'
-            #swagger.parameters['body'] = {
-                in: 'body',
-                required: true,
-                description: 'Token data to create.',
-                schema: {
-                  userId: 'string',
-                  token: 'string',
-                },
-            }
-        */
+        #swagger.ignore = true
+    */
 
     const data = await Token.create(req.body);
 
@@ -49,16 +36,8 @@ module.exports = {
 
   read: async (req, res) => {
     /*
-            #swagger.tags = ['Token']
-            #swagger.summary = 'Get token by ID'
-            #swagger.description = 'Fetch a token by its unique ID and populate the userId field.'
-            #swagger.parameters['id'] = {
-                in: 'path',
-                required: true,
-                description: 'ID of the token to retrieve.',
-                type: 'string',
-            }
-        */
+        #swagger.ignore = true
+    */
 
     const data = await Token.findOne({ _id: req.params.id }).populate("userId");
 
@@ -70,27 +49,8 @@ module.exports = {
 
   update: async (req, res) => {
     /*
-            #swagger.tags = ['Token']
-            #swagger.summary = 'Update token by ID'
-            #swagger.description = 'Update a token\'s details by its unique ID.'
-            #swagger.parameters['id'] = {
-                in: 'path',
-                required: true,
-                description: 'ID of the token to update.',
-                type: 'string',
-            }
-            #swagger.parameters['body'] = {
-                in: 'body',
-                required: true,
-                description: 'Updated token data.',
-                schema: {
-                  userId: 'string',
-                  token: 'string',
-                },
-            }
-          
-  
-        */
+        #swagger.ignore = true
+    */
 
     const data = await Token.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
@@ -105,16 +65,8 @@ module.exports = {
 
   deleteToken: async (req, res) => {
     /*
-            #swagger.tags = ['Token']
-            #swagger.summary = 'Delete token by ID'
-            #swagger.description = 'Delete a token from the database by its unique ID.'
-            #swagger.parameters['id'] = {
-                in: 'path',
-                required: true,
-                description: 'ID of the token to delete.',
-                type: 'string',
-            }
-        */
+        #swagger.ignore = true
+    */
 
     const data = await Token.deleteOne({ _id: req.params.id });
 

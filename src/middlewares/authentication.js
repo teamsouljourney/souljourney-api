@@ -36,7 +36,7 @@ module.exports = async (req, res, next) => {
       }
 
       // console.log(req.user);
-      req.body.userId = req.user._id;
+      // req.body.userId = req.user._id;
     } else if (tokenKey[0] == "Bearer") {
       // JWT
 

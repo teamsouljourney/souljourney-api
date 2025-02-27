@@ -332,8 +332,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -356,6 +356,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       },
@@ -483,13 +486,38 @@
         }
       }
     },
-    "/tokens/": {
+    "/users/{id}/status": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change User Status",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/appointments/": {
       "get": {
         "tags": [
-          "Token"
+          "Appointment"
         ],
-        "summary": "Get all tokens",
-        "description": "Fetch a list of all tokens with optional userId population.",
+        "summary": "Get all appointments",
+        "description": "Fetch a list of all appointments, with optional userId and therapistId population.",
         "responses": {
           "200": {
             "description": "OK"
@@ -498,16 +526,16 @@
       },
       "post": {
         "tags": [
-          "Token"
+          "Appointment"
         ],
-        "summary": "Create a new token",
-        "description": "Create and save a new token in the database.",
+        "summary": "Create a new appointment",
+        "description": "Create and save a new appointment in the database.",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "required": true,
-            "description": "Token data to create.",
+            "description": "Appointment data to create.",
             "schema": {
               "type": "object",
               "properties": {
@@ -515,9 +543,21 @@
                   "type": "string",
                   "example": "string"
                 },
-                "token": {
+                "therapistId": {
                   "type": "string",
                   "example": "string"
+                },
+                "appointmentDate": {
+                  "type": "string",
+                  "example": "date"
+                },
+                "startTime": {
+                  "type": "string",
+                  "example": "date"
+                },
+                "endTime": {
+                  "type": "string",
+                  "example": "date"
                 }
               }
             }
@@ -530,20 +570,20 @@
         }
       }
     },
-    "/tokens/{id}": {
+    "/appointments/{id}": {
       "get": {
         "tags": [
-          "Token"
+          "Appointment"
         ],
-        "summary": "Get token by ID",
-        "description": "Fetch a token by its unique ID and populate the userId field.",
+        "summary": "Get appointment by ID",
+        "description": "Fetch an appointment by its unique ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "ID of the token to retrieve."
+            "description": "ID of the appointment to retrieve."
           }
         ],
         "responses": {
@@ -554,23 +594,23 @@
       },
       "put": {
         "tags": [
-          "Token"
+          "Appointment"
         ],
-        "summary": "Update token by ID",
-        "description": "Update a token\\'s details by its unique ID.",
+        "summary": "Update appointment by ID",
+        "description": "Update an appointment\\'s details by its unique ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "ID of the token to update."
+            "description": "ID of the appointment to update."
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
-            "description": "Updated token data.",
+            "description": "Updated appointment data.",
             "schema": {
               "type": "object",
               "properties": {
@@ -578,9 +618,17 @@
                   "type": "string",
                   "example": "string"
                 },
-                "token": {
+                "therapistId": {
                   "type": "string",
                   "example": "string"
+                },
+                "appointmentDate": {
+                  "type": "string",
+                  "example": "date"
+                },
+                "endTime": {
+                  "type": "string",
+                  "example": "date"
                 }
               }
             }
@@ -589,52 +637,54 @@
         "responses": {
           "202": {
             "description": "Accepted"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Token"
-        ],
-        "summary": "Delete token by ID",
-        "description": "Delete a token from the database by its unique ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "ID of the token to delete."
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "404": {
             "description": "Not Found"
           }
         }
       },
+      "delete": {
+        "tags": [
+          "Appointment"
+        ],
+        "summary": "Delete Appointment",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
       "patch": {
         "tags": [
-          "Token"
+          "Appointment"
         ],
-        "summary": "Update token by ID",
-        "description": "Update a token\\'s details by its unique ID.",
+        "summary": "Update appointment by ID",
+        "description": "Update an appointment\\'s details by its unique ID.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "ID of the token to update."
+            "description": "ID of the appointment to update."
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
-            "description": "Updated token data.",
+            "description": "Updated appointment data.",
             "schema": {
               "type": "object",
               "properties": {
@@ -642,9 +692,17 @@
                   "type": "string",
                   "example": "string"
                 },
-                "token": {
+                "therapistId": {
                   "type": "string",
                   "example": "string"
+                },
+                "appointmentDate": {
+                  "type": "string",
+                  "example": "date"
+                },
+                "endTime": {
+                  "type": "string",
+                  "example": "date"
                 }
               }
             }
@@ -653,16 +711,45 @@
         "responses": {
           "202": {
             "description": "Accepted"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }
     },
-    "/feedbacks/": {
+    "/appointments/user/{id}": {
       "get": {
         "tags": [
-          "Feedbacks"
+          "Appointment"
         ],
-        "summary": "List Feedbacks",
+        "summary": "Get user or therapist appointments",
+        "description": "Fetch a list of appointments for a specific user or therapist, based on their role.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the user or therapist to fetch appointments for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/blogs/": {
+      "get": {
+        "tags": [
+          "Blogs"
+        ],
+        "summary": "List Blogs",
         "description": "\r  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.\r  <ul> Examples:\r   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r   <li>URL/?<b>limit=10&page=1</b></li>\r  </ul>\r  ",
         "responses": {
           "200": {
@@ -672,9 +759,9 @@
       },
       "post": {
         "tags": [
-          "Feedbacks"
+          "Blogs"
         ],
-        "summary": "Create Feedback",
+        "summary": "Create Blog",
         "description": "",
         "parameters": [
           {
@@ -682,7 +769,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Feedback"
+              "$ref": "#/definitions/Blog"
             }
           }
         ],
@@ -693,12 +780,12 @@
         }
       }
     },
-    "/feedbacks/{id}": {
+    "/blogs/{id}": {
       "get": {
         "tags": [
-          "Feedbacks"
+          "Blogs"
         ],
-        "summary": "Get Single Feedback",
+        "summary": "Get Single Blog",
         "description": "",
         "parameters": [
           {
@@ -716,10 +803,10 @@
       },
       "put": {
         "tags": [
-          "Feedbacks"
+          "Blogs"
         ],
-        "summary": "Update Feedback",
-        "description": "",
+        "summary": "Update an existing blog post",
+        "description": "Updates the blog post. Only the therapist who created the post can update it.",
         "parameters": [
           {
             "name": "id",
@@ -732,7 +819,70 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Feedback"
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "Updated Blog Title"
+                        }
+                      }
+                    },
+                    "content": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "Updated blog content"
+                        }
+                      }
+                    },
+                    "image": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "https://example.com/updated-image.jpg"
+                        }
+                      }
+                    },
+                    "categoryId": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "5f50c31b2b8f07c1f1e6e89c"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         ],
@@ -744,9 +894,9 @@
       },
       "delete": {
         "tags": [
-          "Feedbacks"
+          "Blogs"
         ],
-        "summary": "Delete Feedback",
+        "summary": "Delete Blog",
         "description": "",
         "parameters": [
           {
@@ -767,10 +917,10 @@
       },
       "patch": {
         "tags": [
-          "Feedbacks"
+          "Blogs"
         ],
-        "summary": "Update Feedback",
-        "description": "",
+        "summary": "Update an existing blog post",
+        "description": "Updates the blog post. Only the therapist who created the post can update it.",
         "parameters": [
           {
             "name": "id",
@@ -783,7 +933,70 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Feedback"
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "Updated Blog Title"
+                        }
+                      }
+                    },
+                    "content": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "Updated blog content"
+                        }
+                      }
+                    },
+                    "image": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "https://example.com/updated-image.jpg"
+                        }
+                      }
+                    },
+                    "categoryId": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        },
+                        "example": {
+                          "type": "string",
+                          "example": "5f50c31b2b8f07c1f1e6e89c"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         ],
@@ -930,9 +1143,1083 @@
           }
         }
       }
+    },
+    "/feedbacks/": {
+      "get": {
+        "tags": [
+          "Feedbacks"
+        ],
+        "summary": "List Feedbacks",
+        "description": "\r  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.\r  <ul> Examples:\r  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r  <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r  <li>URL/?<b>limit=10&page=1</b></li>\r  </ul>\r  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Feedbacks"
+        ],
+        "summary": "Create Feedback",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Feedback"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/feedbacks/{id}": {
+      "get": {
+        "tags": [
+          "Feedbacks"
+        ],
+        "summary": "Get Single Feedback",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Feedbacks"
+        ],
+        "summary": "Update Feedback",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Feedback"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Feedbacks"
+        ],
+        "summary": "Delete Feedback",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Feedbacks"
+        ],
+        "summary": "Update Feedback",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Feedback"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
+    "/feedbacks/therapists/{therapistId}": {
+      "get": {
+        "tags": [
+          "Feedbacks"
+        ],
+        "summary": "Get Single Therapist Feedbacks",
+        "description": "Fetch all feedback/reviews for a specific therapist.",
+        "parameters": [
+          {
+            "name": "therapistId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the therapist to fetch feedbacks for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/notes/": {
+      "get": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "List Notes",
+        "description": "\r  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.\r  <ul> Examples:\r   <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r   <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r   <li>URL/?<b>limit=10&page=1</b></li>\r  </ul>\r  ",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Create a new notes",
+        "description": "Create and save a new notes in the database.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Notes data to create.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "userId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "therapistId": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/notes/{id}": {
+      "get": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Get a note by ID",
+        "description": "Retrieve a specific note using its unique ID, with userId and therapistId populated.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the note to retrieve."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Update notes by ID",
+        "description": "Update a notes details by its unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the notes to update."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Updated notes data.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "therapistId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Delete a note by ID",
+        "description": "Remove a note from the database using its unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the note to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Notes"
+        ],
+        "summary": "Update notes by ID",
+        "description": "Update a notes details by its unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the notes to update."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Updated notes data.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "therapistId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "content": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
+    "/therapists/": {
+      "get": {
+        "tags": [
+          "Therapists"
+        ],
+        "summary": "List Therapists",
+        "description": "\r  You can send query with endpoint for search[], sort[], page and limit.\r  <ul> Examples:\r   <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r   <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>\r   <li>URL/?<b>page=2&limit=1</b></li>\r  </ul>\r  ",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Therapists"
+        ],
+        "summary": "Create Therapist",
+        "description": "Create a new therapist entry with their details.",
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/therapists/{id}": {
+      "get": {
+        "tags": [
+          "Therapists"
+        ],
+        "summary": "Get Single Therapist",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Therapists"
+        ],
+        "summary": "Update Therapist",
+        "description": "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "in": {
+                  "example": "any"
+                },
+                "required": {
+                  "example": "any"
+                },
+                "schema": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "image": {
+                  "example": "any"
+                },
+                "categoryId": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "isActive": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Therapists"
+        ],
+        "summary": "Delete Therapist",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Therapists"
+        ],
+        "summary": "Update Therapist",
+        "description": "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "in": {
+                  "example": "any"
+                },
+                "required": {
+                  "example": "any"
+                },
+                "schema": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "image": {
+                  "example": "any"
+                },
+                "categoryId": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "isActive": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "202": {
+            "description": "Accepted"
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/therapists/{id}/status": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Change Therapist Status",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/therapist-time-tables/": {
+      "get": {
+        "tags": [
+          "TherapistTimeTable"
+        ],
+        "summary": "Get all therapist time tables",
+        "description": "Fetch a list of all therapist time tables, with optional therapistId population.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "TherapistTimeTable"
+        ],
+        "summary": "Create a new therapist time table",
+        "description": "Create and save a new therapist time table in the database.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Therapist time table data to create.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "therapistId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "availableDates": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "example": "string (ISO format)"
+                      },
+                      "startTime": {
+                        "type": "string",
+                        "example": "string (HH:mm)"
+                      },
+                      "endTime": {
+                        "type": "string",
+                        "example": "string (HH:mm)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/therapist-time-tables/{id}": {
+      "get": {
+        "tags": [
+          "TherapistTimeTable"
+        ],
+        "summary": "Get therapist time table by ID",
+        "description": "Fetch a therapist time table by its unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the therapist time table to retrieve."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "TherapistTimeTable"
+        ],
+        "summary": "Update therapist time table by ID",
+        "description": "Update a therapist time table details by its unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the therapist time table to update."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Updated therapist time table data.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "therapistId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "availableDates": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "example": "string (ISO format)"
+                      },
+                      "startTime": {
+                        "type": "string",
+                        "example": "string (HH:mm)"
+                      },
+                      "endTime": {
+                        "type": "string",
+                        "example": "string (HH:mm)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "TherapistTimeTable"
+        ],
+        "summary": "Delete therapist time table by ID",
+        "description": "Delete a therapist time table from the database by its unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the therapist time table to delete."
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "TherapistTimeTable"
+        ],
+        "summary": "Update therapist time table by ID",
+        "description": "Update a therapist time table details by its unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the therapist time table to update."
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "Updated therapist time table data.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "therapistId": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "availableDates": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string",
+                        "example": "string (ISO format)"
+                      },
+                      "startTime": {
+                        "type": "string",
+                        "example": "string (HH:mm)"
+                      },
+                      "endTime": {
+                        "type": "string",
+                        "example": "string (HH:mm)"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    },
+    "/messages/": {
+      "get": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "List Messages",
+        "description": "\r  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.\r  <ul> Examples:\r  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>\r  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>\r  <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>\r  <li>URL/?<b>limit=10&page=1</b></li>\r  </ul>\r  ",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "userType",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "chatWithId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "chatWithType",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/messages/{id}": {
+      "delete": {
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Delete Message",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   },
   "definitions": {
+    "Appointment": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "therapistId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Therapist"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "appointmentDate": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "startTime": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "endTime": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "videoCallUrl": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {}
+          }
+        }
+      }
+    },
+    "Blog": {
+      "type": "object",
+      "properties": {
+        "therapistId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Therapist"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "categoryId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Category"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "title": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "array",
+              "example": [
+                true,
+                "Content is required!"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "image": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "likes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "function"
+              },
+              "ref": {
+                "type": "string",
+                "example": "User"
+              }
+            }
+          }
+        },
+        "countOfVisitors": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "number",
+              "example": 0
+            }
+          }
+        }
+      }
+    },
     "Category": {
       "type": "object",
       "properties": {
@@ -1029,7 +2316,7 @@
             }
           }
         },
-        "doctorId": {
+        "therapistId": {
           "type": "object",
           "properties": {
             "type": {
@@ -1037,7 +2324,7 @@
             },
             "ref": {
               "type": "string",
-              "example": "Doctor"
+              "example": "Therapist"
             },
             "required": {
               "type": "boolean",
@@ -1047,29 +2334,88 @@
         }
       }
     },
-    "Therapist": {
+    "Notes": {
       "type": "object",
       "properties": {
-        "userName": {
+        "userId": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
             },
+            "ref": {
+              "type": "string",
+              "example": "User"
+            },
             "required": {
-              "type": "boolean",
-              "example": true
+              "type": "array",
+              "example": [
+                true,
+                "User ID is required"
+              ],
+              "items": {
+                "type": "string"
+              }
             },
-            "trim": {
-              "type": "boolean",
-              "example": true
-            },
-            "unique": {
+            "index": {
               "type": "boolean",
               "example": true
             }
           }
         },
+        "therapistId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Therapist"
+            },
+            "required": {
+              "type": "array",
+              "example": [
+                true,
+                "User ID is required"
+              ],
+              "items": {
+                "type": "string"
+              }
+            },
+            "index": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "content": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            },
+            "required": {
+              "type": "array",
+              "example": [
+                true,
+                "Content is required"
+              ],
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Therapist": {
+      "type": "object",
+      "properties": {
         "firstName": {
           "type": "object",
           "properties": {
@@ -1173,46 +2519,84 @@
           }
         },
         "categoryId": {
-          "type": "object",
-          "properties": {
-            "type": {
-              "type": "function"
-            },
-            "ref": {
-              "type": "string",
-              "example": "Category"
-            },
-            "required": {
-              "type": "boolean",
-              "example": true
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "function"
+              },
+              "ref": {
+                "type": "string",
+                "example": "Category"
+              },
+              "required": {
+                "type": "boolean",
+                "example": true
+              }
             }
           }
         },
         "feedbackId": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "function"
+              },
+              "ref": {
+                "type": "string",
+                "example": "Feedback"
+              }
+            }
+          }
+        },
+        "description": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
             },
-            "ref": {
-              "type": "string",
-              "example": "Feedback"
-            },
             "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "trim": {
               "type": "boolean",
               "example": true
             }
           }
         },
-        "isEmailVerified": {
+        "experience": {
           "type": "object",
           "properties": {
             "type": {
               "type": "function"
             },
-            "default": {
+            "required": {
               "type": "boolean",
-              "example": false
+              "example": true
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "graduation": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            },
+            "trim": {
+              "type": "boolean",
+              "example": true
             }
           }
         },
@@ -1225,6 +2609,41 @@
             "default": {
               "type": "boolean",
               "example": true
+            }
+          }
+        },
+        "isTherapist": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "isOnline": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        },
+        "lastSeen": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "function"
             }
           }
         },
@@ -1242,6 +2661,71 @@
         }
       }
     },
+    "TherapistTimeTable": {
+      "type": "object",
+      "properties": {
+        "therapistId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Therapist"
+            },
+            "required": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "unavailableDates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "function"
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              },
+              "startTime": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "function"
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              },
+              "endTime": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "function"
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Token": {
       "type": "object",
       "properties": {
@@ -1255,17 +2739,47 @@
               "type": "string",
               "example": "User"
             },
-            "required": {
+            "default": {},
+            "index": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "therapistId": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "ref": {
+              "type": "string",
+              "example": "Therapist"
+            },
+            "default": {},
+            "index": {
+              "type": "boolean",
+              "example": true
+            }
+          }
+        },
+        "userType": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "enum": {
               "type": "array",
               "example": [
-                true,
-                "User ID is required"
+                "User",
+                "Therapist"
               ],
               "items": {
                 "type": "string"
               }
             },
-            "index": {
+            "required": {
               "type": "boolean",
               "example": true
             }
@@ -1537,6 +3051,18 @@
             }
           }
         },
+        "isTherapist": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        },
         "isStaff": {
           "type": "object",
           "properties": {
@@ -1558,6 +3084,29 @@
             "default": {
               "type": "boolean",
               "example": false
+            }
+          }
+        },
+        "isOnline": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "boolean",
+              "example": false
+            }
+          }
+        },
+        "lastSeen": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "function"
+            },
+            "default": {
+              "type": "function"
             }
           }
         },

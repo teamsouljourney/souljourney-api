@@ -1,5 +1,6 @@
 "use strict";
 
+const filterObj = require("../helpers/allowedFields");
 /* ------------------------------------------------- */
 /*                  SOULJOURNEY API                  */
 /* ------------------------------------------------- */
@@ -9,33 +10,35 @@ const Therapist = require("../models/therapist");
 module.exports = {
   list: async (req, res) => {
     /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "List Therapists"
-            #swagger.description = `
-                You can send query with endpoint for search[], sort[], page and limit.
-                <ul> Examples:
-                    <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
-                    <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
-                    <li>URL/?<b>page=2&limit=1</b></li>
-                </ul>
-            `
-        */
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "List Therapists"
+        #swagger.description = `
+            You can send query with endpoint for search[], sort[], page and limit.
+            <ul> Examples:
+                <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
+                <li>URL/?<b>sort[field1]=1&sort[field2]=-1</b></li>
+                <li>URL/?<b>page=2&limit=1</b></li>
+            </ul>
+        `
+    */
 
-    // let customFilter = {}
-    // if (!req.user.isAdmin) customFilter = { isAdmin: false }
+    let customFilter = {};
 
-    const data = await res.getModelList(Therapist, {}, "categoryId");
-    // const data = await res.getModelList(Therapist, customFilter);
+    if (req.query?.category) {
+      customFilter = { categoryId: req.query.category };
+    }
+
+    const data = await res.getModelList(Therapist, customFilter, [
+      "categoryId",
+      "feedbackId",
+    ]);
 
     res.status(200).send({
       error: false,
-      details: await res.getModelListDetails(Therapist),
-      // details: await res.getModelListDetails(Therapist, customFilter),
-
+      details: await res.getModelListDetails(Therapist, customFilter),
       data,
     });
   },
-
   create: async (req, res) => {
     /*
         #swagger.tags = ["Therapists"]
@@ -54,12 +57,13 @@ module.exports = {
                     image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
                     categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' '67a47634b6da7c1f21194632' },
                     description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
+                    experince: { type: 'string', example: '7 yrs in practice Stress, Anxiety, Addictions, Family conflicts,Self esteem, Motivation, Additional areas of focus: Grief, Intimacy-related issues, Eating disorders, Sleeping disorders, Parenting issues, Anger management, ADHD, Clinical approaches: Client-Centered Therapy' },
+                    graduation: { type: 'string', example: 'Marmara University' },
                     isActive: { type: 'boolean', example: true },
                 }
             }
         }
     */
-    // req.body.isAdmin = false;
 
     const data = await Therapist.create(req.body);
 
@@ -68,54 +72,60 @@ module.exports = {
       data,
     });
   },
-
   read: async (req, res) => {
     /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "Get Single Therapist"
-        */
-    const data = await Therapist.findOne({ _id: req.params.id });
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Get Single Therapist"
+    */
+    const data = await Therapist.findOne({ _id: req.params.id }).populate([
+      "categoryId",
+      "feedbackId",
+    ]);
 
     res.status(200).send({
       error: false,
       data,
     });
   },
-
   update: async (req, res) => {
-  /*
-    #swagger.tags = ["Therapists"]
-    #swagger.summary = "Update Therapist"
-    #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
-    #swagger.parameters['id'] = {
-        in: 'path',
-        description: 'The ID of the therapist to be updated',
-        required: true,
-        type: 'string',
-    }
-    #swagger.parameters['body'] = {
+    /*
+
+      #swagger.tags = ["Therapists"]
+      #swagger.summary = "Update Therapist"
+      #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
+      #swagger.parameters['id'] = {
+      #swagger.tags = ["Therapists"]
+      #swagger.summary = "Update Therapist"
+      #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
+      #swagger.parameters['id'] = {
+      #swagger.parameters['body'] = {
         in: 'body',
         required: true,
         schema: {
-            type: 'object',
-            properties: {
-                firstName: { type: 'string', example: 'Mehmet' },
-                lastName: { type: 'string', example: 'Yılmaz' },
-                email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
-                password: { type: 'string', example: 'Password123!' },
-                image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
-                categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
-                description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
-                isActive: { type: 'boolean', example: true },
+          type: 'object',
+          properties: {
+            firstName: { type: 'string', example: 'Mehmet' },
+            lastName: { type: 'string', example: 'Yılmaz' },
+            email: { type: 'string', example: 'mehmet.yilmaz@example.com' },
+            password: { type: 'string', example: 'Password123!' },
+            image: { type: 'string', example: 'https://example.com/mehmet.jpg' },
+            categoryId: { type: 'string', example: '67a475aeb6da7c1f21194622' },
+            description: { type: 'string', example: 'Experienced psychologist specializing in mental health.' },
+            isActive: { type: 'boolean', example: true },
             },
         },
-    }
-*/
+      }
+    */
 
+    const { _id, password, ...updatedData } = req.body;
 
-    const data = await Therapist.updateOne({ _id: req.params.id }, req.body, {
-      runValidators: true,
-    });
+    const data = await Therapist.updateOne(
+      { _id: req.params.id },
+      updatedData,
+      {
+        runValidators: true,
+      }
+    );
 
     res.status(202).send({
       error: false,
@@ -123,12 +133,11 @@ module.exports = {
       new: await Therapist.findOne({ _id: req.params.id }),
     });
   },
-
   delete: async (req, res) => {
     /*
-            #swagger.tags = ["Therapists"]
-            #swagger.summary = "Delete Therapist"
-        */
+      #swagger.tags = ["Therapists"]
+      #swagger.summary = "Delete Therapist"
+    */
 
     const data = await Therapist.deleteOne({ _id: req.params.id });
 
@@ -137,4 +146,113 @@ module.exports = {
       data,
     });
   },
+  changeTherapistStatus: async (req, res) => {
+    /* 
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Change Therapist Status"
+    */
+    const therapist = await Therapist.findOne({ _id: req.params.id });
+
+    if (!therapist)
+      return res
+        .status(404)
+        .send({ error: true, message: "Therapist not found" });
+
+    therapist.isActive = !therapist.isActive;
+    await therapist.save();
+
+    res.status(200).send({
+      error: false,
+      message: `Therapist ${
+        therapist.isActive ? "activated" : "disabled"
+      } successfully`,
+      data: therapist,
+    });
+  },
+  updateMe: async (req, res) => {
+    /*
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Update Therapist"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                "firstName": "test",
+                "lastName": "test",
+                "image": "test",
+                "description": "test",
+                "experience": "test",
+                "graduation": "test"
+            }
+        }
+    */
+    
+    const filteredObj = filterObj(req.body, 
+      'firstName', 
+      'lastName', 
+      'image', 
+      'description', 
+      'experience', 
+      'graduation',
+    );
+    
+    const data = await Therapist.updateOne({ _id: req.params.id }, filteredObj, {
+      runValidators: true,
+    });
+
+    res.status(201).send({
+      error: !data.modifiedCount,
+      message: data.modifiedCount ? "Therapist updated successfully!" : "Therapist update failed!",
+      data,
+      new: await Therapist.findOne({ _id: req.params.id }),
+    });
+  },
+  changeMyPassword: async (req, res) => {
+
+    /* 
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Update Therapist"
+        #swagger.parameters['body'] = {
+            in: 'body',
+            required: true,
+            schema: {
+                "currentPassword": "***",
+                "newPassword": "***",
+                "retypePassword": "***",
+            }
+        }
+    */
+
+    const {currentPassword, newPassword, retypePassword} = req.body
+
+    if (!currentPassword || !newPassword || !retypePassword) {
+      throw new CustomError("currentPassword, newPassword and retypePassword are required! ")
+    }
+
+    const therapist = await Therapist.findOne({_id: req.user._id})
+
+    if (!therapist) {
+      throw new CustomError("Therapist not found", 404)
+    }
+
+    const isPasswordCorrect = await therapist.correctPassword(currentPassword, therapist?.password)
+    
+    if (!isPasswordCorrect) {
+      throw new CustomError("Your current password is not correct", 401)
+    }
+
+    if (newPassword !== retypePassword) {
+      throw new CustomError("Passwords don't match!", 401)
+    }
+    
+    therapist.password = newPassword
+
+    await therapist.save()
+
+    res.status(201).send({
+      error: false,
+      message: "Password changed successfully",
+      data: therapist
+    })
+  }
 };
