@@ -123,7 +123,7 @@ app.use(require("./src/middlewares/errorHandler"));
 // Stripe:
 
 // RUN SERVER:
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
 });
 
