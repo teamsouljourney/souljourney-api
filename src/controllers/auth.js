@@ -23,6 +23,9 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 const Therapist = require("../models/therapist");
 const translations = require("../../locales/translations");
+const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
+const { welcomeEmail } = require("../utils/emailTamplates/welcomeEmail");
+const { forgotPasswordEmail } = require("../utils/emailTamplates/forgotPasswordEmail");
 
 module.exports = {
   signup: async (req, res) => {
@@ -56,7 +59,7 @@ module.exports = {
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
-    const message = `Click the following link to verify your email address: ${verificationUrl}`;
+    const message = verificationEmail(newUser.userName, verificationUrl);
 
     await sendEmail({
       email: newUser.email,
@@ -119,6 +122,14 @@ module.exports = {
     }
 
     await user.markAsVerified();
+
+    const message = welcomeEmail(user.userName);
+
+    await sendEmail({
+      email: newUser.email,
+      subject: "Welcome to Soul Journey Team",
+      message,
+    });
 
     return res.redirect(
       `${process.env.CLIENT_URL}/auth/verify-email?statusType=success&status=success`
@@ -346,21 +357,22 @@ module.exports = {
     // Reset URL with JWT
     const resetURL = `${process.env.CLIENT_URL}/auth/reset-password/${jwtResetToken}`;
 
-    const message = `
-    Hi ${account.username},
+    const message = forgotPasswordEmail(account.userName, resetURL, verificationCode)
+    // `
+    // Hi ${account.userName},
   
-    You requested to reset your password. Please use the verification code below to proceed:
+    // You requested to reset your password. Please use the verification code below to proceed:
   
-    Verification Code: ${verificationCode}
+    // Verification Code: ${verificationCode}
   
-    Alternatively, you can reset your password by clicking on the following link:
-    ${resetURL}
+    // Alternatively, you can reset your password by clicking on the following link:
+    // ${resetURL}
   
-    If you did not request this, please ignore this email.
+    // If you did not request this, please ignore this email.
   
-    Best regards,
-    The Team
-    `;
+    // Best regards,
+    // The Team
+    // `;
 
     try {
       await sendEmail({

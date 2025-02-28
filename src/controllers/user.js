@@ -10,6 +10,9 @@ const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const filterObj = require("../helpers/allowedFields");
 const translations = require("../../locales/translations");
+const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
+const { deleteAccountEmail } = require("../utils/emailTamplates/deleteAccountEmail");
+const { changePasswordEmail } = require("../utils/emailTamplates/changePasswordEmail");
 
 module.exports = {
   list: async (req, res) => {
@@ -70,9 +73,7 @@ module.exports = {
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
-    const message = req.t(translations.user.verificationEmailMessage, {
-      verificationUrl,
-    });
+    const message = verificationEmail(newUser.userName, verificationUrl)
 
     await sendEmail({
       email: newUser.email,
@@ -169,6 +170,14 @@ module.exports = {
 
     user.isActive = !user.isActive;
     await user.save();
+
+    const message = deleteAccountEmail(user.userName)
+
+    await sendEmail({
+      email: user.email,
+      subject: "Verify Your Email",
+      message,
+    });
 
     res.status(200).send({
       error: false,
@@ -268,6 +277,14 @@ module.exports = {
     user.password = newPassword;
 
     await user.save();
+
+    const message = changePasswordEmail(user.userName)
+
+    await sendEmail({
+      email: user.email,
+      subject: "Verify Your Email",
+      message,
+    });
 
     res.status(201).send({
       error: false,
