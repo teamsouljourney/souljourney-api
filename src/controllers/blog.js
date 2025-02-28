@@ -6,6 +6,7 @@
 
 const Blog = require("../models/blog");
 const CustomError = require("../errors/customError");
+const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
@@ -26,9 +27,10 @@ module.exports = {
       "therapistId",
       "categoryId",
     ]);
-    
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.blog.listSuccess),
       details: await res.getModelListDetails(Blog),
       data,
     });
@@ -46,15 +48,15 @@ module.exports = {
         }
     */
     // Set therapistId from logged in therapist
-
     req.body.therapistId = req.user._id;
-    
+
     const data = await Blog.create(req.body);
     res.status(201).send({
       error: false,
+      message: req.t(translations.blog.createSuccess),
       data,
     });
-  },  
+  },
   read: async (req, res) => {
     /*
         #swagger.tags = ["Blogs"]
@@ -64,15 +66,21 @@ module.exports = {
       "therapistId",
       "categoryId",
     ]);
+
+    if (!data) {
+      throw new CustomError(req.t(translations.blog.notFound), 404);
+    }
+
     data.countOfVisitors += 1;
     await data.save();
     res.status(200).send({
       error: false,
+      message: req.t(translations.blog.readSuccess),
       data,
     });
   },
   update: async (req, res) => {
-   /* 
+    /* 
         #swagger.tags = ["Blogs"]
         #swagger.summary = "Update an existing blog post"
         #swagger.description = "Updates the blog post. Only the therapist who created the post can update it."
@@ -91,18 +99,23 @@ module.exports = {
         }
         
     */
-    const blogData = await Blog.findOne({ _id: req.params.id });    
+    const blogData = await Blog.findOne({ _id: req.params.id });
+
+    if (!blogData) {
+      throw new CustomError(req.t(translations.blog.notFound), 404);
+    }
 
     if (blogData.therapistId.toString() != req.user._id) {
-      throw new CustomError("You cannot update someone else's blog post", 401);
+      throw new CustomError(req.t(translations.blog.updateUnauthorized), 403);
     }
 
     const data = await Blog.updateOne({ _id: req.params.id }, req.body, {
       runValidators: true,
     });
 
-    res.status(202).send({
+    res.status(200).send({
       error: false,
+      message: req.t(translations.blog.updateSuccess),
       data,
       new: await Blog.findOne({ _id: req.params.id }),
     });
@@ -114,17 +127,23 @@ module.exports = {
     */
     const blogData = await Blog.findOne({ _id: req.params.id }).populate(
       "therapistId"
-    );    
+    );
+
+    if (!blogData) {
+      throw new CustomError(req.t(translations.blog.notFound), 404);
+    }
 
     if (!req.user.isAdmin && blogData.therapistId.email !== req.user.email) {
-      throw new CustomError("You cannot delete someone else's blog post", 401);
+      throw new CustomError(req.t(translations.blog.deleteUnauthorized), 403);
     }
 
     const data = await Blog.deleteOne({ _id: req.params.id });
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
-      message: data.deletedCount ? "The blog has been deleted successfully!" : "Deletion failed. Make sure you have the necessary permissions.",
+      message: data.deletedCount
+        ? req.t(translations.blog.deleteSuccess)
+        : req.t(translations.blog.deleteFailed),
       data,
     });
   },
@@ -135,18 +154,27 @@ module.exports = {
     */
     const data = await Blog.findOne({ _id: req.params.id });
 
+    if (!data) {
+      throw new CustomError(req.t(translations.blog.notFound), 404);
+    }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.blog.getLikeSuccess),
       likes: data.likes,
     });
   },
-  
+
   postLike: async (req, res) => {
     /* 
         #swagger.tags = ["Blogs"]
         #swagger.summary = "Add/Remove Like"
     */
     const data = await Blog.findOne({ _id: req.params.id });
+
+    if (!data) {
+      throw new CustomError(req.t(translations.blog.notFound), 404);
+    }
 
     let likes = data?.likes.map((id) => id.toString()) || [];
     const userId = req.user._id.toString();
@@ -159,9 +187,10 @@ module.exports = {
 
     data.likes = likes;
     await data.save();
-    
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.blog.postLikeSuccess),
       data,
     });
   },

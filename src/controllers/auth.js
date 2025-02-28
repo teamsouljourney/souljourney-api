@@ -22,6 +22,7 @@ const CustomError = require("../errors/customError");
 const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 const Therapist = require("../models/therapist");
+const translations = require("../../locales/translations");
 const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
 const { welcomeEmail } = require("../utils/emailTamplates/welcomeEmail");
 const { forgotPasswordEmail } = require("../utils/emailTamplates/forgotPasswordEmail");
@@ -152,9 +153,12 @@ module.exports = {
 
     const { email, password } = req.body;
 
-    // 1) Check if username and password exist
+    // Check if email and password exist
     if (!email || !password) {
-      throw new CustomError("Please provide email and password!", 400);
+      throw new CustomError(
+        req.t(translations.login.provideEmailAndPassword),
+        400
+      );
     }
 
     // 2) Check if user exists in either collection
@@ -167,32 +171,35 @@ module.exports = {
     }
 
     if (!user) {
-      throw new CustomError("Incorrect email or password", 401);
-    }
-
-    // 3) If user is from User model, check email verification
-    if (userType === "User" && !user.isEmailVerified) {
-      throw new CustomError("Please verify your email before logging in", 401);
-    }
-
-    // 4) Check if user is active
-    if (!user.isActive) {
       throw new CustomError(
-        "This account is not active. Please contact support for assistance.",
+        req.t(translations.login.incorrectEmailOrPassword),
         401
       );
     }
 
-    // 5) Compare Password using correctPassword method
+    // Check email verification
+    if (userType === "User" && !user.isEmailVerified) {
+      throw new CustomError(req.t(translations.login.verifyEmail), 401);
+    }
+
+    // Check if user is active
+    if (!user.isActive) {
+      throw new CustomError(req.t(translations.login.accountNotActive), 401);
+    }
+
+    // Check password
     const isPasswordCorrect = await user.correctPassword(
       password,
       user.password
     );
     if (!isPasswordCorrect) {
-      throw new CustomError("Incorrect email or password", 401);
+      throw new CustomError(
+        req.t(translations.login.incorrectEmailOrPassword),
+        401
+      );
     }
 
-    // 6) Token Kaydetme İşlemi Güncellendi
+    // 6) If everything is ok, send token to client
     let tokenData = await Token.findOne({
       $or: [{ userId: user._id }, { therapistId: user._id }],
     });
@@ -230,7 +237,7 @@ module.exports = {
 
     const data = {
       error: false,
-      message: "You are successfully logged in!",
+      message: req.t(translations.auth.loginSuccess),
       token: tokenData.token,
       bearer: {
         access: accessToken,
@@ -263,8 +270,7 @@ module.exports = {
     if (!auth) {
       return res.status(400).json({
         status: "fail",
-        message:
-          "Authorization header is missing. Please provide a valid token.",
+        message: req.t(translations.logout.authorizationHeaderMissing),
       });
     }
 
@@ -273,8 +279,7 @@ module.exports = {
     if (!tokenValue) {
       return res.status(400).json({
         status: "fail",
-        message:
-          "Token value is missing. Ensure the format is 'Token <value>' or 'Bearer <value>'.",
+        message: req.t(translations.logout.tokenValueMissing),
       });
     }
 
@@ -286,8 +291,8 @@ module.exports = {
           status: result.deletedCount > 0 ? "success" : "fail",
           message:
             result.deletedCount > 0
-              ? "Logout successfully."
-              : "Simple token not found. It may have already been logged out.",
+              ? req.t(translations.logout.logoutSuccess)
+              : req.t(translations.logout.tokenNotFound),
         });
 
       case "Bearer":
@@ -295,13 +300,15 @@ module.exports = {
 
         return res.status(200).json({
           status: "success",
-          message: "JWT blacklisted successfully. Logout successfully.",
+          message: req.t(translations.logout.jwtBlacklistedSuccess),
         });
 
       default:
         return res.status(400).json({
           status: "fail",
-          message: `Unsupported token type '${tokenType}'. Use 'Token' or 'Bearer'.`,
+          message: req.t(translations.logout.unsupportedTokenType, {
+            tokenType,
+          }),
         });
     }
   },
@@ -322,7 +329,6 @@ module.exports = {
 
     const { email } = req.body;
 
-    // 1) Get user based on POSTed email
     let account = await User.findOne({ email });
 
     if (!account) {
@@ -331,7 +337,7 @@ module.exports = {
 
     if (!account) {
       throw new CustomError(
-        "There is no user or therapist with this email address.",
+        req.t(translations.forgotPassword.forgotUserNotFound),
         404
       );
     }
@@ -371,13 +377,13 @@ module.exports = {
     try {
       await sendEmail({
         email: account.email,
-        subject: "Your password reset token (valid for 10 min)",
+        subject: req.t(translations.forgotPassword.resetPasswordSubject),
         message,
       });
 
       res.status(200).json({
         status: "success",
-        message: "Reset token and verification code sent to email!",
+        message: req.t(translations.forgotPassword.resetTokenSuccess),
         jwtResetToken,
       });
     } catch (err) {
@@ -390,7 +396,7 @@ module.exports = {
       await account.save({ validateBeforeSave: false });
 
       throw new CustomError(
-        "There was an error sending the reset token and verification code. Try again later!",
+        req.t(translations.forgotPassword.resetTokenError),
         500
       );
     }
@@ -424,19 +430,25 @@ module.exports = {
       process.env.JWT_RESET_SECRET
     );
     if (!decodedToken || !decodedToken.id) {
-      throw new CustomError("Invalid or expired token", 400);
+      throw new CustomError(
+        req.t(translations.resetPassword.invalidToken),
+        400
+      );
     }
 
     // 2) Validate new password and password confirmation
     const { password, confirmPassword, verificationCode } = req.body;
     if (!password || !confirmPassword || !verificationCode) {
       throw new CustomError(
-        "Password, passwordConfirm, and verificationCode are required",
+        req.t(translations.resetPassword.missingFields),
         400
       );
     }
     if (password !== confirmPassword) {
-      throw new CustomError("Passwords do not match", 400);
+      throw new CustomError(
+        req.t(translations.resetPassword.passwordMismatch),
+        400
+      );
     }
 
     // 3) Find user or therapist by decoded token id and check if the verification code is correct
@@ -453,11 +465,17 @@ module.exports = {
     }
 
     if (!account) {
-      throw new CustomError("Token is invalid or has expired", 400);
+      throw new CustomError(
+        req.t(translations.resetPassword.tokenExpired),
+        400
+      );
     }
 
     if (account.verificationCode != verificationCode) {
-      throw new CustomError("Invalid verification code", 400);
+      throw new CustomError(
+        req.t(translations.resetPassword.invalidVerificationCode),
+        400
+      );
     }
 
     // 4) Update password and clear reset fields
@@ -472,7 +490,7 @@ module.exports = {
     // 5) Send response
     res.status(200).json({
       status: "success",
-      message: "Password has been reset successfully!",
+      message: req.t(translations.resetPassword.passwordResetSuccess),
     });
   },
 };

@@ -1,11 +1,13 @@
 "use strict";
 
-const filterObj = require("../helpers/allowedFields");
 /* ------------------------------------------------- */
 /*                  SOULJOURNEY API                  */
 /* ------------------------------------------------- */
 
+const filterObj = require("../helpers/allowedFields");
 const Therapist = require("../models/therapist");
+const CustomError = require("../errors/customError");
+const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
@@ -35,6 +37,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.therapist.listSuccess),
       details: await res.getModelListDetails(Therapist, customFilter),
       data,
     });
@@ -69,6 +72,7 @@ module.exports = {
 
     res.status(201).send({
       error: false,
+      message: req.t(translations.therapist.createSuccess),
       data,
     });
   },
@@ -82,18 +86,21 @@ module.exports = {
       "feedbackId",
     ]);
 
+    if (!data) {
+      return res.status(404).send({
+        error: true,
+        message: req.t(translations.therapist.notFound),
+      });
+    }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.therapist.readSuccess),
       data,
     });
   },
   update: async (req, res) => {
     /*
-
-      #swagger.tags = ["Therapists"]
-      #swagger.summary = "Update Therapist"
-      #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
-      #swagger.parameters['id'] = {
       #swagger.tags = ["Therapists"]
       #swagger.summary = "Update Therapist"
       #swagger.description = "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category."
@@ -129,6 +136,7 @@ module.exports = {
 
     res.status(202).send({
       error: false,
+      message: req.t(translations.therapist.updateSuccess),
       data,
       new: await Therapist.findOne({ _id: req.params.id }),
     });
@@ -143,6 +151,9 @@ module.exports = {
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
+      message: data.deletedCount
+        ? req.t(translations.therapist.deleteSuccess)
+        : req.t(translations.therapist.notFound),
       data,
     });
   },
@@ -153,19 +164,23 @@ module.exports = {
     */
     const therapist = await Therapist.findOne({ _id: req.params.id });
 
-    if (!therapist)
-      return res
-        .status(404)
-        .send({ error: true, message: "Therapist not found" });
+    if (!therapist) {
+      return res.status(404).send({
+        error: true,
+        message: req.t(translations.therapist.notFound),
+      });
+    }
 
     therapist.isActive = !therapist.isActive;
     await therapist.save();
 
     res.status(200).send({
       error: false,
-      message: `Therapist ${
-        therapist.isActive ? "activated" : "disabled"
-      } successfully`,
+      message: req.t(translations.therapist.statusChanged, {
+        status: therapist.isActive
+          ? req.t(translations.therapist.statusActive)
+          : req.t(translations.therapist.statusDisabled),
+      }),
       data: therapist,
     });
   },
@@ -186,29 +201,35 @@ module.exports = {
             }
         }
     */
-    
-    const filteredObj = filterObj(req.body, 
-      'firstName', 
-      'lastName', 
-      'image', 
-      'description', 
-      'experience', 
-      'graduation',
+
+    const filteredObj = filterObj(
+      req.body,
+      "firstName",
+      "lastName",
+      "image",
+      "description",
+      "experience",
+      "graduation"
     );
-    
-    const data = await Therapist.updateOne({ _id: req.params.id }, filteredObj, {
-      runValidators: true,
-    });
+
+    const data = await Therapist.updateOne(
+      { _id: req.params.id },
+      filteredObj,
+      {
+        runValidators: true,
+      }
+    );
 
     res.status(201).send({
       error: !data.modifiedCount,
-      message: data.modifiedCount ? "Therapist updated successfully!" : "Therapist update failed!",
+      message: data.modifiedCount
+        ? req.t(translations.therapist.updateSuccess)
+        : req.t(translations.therapist.updateFailed),
       data,
       new: await Therapist.findOne({ _id: req.params.id }),
     });
   },
   changeMyPassword: async (req, res) => {
-
     /* 
         #swagger.tags = ["Therapists"]
         #swagger.summary = "Update Therapist"
@@ -223,36 +244,48 @@ module.exports = {
         }
     */
 
-    const {currentPassword, newPassword, retypePassword} = req.body
+    const { currentPassword, newPassword, retypePassword } = req.body;
 
     if (!currentPassword || !newPassword || !retypePassword) {
-      throw new CustomError("currentPassword, newPassword and retypePassword are required! ")
+      throw new CustomError(
+        req.t(translations.therapist.passwordFieldsRequired),
+        400
+      );
     }
 
-    const therapist = await Therapist.findOne({_id: req.user._id})
+    const therapist = await Therapist.findOne({ _id: req.user._id });
 
     if (!therapist) {
-      throw new CustomError("Therapist not found", 404)
+      throw new CustomError(req.t(translations.therapist.notFound), 404);
     }
 
-    const isPasswordCorrect = await therapist.correctPassword(currentPassword, therapist?.password)
-    
+    const isPasswordCorrect = await therapist.correctPassword(
+      currentPassword,
+      therapist?.password
+    );
+
     if (!isPasswordCorrect) {
-      throw new CustomError("Your current password is not correct", 401)
+      throw new CustomError(
+        req.t(translations.therapist.currentPasswordIncorrect),
+        401
+      );
     }
 
     if (newPassword !== retypePassword) {
-      throw new CustomError("Passwords don't match!", 401)
+      throw new CustomError(
+        req.t(translations.therapist.passwordsDontMatch),
+        400
+      );
     }
-    
-    therapist.password = newPassword
 
-    await therapist.save()
+    therapist.password = newPassword;
 
-    res.status(201).send({
+    await therapist.save();
+
+    res.status(200).send({
       error: false,
-      message: "Password changed successfully",
-      data: therapist
-    })
-  }
+      message: req.t(translations.therapist.passwordChangeSuccess),
+      data: therapist,
+    });
+  },
 };

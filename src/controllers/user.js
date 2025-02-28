@@ -9,6 +9,7 @@ const { signVerificationToken } = require("../helpers/jwtFunctions");
 const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const filterObj = require("../helpers/allowedFields");
+const translations = require("../../locales/translations");
 const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
 const { deleteAccountEmail } = require("../utils/emailTamplates/deleteAccountEmail");
 const { changePasswordEmail } = require("../utils/emailTamplates/changePasswordEmail");
@@ -73,17 +74,16 @@ module.exports = {
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
     const message = verificationEmail(newUser.userName, verificationUrl)
-    // `Click the following link to verify your email address: ${verificationUrl}`;
 
     await sendEmail({
       email: newUser.email,
-      subject: "Verify Your Email",
+      subject: req.t(translations.user.verificationEmailSubject),
       message,
     });
 
     res.status(200).send({
       error: false,
-      message: "A verification email has been sent to user's email address.",
+      message: req.t(translations.user.verificationEmailSent),
     });
   },
   read: async (req, res) => {
@@ -99,7 +99,7 @@ module.exports = {
     if (!data) {
       return res.status(404).send({
         error: true,
-        message: "User not found.",
+        message: req.t(translations.user.notFound),
       });
     }
 
@@ -132,7 +132,7 @@ module.exports = {
 
     res.status(201).send({
       error: false,
-      message: "User updated successfully!",
+      message: req.t(translations.user.updateSuccess),
       data,
       new: await User.findOne({ _id: req.params.id }),
     });
@@ -146,8 +146,8 @@ module.exports = {
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
       message: data.deletedCount
-        ? "User deleted successfully!"
-        : "User not found!",
+        ? req.t(translations.user.deleteSuccess)
+        : req.t(translations.user.notFound),
       data,
     });
   },
@@ -157,15 +157,14 @@ module.exports = {
         #swagger.summary = "Change User Status"
     */
 
-    const userId = req.user.isAdmin ? req.params.id : req.user._id
-    
+    const userId = req.user.isAdmin ? req.params.id : req.user._id;
+
     const user = await User.findOne({ _id: userId });
-    
 
     if (!user) {
       return res.status(404).send({
         error: true,
-        message: "User not found.",
+        message: req.t(translations.user.notFound),
       });
     }
 
@@ -182,7 +181,11 @@ module.exports = {
 
     res.status(200).send({
       error: false,
-      message: `User is now ${user.isActive ? "active" : "disabled"}.`,
+      message: req.t(translations.user.statusChanged, {
+        status: user.isActive
+          ? req.t(translations.user.active)
+          : req.t(translations.user.disabled),
+      }),
       data: user,
     });
   },
@@ -203,30 +206,32 @@ module.exports = {
             }
         }
     */
-    
-    const filteredObj = filterObj(req.body, 
-      'firstName', 
-      'lastName', 
-      'image', 
-      'phone',
-      'address',
-      'profession'
+
+    const filteredObj = filterObj(
+      req.body,
+      "firstName",
+      "lastName",
+      "image",
+      "phone",
+      "address",
+      "profession"
     );
     console.log(filteredObj);
-    
+
     const data = await User.updateOne({ _id: req.params.id }, filteredObj, {
       runValidators: true,
     });
 
     res.status(201).send({
       error: !data.modifiedCount,
-      message: data.modifiedCount ? "User updated successfully!" : "User update failed!",
+      message: data.modifiedCount
+        ? req.t(translations.user.updateSuccess)
+        : req.t(translations.user.updateFailed),
       data,
       new: await User.findOne({ _id: req.params.id }),
     });
   },
   changeMyPassword: async (req, res) => {
-
     /* 
         #swagger.tags = ["Users"]
         #swagger.summary = "Update User"
@@ -241,33 +246,37 @@ module.exports = {
         }
     */
 
-    const {currentPassword, newPassword, retypePassword} = req.body
+    const { currentPassword, newPassword, retypePassword } = req.body;
 
     if (!currentPassword || !newPassword || !retypePassword) {
-      throw new CustomError("currentPassword, newPassword and retypePassword are required! ")
+      throw new CustomError(req.t(translations.user.passwordFieldsRequired));
     }
 
-    const user = await User.findOne({_id: req.user._id})
+    const user = await User.findOne({ _id: req.user._id });
 
     if (!user) {
-      throw new CustomError("User not found", 404)
+      throw new CustomError(req.t(translations.user.notFound), 404);
     }
 
-    // console.log(user);
+    const isPasswordCorrect = await user.correctPassword(
+      currentPassword,
+      user?.password
+    );
 
-    const isPasswordCorrect = await user.correctPassword(currentPassword, user?.password)
-    
     if (!isPasswordCorrect) {
-      throw new CustomError("Your current password is not correct", 401)
+      throw new CustomError(
+        req.t(translations.user.currentPasswordIncorrect),
+        401
+      );
     }
 
     if (newPassword !== retypePassword) {
-      throw new CustomError("Passwords don't match!", 401)
+      throw new CustomError(req.t(translations.user.passwordsDontMatch), 401);
     }
-    
-    user.password = newPassword
 
-    await user.save()
+    user.password = newPassword;
+
+    await user.save();
 
     const message = changePasswordEmail(user.userName)
 
@@ -279,8 +288,8 @@ module.exports = {
 
     res.status(201).send({
       error: false,
-      message: "Password changed successfully",
-      data: user
-    })
-  }
+      message: req.t(translations.user.passwordChangeSuccess),
+      data: user,
+    });
+  },
 };

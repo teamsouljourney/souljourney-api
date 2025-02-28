@@ -5,6 +5,7 @@
 /* ------------------------------------------------- */
 
 const TherapistTimeTable = require("../models/therapistTimeTable");
+const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
@@ -16,6 +17,7 @@ module.exports = {
     const data = await res.getModelList(TherapistTimeTable, {}, "therapistId");
     res.status(200).send({
       error: false,
+      message: req.t(translations.therapistTimeTable.listSuccess),
       details: await res.getModelListDetails(TherapistTimeTable),
       data,
     });
@@ -45,6 +47,7 @@ module.exports = {
     const data = await TherapistTimeTable.create(req.body);
     res.status(201).send({
       error: false,
+      message: req.t(translations.therapistTimeTable.createSuccess),
       data,
     });
   },
@@ -66,6 +69,7 @@ module.exports = {
     });
     res.status(200).send({
       error: false,
+      message: req.t(translations.therapistTimeTable.readSuccess),
       data,
     });
   },
@@ -104,6 +108,7 @@ module.exports = {
     );
     res.status(202).send({
       error: false,
+      message: req.t(translations.therapistTimeTable.updateSuccess),
       data,
       new: await TherapistTimeTable.findOne({ _id: req.params.id }),
     });
@@ -124,6 +129,9 @@ module.exports = {
     const data = await TherapistTimeTable.deleteOne({ _id: req.params.id });
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
+      message: data.deletedCount
+        ? req.t(translations.therapistTimeTable.deleteSuccess)
+        : req.t(translations.therapistTimeTable.notFound),
       data,
     });
   },

@@ -36,6 +36,9 @@ dbConnection();
 // Connect to socket.io
 const io = initializeSocket(server);
 
+//  i18next
+app.use(require("./i18n"));
+
 /* ------------------------------------------------------- */
 // Middlewares:
 
