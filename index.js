@@ -1,127 +1,103 @@
-"use strict";
+const http = require('http');
+const express = require('express');
+const socketio = require('socket.io');
+const cors = require('cors'); // CORS paketini dahil edin
 
-/* ------------------------------------------------- */
-/*                  SOULJOURNEY API                  */
-/* ------------------------------------------------- */
-
-const express = require("express");
-const session = require("express-session");
-const cookieParser = require("cookie-parser");
-const MongoStore = require("connect-mongo");
 const app = express();
-const cors = require("cors");
-const i18n = require("i18next");
-const http = require("http");
-const initializeSocket = require("./src/configs/socket");
 const server = http.createServer(app);
+const io = socketio(server);
 
-/* ----------------------------------- */
-// Required Modules:
+const PORT = 8000;
 
-// envVariables to process.env:
-require("dotenv").config();
-const HOST = process.env?.HOST || "127.0.0.1";
-const PORT = process.env?.PORT || 8000;
+// CORS'u etkinleştir
+app.use(cors());
 
-// asyncErrors to errorHandler:
-require("express-async-errors");
+// Statik dosyaları sunun
+app.use(express.static(__dirname));
 
-/* ----------------------------------- */
-// Configrations:
+const offers = [];
+const connectedSockets = [];
 
-// Connect to DB:
-const { dbConnection } = require("./src/configs/dbConnection");
-dbConnection();
+io.on('connection', (socket) => {
+    console.log("New client connected: ", socket.id);
 
-// Connect to socket.io
-const io = initializeSocket(server);
+    const userName = socket.handshake.auth?.userName;
+    const password = socket.handshake.auth?.password;
 
-/* ------------------------------------------------------- */
-// Middlewares:
+    if (!userName || password !== "x") {
+        console.log("Unauthorized user disconnected.");
+        socket.disconnect(true);
+        return;
+    }
 
-// Cors
-const corsOptions = {
-  origin: process.env.CLIENT_URL,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-  credentials: true,
-};
-app.use(cors(corsOptions));
+    connectedSockets.push({ socketId: socket.id, userName });
 
-// Passportjs Authentication Config
-require("./src/configs/passportjs-auth/passportConfig");
-app.use(cookieParser());
-app.use(
-  session({
-    secret: process.env.SECRET_KEY,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB,
-      collectionName: "sessions",
-    }),
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
-      httpOnly: true,
-      secure: process.env.NODE_ENV,
-    },
-  })
-);
+    if (offers.length) {
+        socket.emit('availableOffers', offers);
+    }
 
-/* ------------------------------------------------- */
+    socket.on('newOffer', (newOffer) => {
+        const offerObj = {
+            offererUserName: userName,
+            offer: newOffer,
+            offerIceCandidates: [],
+            answererUserName: null,
+            answer: null,
+            answererIceCandidates: []
+        };
+        offers.push(offerObj);
+        socket.broadcast.emit('newOfferAwaiting', offers.slice(-1));
+    });
 
-// Accept JSON:
-app.use(express.json());
+    socket.on('newAnswer', (offerObj, ackFunction) => {
+        const offerToUpdate = offers.find(o => o.offererUserName === offerObj.offererUserName);
+        if (!offerToUpdate) {
+            console.log("No matching offer found");
+            return;
+        }
+        
+        offerToUpdate.answer = offerObj.answer;
+        offerToUpdate.answererUserName = userName;
+        
+        const socketToAnswer = connectedSockets.find(s => s.userName === offerObj.offererUserName);
+        if (socketToAnswer) {
+            socket.to(socketToAnswer.socketId).emit('answerResponse', offerToUpdate);
+            ackFunction(offerToUpdate.offerIceCandidates);
+        }
+    });
 
-// Check Authentication:
-app.use(require("./src/middlewares/authentication"));
+    socket.on('sendIceCandidateToSignalingServer', (iceCandidateObj) => {
+        const { didIOffer, iceUserName, iceCandidate } = iceCandidateObj;
+        let offerInOffers;
+        let socketToSendTo;
+        
+        if (didIOffer) {
+            offerInOffers = offers.find(o => o.offererUserName === iceUserName);
+            if (offerInOffers) {
+                offerInOffers.offerIceCandidates.push(iceCandidate);
+                if (offerInOffers.answererUserName) {
+                    socketToSendTo = connectedSockets.find(s => s.userName === offerInOffers.answererUserName);
+                }
+            }
+        } else {
+            offerInOffers = offers.find(o => o.answererUserName === iceUserName);
+            if (offerInOffers) {
+                socketToSendTo = connectedSockets.find(s => s.userName === offerInOffers.offererUserName);
+            }
+        }
+        
+        if (socketToSendTo) {
+            socket.to(socketToSendTo.socketId).emit('receivedIceCandidateFromServer', iceCandidate);
+        }
+    });
 
-// res.getModelList():
-app.use(require("./src/middlewares/queryHandler"));
-
-// Run Logger:
-// app.use(require('./src/middlewares/logger'))
-
-/* ------------------------------------------------------- */
-// Routes:
-
-// HomePath:
-app.all("/", (req, res) => {
-  res.send({
-    error: false,
-    message: "Welcome to Soul Journey API",
-    documents: {
-      swagger: "/documents/swagger",
-      redoc: "/documents/redoc",
-      json: "/documents/json",
-    },
-  });
+    socket.on('disconnect', () => {
+        console.log(`Client disconnected: ${socket.id}`);
+        const index = connectedSockets.findIndex(s => s.socketId === socket.id);
+        if (index !== -1) connectedSockets.splice(index, 1);
+    });
 });
 
-// Routes:
-app.use(require("./src/routes/index"));
-
-app.use("/checkout", require("./src/routes/payment"));
-
-// Not Found
-app.use("*", (req, res) => {
-  res.status(404).json({
-    error: true,
-    message: "404 Not Found",
-  });
+server.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
-
-/* ------------------------------------------------- */
-
-// errorHandler:
-app.use(require("./src/middlewares/errorHandler"));
-
-/* ------------------------------------------------------- */
-
-// Stripe:
-
-// RUN SERVER:
-app.listen(PORT, () => {
-  console.log(`Server running on http://${HOST}:${PORT}`);
-});
-
-/* ------------------------------------------------------- */
