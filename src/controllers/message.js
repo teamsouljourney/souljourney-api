@@ -18,35 +18,35 @@ module.exports = {
           `
         */
 
-    const { userId, userType, chatWithId, chatWithType } = req.query;
+    const { userId, userModel, chatWithId, chatWithModel } = req.query;
 
     if (
-      !["therapist", "patient"].includes(userType) ||
-      !["therapist", "patient"].includes(chatWithType)
+      !["Therapist", "User"].includes(userModel) ||
+      !["Therapist", "User"].includes(chatWithModel)
     ) {
       return res
         .status(400)
-        .json({ error: true, message: "Invalid user type" });
+        .send({ error: true, message: "Invalid user type" });
     }
 
     const messages = await Message.find({
       $or: [
         {
           senderId: userId,
-          senderType: userType,
-          receiverId: chatWithId,
-          receiverType: chatWithType,
+          senderModel: userModel.toString(),
+          recieverId: chatWithId,
+          recieverModel: chatWithModel.toString(),
         },
         {
           senderId: chatWithId,
-          senderType: chatWithType,
-          receiverId: userId,
-          receiverType: userType,
+          senderModel: chatWithModel.toString(),
+          recieverId: userId,
+          recieverModel: userModel.toString(),
         },
       ],
     })
       .populate("senderId")
-      .populate("receiverId");
+      .populate("recieverId");
 
     res.status(200).send({
       error: false,
@@ -69,11 +69,10 @@ module.exports = {
     //Set userId from logged in user:
     req.body.senderId = req.user._id;
 
-    const { senderId, senderType, recieverId, recieverType, content } =
-      req.body;
+    const { senderModel, recieverModel } = req.body;
     if (
-      !["therapist", "patient"].includes(senderType) ||
-      !["therapist", "patient"].includes(recieverType)
+      !["Therapist", "User"].includes(senderModel) ||
+      !["Therapist", "User"].includes(recieverModel)
     ) {
       throw new Error(400, "Unvalid user");
     }

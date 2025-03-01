@@ -6,22 +6,20 @@ const MessageSchema = new mongoose.Schema(
   {
     senderId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
       required: true,
     },
-    senderType: {
+    senderModel: {
       type: String,
-      enum: ["therapist", "patient"],
+      enum: ["Therapist", "User"],
       required: true,
     },
     recieverId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
       required: true,
     },
-    recieverType: {
+    recieverModel: {
       type: String,
-      enum: ["therapist", "patient"],
+      enum: ["Therapist", "User"],
       required: true,
     },
     content: {

@@ -36,6 +36,9 @@ dbConnection();
 // Connect to socket.io
 const io = initializeSocket(server);
 
+//  i18next
+app.use(require("./i18n"));
+
 /* ------------------------------------------------------- */
 // Middlewares:
 
@@ -120,7 +123,7 @@ app.use(require("./src/middlewares/errorHandler"));
 // Stripe:
 
 // RUN SERVER:
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
 });
 

@@ -1,9 +1,14 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const CustomError = require("../errors/customError");
 const Appointment = require("../models/appointment");
 const Feedback = require("../models/feedback");
 const Therapist = require("../models/therapist");
+const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
@@ -27,6 +32,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.listSuccess),
       details: await res.getModelListDetails(Feedback),
       data,
     });
@@ -45,41 +51,36 @@ module.exports = {
     */
 
     //Set userId from logged in user:
-    const userId = req.user._id
+    const userId = req.user._id;
     req.body.userId = userId;
 
-    const currentDate = new Date()
+    const currentDate = new Date();
 
     const userEndedAppointment = await Appointment.findOne({
       userId,
-      endTime: { $lte: currentDate }
+      endTime: { $lte: currentDate },
     });
 
-    // console.log(userEndedAppointment);
-
     if (!userEndedAppointment) {
-      throw new CustomError('You can only provide feedback for this therapist if you have previously scheduled an appointment and completed it.', 400);
+      throw new CustomError(req.t(translations.feedback.noAppointment), 400);
     }
 
     const data = await Feedback.create(req.body);
 
     // Pushing the feedbackId to the feedbackId array of the Therapist model
-
     const therapistData = await Therapist.findOne({
       _id: req.body.therapistId,
     });
-    // console.log(therapistData);
 
-    let feedbackId = therapistData?.feedbackId;
-    // console.log(feedbackId);
+    const feedbackId = therapistData?.feedbackId;
 
     feedbackId.push(data._id);
 
     await therapistData.save();
-    // console.log("therapistData-->", therapistData);
 
     res.status(201).send({
       error: false,
+      message: req.t(translations.feedback.createSuccess),
       data,
     });
   },
@@ -94,8 +95,13 @@ module.exports = {
       "therapistId",
     ]);
 
+    if (!data) {
+      throw new CustomError(req.t(translations.feedback.notFound), 404);
+    }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.readSuccess),
       data,
     });
   },
@@ -116,8 +122,13 @@ module.exports = {
       runValidators: true,
     });
 
-    res.status(202).send({
+    if (data.matchedCount === 0) {
+      throw new CustomError(req.t(translations.feedback.notFound), 404);
+    }
+
+    res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.updateSuccess),
       data,
       newFeedback: await Feedback.findOne({ _id: req.params.id }),
     });
@@ -130,8 +141,11 @@ module.exports = {
 
     const data = await Feedback.deleteOne({ _id: req.params.id });
 
-    res.status(data.deletedCount ? 204 : 404).send({
+    res.status(data.deletedCount ? 200 : 404).send({
       error: !data.deletedCount,
+      message: data.deletedCount
+        ? req.t(translations.feedback.deleteSuccess)
+        : req.t(translations.feedback.notFound),
       data,
     });
   },
@@ -147,8 +161,6 @@ module.exports = {
           type: 'string',
         }
     */
-    // console.log(req.params);
-
     const { therapistId } = req.params;
 
     const data = await Feedback.find({ therapistId }).populate([
@@ -156,10 +168,9 @@ module.exports = {
       "therapistId",
     ]);
 
-    // console.log(data);
-
     res.status(200).send({
       error: false,
+      message: req.t(translations.feedback.getSingleTherapistSuccess),
       data,
     });
   },
