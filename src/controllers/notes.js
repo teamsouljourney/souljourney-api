@@ -24,7 +24,10 @@ module.exports = {
     
     const customFilter = { therapistId: therapistId }
     
-    const data = await res.getModelList(Notes, customFilter, ["userId","therapistId"]);
+    const data = await res.getModelList(Notes, customFilter, [
+      { path: "userId", select: "_id firstName lastName" },
+      { path: "therapistId", select: "_id firstName lastName" }
+    ]);
     res.status(200).send({
       error: false,
       details: await res.getModelListDetails(Notes),
@@ -137,8 +140,8 @@ module.exports = {
     res.status(data.deletedCount ? 200 : 404).send({
       error: !data.deletedCount,
       message: data.deletedCount
-        ? req.t(translations.feedback.deleteSuccess)
-        : req.t(translations.feedback.notFound),
+        ? "Note deleted successfully"
+        : "Note already deleted or you have no permission to delete",
       data,
     });
   },
@@ -158,7 +161,8 @@ module.exports = {
     
     const { userId } = req.params;
     
-    const data = await Notes.find({userId}).populate(["userId","therapistId"]);
+    const data = await Notes.find({userId})
+    .populate(["userId","therapistId"]);
 
     res.status(202).send({
       error: false,
