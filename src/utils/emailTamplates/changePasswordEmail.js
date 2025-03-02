@@ -158,7 +158,7 @@ export const changePasswordEmail = (userName, timestamp = new Date()) => {
           </div>
 
           <div class="button-container">
-            <a href="https://souljourney.com/account/security" class="button">Review Account Security</a>
+            <a href="https://team.souljourney.com" class="button">Review Account Security</a>
           </div>
 
           <p>For your security, we recommend:</p>

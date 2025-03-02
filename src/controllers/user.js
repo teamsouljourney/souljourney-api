@@ -282,7 +282,7 @@ module.exports = {
 
     await sendEmail({
       email: user.email,
-      subject: "Verify Your Email",
+      subject: req.t(translations.user.passwordChangeSuccess), // "Password Changed",
       message,
     });
 
