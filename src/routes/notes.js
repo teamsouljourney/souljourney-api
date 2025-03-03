@@ -15,5 +15,8 @@ router.route("/:id")
     .put(notes.update)
     .patch(notes.update)
     .delete(notes.delete)
+router.route("/user/:userId")
+    .get(notes.getSingleUserNotes)
+
 
 module.exports = router

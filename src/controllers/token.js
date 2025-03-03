@@ -5,6 +5,8 @@
 /* ------------------------------------------------- */
 
 const Token = require("../models/token");
+const translations = require("../../locales/translations");
+const CustomError = require("../errors/customError");
 
 module.exports = {
   list: async (req, res) => {
@@ -16,6 +18,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.token.listSuccess),
       details: await res.getModelListDetails(Token),
       data,
     });
@@ -30,6 +33,7 @@ module.exports = {
 
     res.status(201).send({
       error: false,
+      message: req.t(translations.token.createSuccess),
       data,
     });
   },
@@ -41,8 +45,13 @@ module.exports = {
 
     const data = await Token.findOne({ _id: req.params.id }).populate("userId");
 
+    if (!data) {
+      throw new CustomError(req.t(translations.token.notFound), 404);
+    }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.token.readSuccess),
       data,
     });
   },
@@ -56,8 +65,13 @@ module.exports = {
       runValidators: true,
     });
 
+    if (data.nModified === 0) {
+      throw new CustomError(req.t(translations.token.notFound), 404);
+    }
+
     res.status(202).send({
       error: false,
+      message: req.t(translations.token.updateSuccess),
       data,
       new: await Token.findOne({ _id: req.params.id }),
     });
@@ -70,8 +84,13 @@ module.exports = {
 
     const data = await Token.deleteOne({ _id: req.params.id });
 
-    res.status(data.deletedCount ? 204 : 404).send({
-      error: !data.deletedCount,
+    if (data.deletedCount === 0) {
+      throw new CustomError(req.t(translations.token.notFound), 404);
+    }
+
+    res.status(204).send({
+      error: false,
+      message: req.t(translations.token.deleteSuccess),
       data,
     });
   },

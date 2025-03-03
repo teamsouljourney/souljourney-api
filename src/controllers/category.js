@@ -7,6 +7,8 @@
 // Category Controllers:
 
 const Category = require("../models/category");
+const translations = require("../../locales/translations");
+const CustomError = require("../errors/customError");
 
 module.exports = {
   list: async (req, res) => {
@@ -28,6 +30,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.category.listSuccess),
       details: await res.getModelListDetails(Category),
       data,
     });
@@ -49,11 +52,11 @@ module.exports = {
 
     res.status(201).send({
       error: false,
+      message: req.t(translations.category.createSuccess),
       body: req.body,
       data,
     });
   },
-
   read: async (req, res) => {
     /* 
             #swagger.tags = ["Category"]
@@ -62,8 +65,13 @@ module.exports = {
 
     const data = await Category.findOne({ _id: req.params.id });
 
+    if (!data) {
+      throw new CustomError(req.t(translations.category.notFound), 404);
+    }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.category.readSuccess),
       data,
     });
   },
@@ -87,7 +95,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
-      body: req.body,
+      message: req.t(translations.category.updateSuccess),
       data,
       new: await Category.findOne({ _id: req.params.id }),
     });
@@ -103,6 +111,7 @@ module.exports = {
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
+      message: req.t(translations.category.deleteSuccess),
       data,
     });
   },
