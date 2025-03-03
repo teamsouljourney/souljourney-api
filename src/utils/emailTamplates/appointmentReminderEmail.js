@@ -1,6 +1,6 @@
 "use strict";
 
-export const appointmentReminderTemplate = (
+module.exports.appointmentReminderTemplate = (
   username,
   therapistName,
   appointmentDate,

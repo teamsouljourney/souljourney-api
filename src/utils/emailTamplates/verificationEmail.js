@@ -1,6 +1,6 @@
 "use strict";
 
-export const verificationEmail = (username, verificationUrl) => {
+module.exports.verificationEmail = (username, verificationUrl) => {
   return `
     <!DOCTYPE html>
     <html lang="en">
