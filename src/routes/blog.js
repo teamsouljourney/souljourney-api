@@ -13,8 +13,8 @@ router
   .get(blog.read)
   .put(blog.update)
   .patch(blog.update)
-  .delete(blog.delete)
-  .get(blog.getLike)
-  .post(blog.postLike);
+  .delete(blog.delete);
+
+router.route("/:id/likes").get(blog.getLike).post(blog.postLike);
 
 module.exports = router;
