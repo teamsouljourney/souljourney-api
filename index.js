@@ -102,6 +102,17 @@ app.use(require("./src/routes/index"));
 
 app.use("/checkout", require("./src/routes/payment"));
 
+//video
+app.get("/user-link", (req, res) => {
+  //data for the end-user appointment
+  const apptData = {
+    fullName: "Ayse Yilmaz",
+    appointmentDate: Date.now(),
+  };
+
+  res.send("This is atest route");
+});
+
 // Not Found
 app.use("*", (req, res) => {
   res.status(404).json({
