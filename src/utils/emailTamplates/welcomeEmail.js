@@ -1,6 +1,6 @@
 "use strict";
 
-export const welcomeEmail = (username) => {
+module.exports.welcomeEmail = (username) => {
   return `
     <!DOCTYPE html>
     <html lang="en">

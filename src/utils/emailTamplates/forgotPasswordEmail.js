@@ -1,6 +1,6 @@
 "use strict";
 
-export const forgotPasswordEmail = (userName, resetURL, verificationCode) => {
+module.exports.forgotPasswordEmail = (userName, resetURL, verificationCode) => {
   return `
     <!DOCTYPE html>
     <html lang="en">
