@@ -23,7 +23,14 @@ module.exports = {
             </ul>
         `
     */
-    const data = await res.getModelList(Blog, {}, [
+
+    let customFilter = {};
+
+    if (req.query?.category) {
+      customFilter = { categoryId: req.query.category };
+    }
+
+    const data = await res.getModelList(Blog, customFilter, [
       "therapistId",
       "categoryId",
     ]);
