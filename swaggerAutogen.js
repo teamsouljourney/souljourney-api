@@ -52,6 +52,8 @@ const documents = {
 
         Feedback: require('./src/models/feedback').schema.obj,
 
+        Message: require('./src/models/message').schema.obj,
+
         Notes: require('./src/models/notes').schema.obj,
         
         Therapist: require('./src/models/therapist').schema.obj,
