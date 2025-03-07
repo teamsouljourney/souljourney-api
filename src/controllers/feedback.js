@@ -26,8 +26,8 @@ module.exports = {
       `
     */
     const data = await res.getModelList(Feedback, {}, [
-      "userId",
-      "therapistId",
+      { path: "userId", select: "_id firstName lastName" },
+      { path: "therapistId", select: "_id firstName lastName" }
     ]);
 
     res.status(200).send({
@@ -91,8 +91,8 @@ module.exports = {
     */
 
     const data = await Feedback.findOne({ _id: req.params.id }).populate([
-      "userId",
-      "therapistId",
+      { path: "userId", select: "_id firstName lastName" },
+      { path: "therapistId", select: "_id firstName lastName" }
     ]);
 
     if (!data) {
@@ -162,10 +162,12 @@ module.exports = {
         }
     */
     const { therapistId } = req.params;
+    console.log(req.query);
+    
 
     const data = await Feedback.find({ therapistId }).populate([
-      "userId",
-      "therapistId",
+      { path: "userId", select: "_id firstName lastName" },
+      { path: "therapistId", select: "_id firstName lastName" }
     ]);
 
     res.status(200).send({
