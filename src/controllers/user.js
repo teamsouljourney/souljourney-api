@@ -175,7 +175,7 @@ module.exports = {
 
     await sendEmail({
       email: user.email,
-      subject: "Verify Your Email",
+      subject: "Your Soul Journey Account Has Been Deleted – Come Back to Soul Journey Anytime",
       message,
     });
 
