@@ -5,14 +5,25 @@
 /* ------------------------------------------------- */
 
 const express = require("express");
+const fs = require("fs");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const app = express();
 const cors = require("cors");
 const http = require("http");
+const https = require("https");
 const initializeSocket = require("./src/configs/socket");
-const server = http.createServer(app);
+
+const key = fs.readFileSync("./certs/localhost-key.pem");
+const cert = fs.readFileSync("./certs/localhost.pem");
+
+let server;
+if (process.env.NODE_ENV === "production") {
+  server = http.createServer(app);
+} else {
+  server = https.createServer({ key, cert }, app);
+}
 
 /* ----------------------------------- */
 // Required Modules:
@@ -64,7 +75,7 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
-      secure: process.env.NODE_ENV,
+      secure: process.env.NODE_ENV === "production",
     },
   })
 );
@@ -119,11 +130,13 @@ app.use(require("./src/middlewares/errorHandler"));
 
 /* ------------------------------------------------------- */
 
-// Stripe:
-
 // RUN SERVER:
 server.listen(PORT, () => {
-  console.log(`Server running on http://${HOST}:${PORT}`);
+  console.log(
+    `Server running on ${
+      process.env?.NODE_ENV === "development" ? "https" : "http"
+    }://${HOST}:${PORT}`
+  );
 });
 
 /* ------------------------------------------------------- */
