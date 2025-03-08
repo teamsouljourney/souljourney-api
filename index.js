@@ -10,7 +10,6 @@ const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 const app = express();
 const cors = require("cors");
-const i18n = require("i18next");
 const http = require("http");
 const initializeSocket = require("./src/configs/socket");
 const server = http.createServer(app);
