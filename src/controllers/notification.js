@@ -4,11 +4,35 @@ const Notification = require("../models/notification");
 
 module.exports = {
   list: async (req, res) => {
-    const { isTherapist } = req.user;
+    const { userId, userModel, recieverNotId, recieverNotModel } = req.query;
 
-    const populateField = isTherapist ? "therapistId" : "userId";
+    if (
+      !["Therapist", "User"].includes(userModel) ||
+      !["Therapist", "User"].includes(recieverNotModel)
+    ) {
+      return res
+        .status(400)
+        .send({ error: true, message: "Invalid user type" });
+    }
 
-    const data = await Notification.find().populate(populateField);
+    const data = await Notification.find({
+      $or: [
+        {
+          senderId: userId,
+          senderModel: userModel.toString(),
+          recieverId: recieverNotId,
+          recieverModel: recieverNotModel.toString(),
+        },
+        {
+          senderId: recieverNotId,
+          senderModel: recieverNotModel.toString(),
+          recieverId: userId,
+          recieverModel: userModel.toString(),
+        },
+      ],
+    })
+      .populate("senderId")
+      .populate("recieverId");
 
     res.status(200).send({
       error: false,
@@ -17,21 +41,16 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    const { isTherapist } = req.user;
-    const { id, ...notificationData } = req.body;
+    const userId = req.params.userId;
 
-    const payload = {
-      ...notificationData,
-      ...(isTherapist ? { therapistId: id } : { userId: id }),
-    };
+    const notifications = await Notification.find({ user: userId }).sort({
+      createdAt: -1,
+    });
 
-    const data = await Notification.create(payload);
-
-    console.log(data);
-
-    res.status(201).send({
+    res.status(200).send({
       error: false,
-      data,
+      message: "Notifications retrieved successfully",
+      data: notifications,
     });
   },
 
