@@ -66,6 +66,12 @@ const TherapistSchema = new mongoose.Schema(
         ref: "Feedback",
       },
     ],
+    notifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
     description: {
       type: String,
       required: true,
