@@ -117,6 +117,12 @@ const UserSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    notifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification",
+      },
+    ],
     passwordResetToken: String,
     passwordResetExpires: Date,
     verificationCode: Number,

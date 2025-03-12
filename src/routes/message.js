@@ -10,8 +10,8 @@ const {
   deleteMessage,
 } = require("../controllers/message");
 
-router.route("/").get(getMessages).post(sendMessage).post(markAsSeen);
+router.route("/").get(getMessages).post(sendMessage);
 
-router.route("/:id").delete(deleteMessage);
+router.route("/:id").delete(deleteMessage).put(markAsSeen);
 
 module.exports = router;
