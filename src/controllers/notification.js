@@ -4,35 +4,20 @@ const Notification = require("../models/notification");
 
 module.exports = {
   list: async (req, res) => {
-    const { userId, userModel, recieverNotId, recieverNotModel } = req.query;
+    const { recieverId, recieverModel } = req.query;
 
-    if (
-      !["Therapist", "User"].includes(userModel) ||
-      !["Therapist", "User"].includes(recieverNotModel)
-    ) {
+    if (!["Therapist", "User"].includes(recieverModel)) {
       return res
         .status(400)
         .send({ error: true, message: "Invalid user type" });
     }
 
     const data = await Notification.find({
-      $or: [
-        {
-          senderId: userId,
-          senderModel: userModel.toString(),
-          recieverId: recieverNotId,
-          recieverModel: recieverNotModel.toString(),
-        },
-        {
-          senderId: recieverNotId,
-          senderModel: recieverNotModel.toString(),
-          recieverId: userId,
-          recieverModel: userModel.toString(),
-        },
-      ],
+      recieverId,
+      recieverModel,
     })
-      .populate("senderId")
-      .populate("recieverId");
+      .populate("recieverId")
+      .sort({ createdAt: -1 });
 
     res.status(200).send({
       error: false,
@@ -41,16 +26,18 @@ module.exports = {
   },
 
   create: async (req, res) => {
-    const userId = req.params.userId;
+    const { content, recieverId, recieverModel, notificationType } = req.body;
 
-    const notifications = await Notification.find({ user: userId }).sort({
-      createdAt: -1,
+    const data = await Notification.create({
+      recieverId,
+      recieverModel,
+      notificationType,
+      content,
     });
 
-    res.status(200).send({
+    res.status(201).send({
       error: false,
-      message: "Notifications retrieved successfully",
-      data: notifications,
+      data,
     });
   },
 
