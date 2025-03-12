@@ -4,20 +4,15 @@ const Notification = require("../models/notification");
 
 module.exports = {
   list: async (req, res) => {
-    const { recieverId, recieverModel } = req.query;
+    const readNotifications = await Notification.find({ isRead: true }).sort({
+      createdAt: -1,
+    });
 
-    if (!["Therapist", "User"].includes(recieverModel)) {
-      return res
-        .status(400)
-        .send({ error: true, message: "Invalid user type" });
-    }
+    const unreadNotifications = await Notification.find({ isRead: false }).sort(
+      { createdAt: -1 }
+    );
 
-    const data = await Notification.find({
-      recieverId,
-      recieverModel,
-    })
-      .populate("recieverId")
-      .sort({ createdAt: -1 });
+    const data = [...readNotifications, ...unreadNotifications];
 
     res.status(200).send({
       error: false,
@@ -36,6 +31,27 @@ module.exports = {
     });
 
     res.status(201).send({
+      error: false,
+      data,
+    });
+  },
+  read: async (req, res) => {
+    const { recieverId, recieverModel } = req.query;
+
+    if (!["Therapist", "User"].includes(recieverModel)) {
+      return res
+        .status(400)
+        .send({ error: true, message: "Invalid user type" });
+    }
+
+    const data = await Notification.find({
+      recieverId,
+      recieverModel,
+    })
+      .populate("recieverId")
+      .sort({ createdAt: -1 });
+
+    res.status(200).send({
       error: false,
       data,
     });
