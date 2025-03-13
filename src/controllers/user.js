@@ -13,6 +13,8 @@ const translations = require("../../locales/translations");
 const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
 const { deleteAccountEmail } = require("../utils/emailTamplates/deleteAccountEmail");
 const { changePasswordEmail } = require("../utils/emailTamplates/changePasswordEmail");
+const Appointment = require("../models/appointment");
+const TherapistTimeTable = require("../models/therapistTimeTable");
 
 module.exports = {
   list: async (req, res) => {
@@ -33,8 +35,6 @@ module.exports = {
     let customFilter = {};
 
     customFilter = { isAdmin: false };
-
-    if (!req.user.isAdmin) customFilter = { _id: req.user._id };
 
     const data = await res.getModelList(User, customFilter);
     res.status(200).send({
@@ -156,29 +156,54 @@ module.exports = {
         #swagger.tags = ["Users"]
         #swagger.summary = "Change User Status"
     */
-
+  
     const userId = req.user.isAdmin ? req.params.id : req.user._id;
-
+  
     const user = await User.findOne({ _id: userId });
-
+  
     if (!user) {
       return res.status(404).send({
         error: true,
         message: req.t(translations.user.notFound),
       });
     }
-
+  
+  
     user.isActive = !user.isActive;
     await user.save();
-
-    const message = deleteAccountEmail(user.userName)
-
+  
+    // If the user is deactivated:
+    if (!user.isActive) {
+  
+      const appointments = await Appointment.find({ userId: user._id });
+  
+      // Delete all appointments related to the user
+      await Appointment.deleteMany({ userId: user._id });
+      for (const appointment of appointments) {
+        await TherapistTimeTable.updateOne(
+          { therapistId: appointment.therapistId },
+          {
+            $pull: {
+              unavailableDates: {
+                date: appointment.appointmentDate,
+                startTime: appointment.startTime,
+                endTime: appointment.endTime,
+              },
+            },
+          }
+        );
+      }
+    }
+  
+  
+    const message = deleteAccountEmail(user.userName);
+  
     await sendEmail({
       email: user.email,
-      subject: "Verify Your Email",
+      subject: "Your Soul Journey Account Has Been Deleted – Come Back to Soul Journey Anytime",
       message,
     });
-
+  
     res.status(200).send({
       error: false,
       message: req.t(translations.user.statusChanged, {

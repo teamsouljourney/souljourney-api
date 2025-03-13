@@ -8,6 +8,8 @@ const filterObj = require("../helpers/allowedFields");
 const Therapist = require("../models/therapist");
 const CustomError = require("../errors/customError");
 const translations = require("../../locales/translations");
+const Appointment = require("../models/appointment");
+const TherapistTimeTable = require("../models/therapistTimeTable");
 
 module.exports = {
   list: async (req, res) => {
@@ -173,6 +175,13 @@ module.exports = {
 
     therapist.isActive = !therapist.isActive;
     await therapist.save();
+
+    if (!therapist.isActive) {
+
+      // Delete all appointments related to the therapist
+      await Appointment.deleteMany({ therapistId: therapist._id });
+      await TherapistTimeTable.deleteOne({ therapistId: therapist._id });
+    }
 
     res.status(200).send({
       error: false,
