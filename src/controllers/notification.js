@@ -69,4 +69,15 @@ module.exports = {
       data,
     });
   },
+
+  delete: async (req, res) => {
+    const data = await Notification.deleteOne({
+      _id: req.params.id,
+    });
+
+    res.status(data.deletedCount ? 204 : 404).send({
+      error: !data.deletedCount,
+      data,
+    });
+  },
 };
