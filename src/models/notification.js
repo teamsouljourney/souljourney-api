@@ -4,15 +4,6 @@ const { mongoose } = require("../configs/dbConnection");
 
 const NotificationSchema = new mongoose.Schema(
   {
-    senderId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
-    senderModel: {
-      type: String,
-      enum: ["Therapist", "User"],
-      required: true,
-    },
     recieverId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,

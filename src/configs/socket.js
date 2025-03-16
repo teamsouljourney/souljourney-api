@@ -29,6 +29,9 @@ const initializeSocket = (server) => {
         });
         pendingIceCandidates.delete(userId);
       }
+
+      // Join a notification room for this user
+      socket.join(`notification-${userId}`);
     }
 
     // Handle call initiation
@@ -128,6 +131,24 @@ const initializeSocket = (server) => {
         io.to(receiverSocketId).emit("receiveMessage", messageData);
       }
       socket.emit("messageSent", messageData);
+    });
+
+    // Handle notification sending
+    socket.on("sendNotification", (notificationData) => {
+      // Emit to specific user's notification room
+      io.to(`notification-${notificationData.recieverId}`).emit(
+        "receiveNotification",
+        notificationData
+      );
+
+      socket.emit("notificationSent", notificationData);
+    });
+
+    // Join notification room for receiving notifications
+    socket.on("joinNotificationRoom", (userId) => {
+      if (userId) {
+        socket.join(`notification-${userId}`);
+      }
     });
 
     // Handle user disconnection

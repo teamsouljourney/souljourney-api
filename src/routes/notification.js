@@ -3,10 +3,16 @@
 const router = require("express").Router();
 
 //routes/message:
-const { list, create, isRead } = require("../controllers/notification");
+const {
+  list,
+  create,
+  read,
+  isRead,
+  delete: deleteNotification,
+} = require("../controllers/notification");
 
 router.route("/").get(list).post(create);
 
-router.route("/:id").put(isRead);
+router.route("/:id").get(read).put(isRead).delete(deleteNotification);
 
 module.exports = router;
