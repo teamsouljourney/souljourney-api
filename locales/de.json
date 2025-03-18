@@ -113,5 +113,15 @@
   "messageMarkAsSeenSuccess": "Nachricht erfolgreich als gesehen markiert",
   "messageDeleteSuccess": "Nachricht erfolgreich gelöscht",
   "messageNotFound": "Nachricht nicht gefunden",
-  "messageInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein"
+  "messageInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein",
+
+  "notesListSuccess": "Notizen erfolgreich aufgelistet",
+  "notesCreateSuccess": "Notiz erfolgreich erstellt",
+  "notesReadSuccess": "Notizdetails erfolgreich abgerufen",
+  "notesUpdateSuccess": "Notiz erfolgreich aktualisiert",
+  "notesDeleteSuccess": "Notiz erfolgreich gelöscht",
+  "notesNotFound": "Notiz nicht gefunden",
+  "notesNotFoundOrNoPermission": "Notizen wurden nicht gefunden oder gehören nicht zu Ihnen",
+  "notesDeletedOrNoPermission": "Notiz bereits gelöscht oder Sie haben keine Berechtigung zum Löschen",
+  "notesGetSingleUserSuccess": "Benutzernotizen erfolgreich abgerufen"
 }

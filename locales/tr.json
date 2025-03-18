@@ -113,5 +113,15 @@
   "messageMarkAsSeenSuccess": "Mesaj başarıyla görüldü olarak işaretlendi",
   "messageDeleteSuccess": "Mesaj başarıyla silindi",
   "messageNotFound": "Mesaj bulunamadı",
-  "messageInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır"
+  "messageInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır",
+
+  "notesListSuccess": "Notlar başarıyla listelendi",
+  "notesCreateSuccess": "Not başarıyla oluşturuldu",
+  "notesReadSuccess": "Not detayları başarıyla alındı",
+  "notesUpdateSuccess": "Not başarıyla güncellendi",
+  "notesDeleteSuccess": "Not başarıyla silindi",
+  "notesNotFound": "Not bulunamadı",
+  "notesNotFoundOrNoPermission": "Notlar bulunamadı veya size ait değil",
+  "notesDeletedOrNoPermission": "Not zaten silinmiş veya silme izniniz yok",
+  "notesGetSingleUserSuccess": "Kullanıcı notları başarıyla alındı"
 }

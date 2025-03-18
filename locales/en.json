@@ -113,5 +113,15 @@
   "messageMarkAsSeenSuccess": "Message marked as seen successfully",
   "messageDeleteSuccess": "Message deleted successfully",
   "messageNotFound": "Message not found",
-  "messageInvalidUserType": "Invalid user type. User type must be either 'Therapist' or 'User'"
+  "messageInvalidUserType": "Invalid user type. User type must be either 'Therapist' or 'User'",
+
+  "notesListSuccess": "Notes listed successfully",
+  "notesCreateSuccess": "Note created successfully",
+  "notesReadSuccess": "Note details retrieved successfully",
+  "notesUpdateSuccess": "Note updated successfully",
+  "notesDeleteSuccess": "Note deleted successfully",
+  "notesNotFound": "Note not found",
+  "notesNotFoundOrNoPermission": "Notes are not found or not belong to you",
+  "notesDeletedOrNoPermission": "Note already deleted or you have no permission to delete",
+  "notesGetSingleUserSuccess": "User notes retrieved successfully"
 }

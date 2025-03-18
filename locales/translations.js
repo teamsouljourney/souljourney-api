@@ -150,6 +150,18 @@ const translations = {
     notFound: "messageNotFound",
     invalidUserType: "messageInvalidUserType",
   },
+
+  notes: {
+    listSuccess: "notesListSuccess",
+    createSuccess: "notesCreateSuccess",
+    readSuccess: "notesReadSuccess",
+    updateSuccess: "notesUpdateSuccess",
+    deleteSuccess: "notesDeleteSuccess",
+    notFound: "notesNotFound",
+    notFoundOrNoPermission: "notesNotFoundOrNoPermission",
+    deletedOrNoPermission: "notesDeletedOrNoPermission",
+    getSingleUserSuccess: "notesGetSingleUserSuccess",
+  },
 };
 
 module.exports = translations;
