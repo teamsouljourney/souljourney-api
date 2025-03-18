@@ -2371,7 +2371,11 @@
     },
     "/notifications/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "List Notifications",
+        "description": "  You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.  <ul> Examples:  <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>  <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>  <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>  <li>URL/?<b>limit=10&page=1</b></li>  </ul>  ",
         "responses": {
           "200": {
             "description": "OK"
@@ -2379,27 +2383,18 @@
         }
       },
       "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Create Notification",
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "content": {
-                  "example": "any"
-                },
-                "recieverId": {
-                  "example": "any"
-                },
-                "recieverModel": {
-                  "example": "any"
-                },
-                "notificationType": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/Notification"
             }
           }
         ],
@@ -2412,6 +2407,10 @@
     },
     "/notifications/{id}": {
       "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Read Notifications by Receiver",
         "description": "",
         "parameters": [
           {
@@ -2423,11 +2422,19 @@
           {
             "name": "recieverId",
             "in": "query",
+            "description": "ID of the receiver",
+            "required": true,
             "type": "string"
           },
           {
             "name": "recieverModel",
             "in": "query",
+            "description": "Model type of the receiver (Therapist or User)",
+            "required": true,
+            "enum": [
+              "Therapist",
+              "User"
+            ],
             "type": "string"
           }
         ],
@@ -2438,13 +2445,18 @@
         }
       },
       "put": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Mark Notification as Read",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "string",
+            "description": "Notification ID"
           }
         ],
         "responses": {
@@ -2454,10 +2466,26 @@
         }
       },
       "delete": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "Delete Notification",
         "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Notification ID"
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found"
           }
         }
       }

@@ -12,7 +12,7 @@ const {
   create,
   read,
   isRead,
-  delete: deleteNotification,
+  deleteNotification,
 } = require("../controllers/notification");
 
 router.route("/").get(list).post(create);

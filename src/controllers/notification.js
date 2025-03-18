@@ -138,7 +138,7 @@ module.exports = {
     });
   },
 
-  delete: async (req, res) => {
+  deleteNotification: async (req, res) => {
     /*
       #swagger.tags = ["Notifications"]
       #swagger.summary = "Delete Notification"
