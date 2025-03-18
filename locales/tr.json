@@ -20,6 +20,7 @@
   "tokenExpired": "Token geçersiz veya süresi dolmuş",
   "invalidVerificationCode": "Geçersiz doğrulama kodu",
   "passwordResetSuccess": "Şifre başarıyla sıfırlandı!",
+  "loginSuccess": "Başarıyla giriş yapıldı",
 
   "authVerificationEmailSent": "E-posta adresinize bir doğrulama e-postası gönderildi",
   "authVerificationEmailSubject": "E-postanızı Doğrulayın",

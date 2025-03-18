@@ -20,6 +20,7 @@
   "tokenExpired": "Token ist ungültig oder abgelaufen",
   "invalidVerificationCode": "Ungültiger Bestätigungscode",
   "passwordResetSuccess": "Passwort wurde erfolgreich zurückgesetzt!",
+  "loginSuccess": "Erfolgreich eingeloggt",
 
   "authVerificationEmailSent": "Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet",
   "authVerificationEmailSubject": "Bestätigen Sie Ihre E-Mail",

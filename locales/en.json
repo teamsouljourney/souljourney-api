@@ -20,6 +20,7 @@
   "tokenExpired": "Token is invalid or has expired",
   "invalidVerificationCode": "Invalid verification code",
   "passwordResetSuccess": "Password has been reset successfully!",
+  "loginSuccess": "Logged in successfully",
 
   "authVerificationEmailSent": "A verification email has been sent to your email address",
   "authVerificationEmailSubject": "Verify Your Email",
