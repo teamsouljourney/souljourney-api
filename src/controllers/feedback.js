@@ -162,8 +162,6 @@ module.exports = {
         }
     */
     const { therapistId } = req.params;
-    console.log(req.query);
-    
 
     const data = await Feedback.find({ therapistId }).populate([
       { path: "userId", select: "_id firstName lastName" },
