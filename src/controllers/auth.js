@@ -23,9 +23,13 @@ const passwordEncrypt = require("../helpers/passwordEncrypt");
 const blacklistToken = require("../helpers/blacklistFunctions");
 const Therapist = require("../models/therapist");
 const translations = require("../../locales/translations");
-const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
+const {
+  verificationEmail,
+} = require("../utils/emailTamplates/verificationEmail");
 const { welcomeEmail } = require("../utils/emailTamplates/welcomeEmail");
-const { forgotPasswordEmail } = require("../utils/emailTamplates/forgotPasswordEmail");
+const {
+  forgotPasswordEmail,
+} = require("../utils/emailTamplates/forgotPasswordEmail");
 
 module.exports = {
   signup: async (req, res) => {
@@ -357,22 +361,11 @@ module.exports = {
     // Reset URL with JWT
     const resetURL = `${process.env.CLIENT_URL}/auth/reset-password/${jwtResetToken}`;
 
-    const message = forgotPasswordEmail(account.userName, resetURL, verificationCode)
-    // `
-    // Hi ${account.userName},
-  
-    // You requested to reset your password. Please use the verification code below to proceed:
-  
-    // Verification Code: ${verificationCode}
-  
-    // Alternatively, you can reset your password by clicking on the following link:
-    // ${resetURL}
-  
-    // If you did not request this, please ignore this email.
-  
-    // Best regards,
-    // The Team
-    // `;
+    const message = forgotPasswordEmail(
+      account.userName,
+      resetURL,
+      verificationCode
+    );
 
     try {
       await sendEmail({
