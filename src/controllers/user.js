@@ -324,46 +324,46 @@ module.exports = {
 
   uploadProfilePicture: async (req, res) => {
     /* 
-        #swagger.tags = ["Therapists"]
-        #swagger.summary = "Upload Therapist Profile Picture"
+        #swagger.tags = ["Users"]
+        #swagger.summary = "Upload User Profile Picture"
         #swagger.consumes = ['multipart/form-data']
         #swagger.parameters['image'] = {
             in: 'formData',
             type: 'file',
             required: 'true',
-            description: 'Therapist profile picture'
+            description: 'User profile picture'
         }
     */
 
     // Check if file exists
     if (!req.file) {
-      throw new CustomError(req.t(translations.therapist.noFileUploaded), 400);
+      throw new CustomError(req.t(translations.user.noFileUploaded), 400);
     }
 
-    const therapistId = req.params.id;
+    const userId = req.params.id;
 
-    // Find the therapist
-    const therapist = await Therapist.findOne({ _id: therapistId });
+    // Find the user
+    const user = await User.findOne({ _id: userId });
 
-    if (!therapist) {
-      throw new CustomError(req.t(translations.therapist.notFound), 404);
+    if (!user) {
+      throw new CustomError(req.t(translations.user.notFound), 404);
     }
 
-    // If therapist already has an image that's stored in our uploads folder, delete it
-    if (therapist.image && therapist.image.includes("_")) {
-      const oldImagePath = `./uploads/${therapist.image.split("/").pop()}`;
+    // If user already has an image that's stored in our uploads folder, delete it
+    if (user.image && user.image.includes("_")) {
+      const oldImagePath = `./uploads/${user.image.split("/").pop()}`;
       if (require("fs").existsSync(oldImagePath)) {
         require("fs").unlinkSync(oldImagePath);
       }
     }
 
     const imageUrl = `/uploads/${req.file.filename}`;
-    therapist.image = imageUrl;
-    await therapist.save();
+    user.image = imageUrl;
+    await user.save();
 
     res.status(200).send({
       error: false,
-      message: req.t(translations.therapist.profilePictureUploaded),
+      message: req.t(translations.user.profilePictureUploaded),
       data: {
         imageUrl,
       },

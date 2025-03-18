@@ -107,6 +107,8 @@ const translations = {
     currentPasswordIncorrect: "userCurrentPasswordIncorrect",
     passwordsDontMatch: "userPasswordsDontMatch",
     passwordChangeSuccess: "userPasswordChangeSuccess",
+    noFileUploaded: "userNoFileUploaded",
+    profilePictureUploaded: "userProfilePictureUploaded",
   },
 
   therapist: {

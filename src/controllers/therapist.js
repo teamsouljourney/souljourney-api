@@ -312,10 +312,7 @@ module.exports = {
 
     // Check if file exists
     if (!req.file) {
-      return res.status(400).send({
-        error: true,
-        message: req.t(translations.therapist.noFileUploaded),
-      });
+      throw new CustomError(req.t(translations.therapist.noFileUploaded), 400);
     }
 
     const therapistId = req.params.id;
@@ -324,10 +321,7 @@ module.exports = {
     const therapist = await Therapist.findOne({ _id: therapistId });
 
     if (!therapist) {
-      return res.status(404).send({
-        error: true,
-        message: req.t(translations.therapist.notFound),
-      });
+      throw new CustomError(req.t(translations.therapist.notFound), 404);
     }
 
     // If therapist already has an image that's stored in our uploads folder, delete it
@@ -338,8 +332,6 @@ module.exports = {
       }
     }
 
-    // Update therapist with new image path
-    // The file name is already set by the multer middleware with timestamp
     const imageUrl = `/uploads/${req.file.filename}`;
     therapist.image = imageUrl;
     await therapist.save();

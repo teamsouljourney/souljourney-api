@@ -82,6 +82,8 @@
   "userCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
   "userPasswordsDontMatch": "Şifreler eşleşmiyor",
   "userPasswordChangeSuccess": "Şifre başarıyla değiştirildi",
+  "userNoFileUploaded": "Dosya yüklenmedi",
+  "userProfilePictureUploaded": "Profil resmi başarıyla yüklendi",
 
   "therapistListSuccess": "Terapistler başarıyla listelendi",
   "therapistCreateSuccess": "Terapist başarıyla oluşturuldu",

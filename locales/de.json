@@ -82,6 +82,8 @@
   "userCurrentPasswordIncorrect": "Ihr aktuelles Passwort ist nicht korrekt",
   "userPasswordsDontMatch": "Passwörter stimmen nicht überein",
   "userPasswordChangeSuccess": "Passwort erfolgreich geändert",
+  "userNoFileUploaded": "Keine Datei hochgeladen",
+  "userProfilePictureUploaded": "Profilbild erfolgreich hochgeladen",
 
   "therapistListSuccess": "Therapeuten erfolgreich aufgelistet",
   "therapistCreateSuccess": "Therapeut erfolgreich erstellt",
