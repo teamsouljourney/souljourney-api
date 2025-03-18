@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 module.exports.forgotPasswordEmail = (userName, resetURL, verificationCode) => {
   return `
     <!DOCTYPE html>
