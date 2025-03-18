@@ -7,6 +7,7 @@
 const router = require("express").Router();
 
 const user = require("../controllers/user");
+const upload = require("../middlewares/upload");
 
 router.route("/").get(user.list).post(user.create);
 router
@@ -19,5 +20,8 @@ router
 router.route("/:id/status").patch(user.changeUserStatus);
 router.route("/:id/updateMe").patch(user.updateMe);
 router.route("/:id/changeMyPassword").patch(user.changeMyPassword);
+router
+  .route("/:id/upload-profile-picture")
+  .post(upload.single("image"), user.uploadProfilePicture);
 
 module.exports = router;

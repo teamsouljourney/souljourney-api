@@ -177,7 +177,6 @@ module.exports = {
     await therapist.save();
 
     if (!therapist.isActive) {
-
       // Delete all appointments related to the therapist
       await Appointment.deleteMany({ therapistId: therapist._id });
       await TherapistTimeTable.deleteOne({ therapistId: therapist._id });
@@ -295,6 +294,62 @@ module.exports = {
       error: false,
       message: req.t(translations.therapist.passwordChangeSuccess),
       data: therapist,
+    });
+  },
+
+  uploadProfilePicture: async (req, res) => {
+    /* 
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Upload Therapist Profile Picture"
+        #swagger.consumes = ['multipart/form-data']
+        #swagger.parameters['image'] = {
+            in: 'formData',
+            type: 'file',
+            required: 'true',
+            description: 'Therapist profile picture'
+        }
+    */
+
+    // Check if file exists
+    if (!req.file) {
+      return res.status(400).send({
+        error: true,
+        message: req.t(translations.therapist.noFileUploaded),
+      });
+    }
+
+    const therapistId = req.params.id;
+
+    // Find the therapist
+    const therapist = await Therapist.findOne({ _id: therapistId });
+
+    if (!therapist) {
+      return res.status(404).send({
+        error: true,
+        message: req.t(translations.therapist.notFound),
+      });
+    }
+
+    // If therapist already has an image that's stored in our uploads folder, delete it
+    if (therapist.image && therapist.image.includes("_")) {
+      const oldImagePath = `./uploads/${therapist.image.split("/").pop()}`;
+      if (require("fs").existsSync(oldImagePath)) {
+        require("fs").unlinkSync(oldImagePath);
+      }
+    }
+
+    // Update therapist with new image path
+    // The file name is already set by the multer middleware with timestamp
+    const imageUrl = `/uploads/${req.file.filename}`;
+    therapist.image = imageUrl;
+    await therapist.save();
+
+    res.status(200).send({
+      error: false,
+      message: req.t(translations.therapist.profilePictureUploaded),
+      data: {
+        imageUrl,
+      },
     });
   },
 };
