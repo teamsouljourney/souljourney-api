@@ -10,6 +10,20 @@ const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
+    /*
+      #swagger.tags = ["Notifications"]
+      #swagger.summary = "List Notifications"
+      #swagger.description = `
+        You can use <u>filter[] & search[] & sort[] & page & limit</u> queries with endpoint.
+        <ul> Examples:
+          <li>URL/?<b>filter[field1]=value1&filter[field2]=value2</b></li>
+          <li>URL/?<b>search[field1]=value1&search[field2]=value2</b></li>
+          <li>URL/?<b>sort[field1]=asc&sort[field2]=desc</b></li>
+          <li>URL/?<b>limit=10&page=1</b></li>
+        </ul>
+      `
+    */
+
     const readNotifications = await Notification.find({ isRead: true }).sort({
       createdAt: -1,
     });
@@ -28,6 +42,18 @@ module.exports = {
   },
 
   create: async (req, res) => {
+    /*
+      #swagger.tags = ["Notifications"]
+      #swagger.summary = "Create Notification"
+      #swagger.parameters['body'] = {
+        in: 'body',
+        required: true,
+        schema: {
+          $ref: "#/definitions/Notification"
+        }
+      }
+    */
+
     const { content, recieverId, recieverModel, notificationType } = req.body;
 
     const data = await Notification.create({
@@ -45,6 +71,22 @@ module.exports = {
   },
 
   read: async (req, res) => {
+    /*
+      #swagger.tags = ["Notifications"]
+      #swagger.summary = "Read Notifications by Receiver"
+      #swagger.parameters['recieverId'] = {
+        in: 'query',
+        description: 'ID of the receiver',
+        required: true
+      }
+      #swagger.parameters['recieverModel'] = {
+        in: 'query',
+        description: 'Model type of the receiver (Therapist or User)',
+        required: true,
+        enum: ['Therapist', 'User']
+      }
+    */
+
     const { recieverId, recieverModel } = req.query;
 
     if (!["Therapist", "User"].includes(recieverModel)) {
@@ -69,6 +111,16 @@ module.exports = {
   },
 
   isRead: async (req, res) => {
+    /*
+      #swagger.tags = ["Notifications"]
+      #swagger.summary = "Mark Notification as Read"
+      #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'Notification ID',
+        required: true
+      }
+    */
+
     const data = await Notification.findOneAndUpdate(
       { _id: req.params.id },
       { isRead: true },
@@ -87,6 +139,16 @@ module.exports = {
   },
 
   delete: async (req, res) => {
+    /*
+      #swagger.tags = ["Notifications"]
+      #swagger.summary = "Delete Notification"
+      #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'Notification ID',
+        required: true
+      }
+    */
+
     const data = await Notification.deleteOne({
       _id: req.params.id,
     });
