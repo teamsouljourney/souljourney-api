@@ -24,6 +24,8 @@ router.use("/users", require("./user"));
 // Appointments:
 router.use("/appointments", require("./appointment"));
 
+// Blogs:
+router.use("/blogs", require("./blog"));
 
 // Categories
 router.use("/categories", require("./category"));
