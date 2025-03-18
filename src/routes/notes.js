@@ -1,22 +1,20 @@
 "use strict";
-/* -------------------------------------------------------
-                    SOULJOURNEY API  
-------------------------------------------------------- */
 
-const router = require("express").Router()
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
 
-const notes = require("../controllers/notes")
+const router = require("express").Router();
 
-router.route("/")
-    .get(notes.list)
-    .post(notes.create)
-router.route("/:id")
-    .get(notes.read)
-    .put(notes.update)
-    .patch(notes.update)
-    .delete(notes.delete)
-router.route("/user/:userId")
-    .get(notes.getSingleUserNotes)
+const notes = require("../controllers/notes");
 
+router.route("/").get(notes.list).post(notes.create);
+router
+  .route("/:id")
+  .get(notes.read)
+  .put(notes.update)
+  .patch(notes.update)
+  .delete(notes.delete);
+router.route("/user/:userId").get(notes.getSingleUserNotes);
 
-module.exports = router
+module.exports = router;
