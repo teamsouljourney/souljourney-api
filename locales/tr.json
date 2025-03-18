@@ -106,5 +106,12 @@
   "blogDeleteUnauthorized": "Başkasının blog gönderisini silemezsiniz",
   "blogDeleteFailed": "Silme işlemi başarısız oldu. Gerekli izinlere sahip olduğunuzdan emin olun",
   "blogGetLikeSuccess": "Blog beğenileri başarıyla alındı",
-  "blogPostLikeSuccess": "Blog beğeni durumu başarıyla güncellendi"
+  "blogPostLikeSuccess": "Blog beğeni durumu başarıyla güncellendi",
+
+  "messageListSuccess": "Mesajlar başarıyla alındı",
+  "messageCreateSuccess": "Mesaj başarıyla gönderildi",
+  "messageMarkAsSeenSuccess": "Mesaj başarıyla görüldü olarak işaretlendi",
+  "messageDeleteSuccess": "Mesaj başarıyla silindi",
+  "messageNotFound": "Mesaj bulunamadı",
+  "messageInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır"
 }

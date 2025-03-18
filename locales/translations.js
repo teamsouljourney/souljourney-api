@@ -141,6 +141,15 @@ const translations = {
     getLikeSuccess: "blogGetLikeSuccess",
     postLikeSuccess: "blogPostLikeSuccess",
   },
+
+  message: {
+    listSuccess: "messageListSuccess",
+    createSuccess: "messageCreateSuccess",
+    markAsSeenSuccess: "messageMarkAsSeenSuccess",
+    deleteSuccess: "messageDeleteSuccess",
+    notFound: "messageNotFound",
+    invalidUserType: "messageInvalidUserType",
+  },
 };
 
 module.exports = translations;

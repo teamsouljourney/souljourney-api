@@ -1,6 +1,10 @@
-"use strict";
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
 
 const Message = require("../models/message");
+const CustomError = require("../errors/customError");
+const translations = require("../../locales/translations");
 
 module.exports = {
   getMessages: async (req, res) => {
@@ -24,9 +28,7 @@ module.exports = {
       !["Therapist", "User"].includes(userModel) ||
       !["Therapist", "User"].includes(chatWithModel)
     ) {
-      return res
-        .status(400)
-        .send({ error: true, message: "Invalid user type" });
+      throw new CustomError(req.t(translations.message.invalidUserType), 400);
     }
 
     const messages = await Message.find({
@@ -50,6 +52,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.message.listSuccess),
       data: messages,
     });
   },
@@ -74,13 +77,14 @@ module.exports = {
       !["Therapist", "User"].includes(senderModel) ||
       !["Therapist", "User"].includes(recieverModel)
     ) {
-      throw new Error(400, "Unvalid user");
+      throw new CustomError(req.t(translations.message.invalidUserType), 400);
     }
 
     const message = await Message.create(req.body);
 
     res.status(201).send({
       error: false,
+      message: req.t(translations.message.createSuccess),
       data: message,
     });
   },
@@ -92,10 +96,17 @@ module.exports = {
 
     const { messageId } = req.body;
 
+    const message = await Message.findById(messageId);
+
+    if (!message) {
+      throw new CustomError(req.t(translations.message.notFound), 404);
+    }
+
     const data = await Message.findByIdAndUpdate(messageId, { seen: true });
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.message.markAsSeenSuccess),
       data,
     });
   },
@@ -109,6 +120,9 @@ module.exports = {
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
+      message: data.deletedCount
+        ? req.t(translations.message.deleteSuccess)
+        : req.t(translations.message.notFound),
       data,
     });
   },

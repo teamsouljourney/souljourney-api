@@ -106,5 +106,12 @@
   "blogDeleteUnauthorized": "You cannot delete someone else's blog post",
   "blogDeleteFailed": "Deletion failed. Make sure you have the necessary permissions",
   "blogGetLikeSuccess": "Blog likes retrieved successfully",
-  "blogPostLikeSuccess": "Blog like status updated successfully"
+  "blogPostLikeSuccess": "Blog like status updated successfully",
+
+  "messageListSuccess": "Messages retrieved successfully",
+  "messageCreateSuccess": "Message sent successfully",
+  "messageMarkAsSeenSuccess": "Message marked as seen successfully",
+  "messageDeleteSuccess": "Message deleted successfully",
+  "messageNotFound": "Message not found",
+  "messageInvalidUserType": "Invalid user type. User type must be either 'Therapist' or 'User'"
 }

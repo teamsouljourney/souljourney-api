@@ -106,5 +106,12 @@
   "blogDeleteUnauthorized": "Sie können den Blog-Beitrag eines anderen nicht löschen",
   "blogDeleteFailed": "Löschen fehlgeschlagen. Stellen Sie sicher, dass Sie die erforderlichen Berechtigungen haben",
   "blogGetLikeSuccess": "Blog-Likes erfolgreich abgerufen",
-  "blogPostLikeSuccess": "Blog-Like-Status erfolgreich aktualisiert"
+  "blogPostLikeSuccess": "Blog-Like-Status erfolgreich aktualisiert",
+
+  "messageListSuccess": "Nachrichten erfolgreich abgerufen",
+  "messageCreateSuccess": "Nachricht erfolgreich gesendet",
+  "messageMarkAsSeenSuccess": "Nachricht erfolgreich als gesehen markiert",
+  "messageDeleteSuccess": "Nachricht erfolgreich gelöscht",
+  "messageNotFound": "Nachricht nicht gefunden",
+  "messageInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein"
 }
