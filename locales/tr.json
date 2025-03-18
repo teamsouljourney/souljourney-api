@@ -21,6 +21,16 @@
   "invalidVerificationCode": "Geçersiz doğrulama kodu",
   "passwordResetSuccess": "Şifre başarıyla sıfırlandı!",
 
+  "authVerificationEmailSent": "E-posta adresinize bir doğrulama e-postası gönderildi",
+  "authVerificationEmailSubject": "E-postanızı Doğrulayın",
+  "authVerifyEmailSuccess": "E-posta başarıyla doğrulandı",
+  "authVerifyEmailError": "E-posta doğrulanırken hata oluştu",
+  "authVerifyEmailMissingToken": "Doğrulama token'ı eksik",
+  "authVerifyEmailInvalidToken": "Geçersiz veya süresi dolmuş doğrulama token'ı",
+  "authVerifyEmailUserNotFound": "Kullanıcı bulunamadı",
+  "authVerifyEmailAlreadyVerified": "E-posta zaten doğrulanmış",
+  "authWelcomeEmailSubject": "Soul Journey Ekibine Hoş Geldiniz",
+
   "categoryListSuccess": "Kategoriler başarıyla listelendi",
   "categoryCreateSuccess": "Kategori başarıyla oluşturuldu",
   "categoryReadSuccess": "Kategori detayları başarıyla alındı",

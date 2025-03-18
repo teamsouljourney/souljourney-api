@@ -21,6 +21,16 @@
   "invalidVerificationCode": "Ungültiger Bestätigungscode",
   "passwordResetSuccess": "Passwort wurde erfolgreich zurückgesetzt!",
 
+  "authVerificationEmailSent": "Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet",
+  "authVerificationEmailSubject": "Bestätigen Sie Ihre E-Mail",
+  "authVerifyEmailSuccess": "E-Mail erfolgreich bestätigt",
+  "authVerifyEmailError": "Fehler bei der Bestätigung der E-Mail",
+  "authVerifyEmailMissingToken": "Bestätigungstoken fehlt",
+  "authVerifyEmailInvalidToken": "Ungültiges oder abgelaufenes Bestätigungstoken",
+  "authVerifyEmailUserNotFound": "Benutzer nicht gefunden",
+  "authVerifyEmailAlreadyVerified": "E-Mail ist bereits bestätigt",
+  "authWelcomeEmailSubject": "Willkommen im Soul Journey Team",
+
   "categoryListSuccess": "Kategorien erfolgreich aufgelistet",
   "categoryCreateSuccess": "Kategorie erfolgreich erstellt",
   "categoryReadSuccess": "Kategoriedetails erfolgreich abgerufen",

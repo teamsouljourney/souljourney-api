@@ -67,13 +67,13 @@ module.exports = {
 
     await sendEmail({
       email: newUser.email,
-      subject: "Verify Your Email",
+      subject: req.t(translations.auth.verificationEmailSubject),
       message,
     });
 
     res.status(201).json({
       status: "success",
-      message: "A verification email has been sent to your email address.",
+      message: req.t(translations.auth.verificationEmailSent),
     });
   },
 
@@ -81,7 +81,7 @@ module.exports = {
     /*
           #swagger.tags = ["Authentication"]
           #swagger.summary = "Verify Email"
-          #swagger.description = 'Verify a user’s email address using a token sent via email.'
+          #swagger.description = 'Verify a user's email address using a token sent via email.'
           #swagger.parameters["token"] = {
               in: "query",
               required: true,
@@ -130,8 +130,8 @@ module.exports = {
     const message = welcomeEmail(user.userName);
 
     await sendEmail({
-      email: newUser.email,
-      subject: "Welcome to Soul Journey Team",
+      email: user.email,
+      subject: req.t(translations.auth.welcomeEmailSubject),
       message,
     });
 
@@ -272,19 +272,16 @@ module.exports = {
     const auth = req.headers?.authorization || null;
 
     if (!auth) {
-      return res.status(400).json({
-        status: "fail",
-        message: req.t(translations.logout.authorizationHeaderMissing),
-      });
+      throw new CustomError(
+        req.t(translations.logout.authorizationHeaderMissing),
+        400
+      );
     }
 
     const [tokenType, tokenValue] = auth.split(" ");
 
     if (!tokenValue) {
-      return res.status(400).json({
-        status: "fail",
-        message: req.t(translations.logout.tokenValueMissing),
-      });
+      throw new CustomError(req.t(translations.logout.tokenValueMissing), 400);
     }
 
     switch (tokenType) {
@@ -308,12 +305,12 @@ module.exports = {
         });
 
       default:
-        return res.status(400).json({
-          status: "fail",
-          message: req.t(translations.logout.unsupportedTokenType, {
+        throw new CustomError(
+          req.t(translations.logout.unsupportedTokenType, {
             tokenType,
           }),
-        });
+          400
+        );
     }
   },
 
@@ -321,7 +318,7 @@ module.exports = {
     /*
         #swagger.tags = ["Authentication"]
         #swagger.summary = "Forgot Password"
-        #swagger.description = 'Send a reset password token to the user’s registered email address.'
+        #swagger.description = 'Send a reset password token to the user's registered email address.'
         #swagger.parameters["body"] = {
             in: "body",
             required: true,

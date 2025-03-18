@@ -21,6 +21,16 @@
   "invalidVerificationCode": "Invalid verification code",
   "passwordResetSuccess": "Password has been reset successfully!",
 
+  "authVerificationEmailSent": "A verification email has been sent to your email address",
+  "authVerificationEmailSubject": "Verify Your Email",
+  "authVerifyEmailSuccess": "Email verified successfully",
+  "authVerifyEmailError": "Error verifying email",
+  "authVerifyEmailMissingToken": "Verification token is missing",
+  "authVerifyEmailInvalidToken": "Invalid or expired verification token",
+  "authVerifyEmailUserNotFound": "User not found",
+  "authVerifyEmailAlreadyVerified": "Email is already verified",
+  "authWelcomeEmailSubject": "Welcome to Soul Journey Team",
+
   "categoryListSuccess": "Categories listed successfully",
   "categoryCreateSuccess": "Category created successfully",
   "categoryReadSuccess": "Category details retrieved successfully",

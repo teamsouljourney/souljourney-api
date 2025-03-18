@@ -5,6 +5,15 @@ const translations = {
     signupSuccess: "signupSuccess",
     loginSuccess: "loginSuccess",
     userNotFound: "userNotFound",
+    verificationEmailSent: "authVerificationEmailSent",
+    verificationEmailSubject: "authVerificationEmailSubject",
+    verifyEmailSuccess: "authVerifyEmailSuccess",
+    verifyEmailError: "authVerifyEmailError",
+    verifyEmailMissingToken: "authVerifyEmailMissingToken",
+    verifyEmailInvalidToken: "authVerifyEmailInvalidToken",
+    verifyEmailUserNotFound: "authVerifyEmailUserNotFound",
+    verifyEmailAlreadyVerified: "authVerifyEmailAlreadyVerified",
+    welcomeEmailSubject: "authWelcomeEmailSubject",
   },
 
   login: {
