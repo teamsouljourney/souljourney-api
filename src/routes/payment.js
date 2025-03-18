@@ -1,3 +1,9 @@
+"use strict";
+
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const router = require("express").Router();
 const Stripe = require("stripe");
 

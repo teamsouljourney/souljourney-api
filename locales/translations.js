@@ -5,6 +5,15 @@ const translations = {
     signupSuccess: "signupSuccess",
     loginSuccess: "loginSuccess",
     userNotFound: "userNotFound",
+    verificationEmailSent: "authVerificationEmailSent",
+    verificationEmailSubject: "authVerificationEmailSubject",
+    verifyEmailSuccess: "authVerifyEmailSuccess",
+    verifyEmailError: "authVerifyEmailError",
+    verifyEmailMissingToken: "authVerifyEmailMissingToken",
+    verifyEmailInvalidToken: "authVerifyEmailInvalidToken",
+    verifyEmailUserNotFound: "authVerifyEmailUserNotFound",
+    verifyEmailAlreadyVerified: "authVerifyEmailAlreadyVerified",
+    welcomeEmailSubject: "authWelcomeEmailSubject",
   },
 
   login: {
@@ -98,6 +107,8 @@ const translations = {
     currentPasswordIncorrect: "userCurrentPasswordIncorrect",
     passwordsDontMatch: "userPasswordsDontMatch",
     passwordChangeSuccess: "userPasswordChangeSuccess",
+    noFileUploaded: "userNoFileUploaded",
+    profilePictureUploaded: "userProfilePictureUploaded",
   },
 
   therapist: {
@@ -115,6 +126,8 @@ const translations = {
     currentPasswordIncorrect: "therapistCurrentPasswordIncorrect",
     passwordsDontMatch: "therapistPasswordsDontMatch",
     passwordChangeSuccess: "therapistPasswordChangeSuccess",
+    noFileUploaded: "therapistNoFileUploaded",
+    profilePictureUploaded: "therapistProfilePictureUploaded",
   },
 
   feedback: {
@@ -140,6 +153,42 @@ const translations = {
     deleteFailed: "blogDeleteFailed",
     getLikeSuccess: "blogGetLikeSuccess",
     postLikeSuccess: "blogPostLikeSuccess",
+  },
+
+  message: {
+    listSuccess: "messageListSuccess",
+    createSuccess: "messageCreateSuccess",
+    markAsSeenSuccess: "messageMarkAsSeenSuccess",
+    deleteSuccess: "messageDeleteSuccess",
+    notFound: "messageNotFound",
+    invalidUserType: "messageInvalidUserType",
+  },
+
+  notes: {
+    listSuccess: "notesListSuccess",
+    createSuccess: "notesCreateSuccess",
+    readSuccess: "notesReadSuccess",
+    updateSuccess: "notesUpdateSuccess",
+    deleteSuccess: "notesDeleteSuccess",
+    notFound: "notesNotFound",
+    notFoundOrNoPermission: "notesNotFoundOrNoPermission",
+    deletedOrNoPermission: "notesDeletedOrNoPermission",
+    getSingleUserSuccess: "notesGetSingleUserSuccess",
+  },
+
+  notification: {
+    listSuccess: "notificationListSuccess",
+    createSuccess: "notificationCreateSuccess",
+    readSuccess: "notificationReadSuccess",
+    markAsReadSuccess: "notificationMarkAsReadSuccess",
+    deleteSuccess: "notificationDeleteSuccess",
+    notFound: "notificationNotFound",
+    invalidUserType: "notificationInvalidUserType",
+  },
+
+  middleware: {
+    tokenUserNotExists: "middlewareAuthTokenUserNotExists",
+    jwtUserNotExists: "middlewareAuthJwtUserNotExists",
   },
 };
 

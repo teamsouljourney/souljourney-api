@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 module.exports.appointmentReminderTemplate = (
   username,
   therapistName,
@@ -10,11 +14,11 @@ module.exports.appointmentReminderTemplate = (
 ) => {
   // Convert date string to Date object for formatting
   const date = new Date(appointmentDate);
-  const formattedDate = date.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+  const formattedDate = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   return `
@@ -190,11 +194,15 @@ module.exports.appointmentReminderTemplate = (
             </ul>
           </div>
 
-          ${appointmentType === "Video Session" ? `
+          ${
+            appointmentType === "Video Session"
+              ? `
           <div class="button-container">
             <a href="${meetingLink}" class="button">Join Session</a>
           </div>
-          ` : ''}
+          `
+              : ""
+          }
           
           <div class="preparation-box">
             <h3 class="preparation-title">Preparing for Your Session</h3>
@@ -214,9 +222,13 @@ module.exports.appointmentReminderTemplate = (
             </p>
           </div>
 
-          ${appointmentType === "Video Session" ? `
+          ${
+            appointmentType === "Video Session"
+              ? `
           <p>Having technical issues? Test your connection before the session here: <a href="https://souljourney.com/test-connection" style="color: #4DA1A9;">Connection Test</a></p>
-          ` : ''}
+          `
+              : ""
+          }
 
           <div class="divider"></div>
 

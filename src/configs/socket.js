@@ -1,3 +1,9 @@
+"use strict";
+
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const { Server } = require("socket.io");
 const Appointment = require("../models/appointment");
 

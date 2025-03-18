@@ -1,4 +1,9 @@
 "use strict";
+
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const CustomError = require("../errors/customError");
 const Notes = require("../models/notes");
 const translations = require("../../locales/translations");
@@ -21,15 +26,16 @@ module.exports = {
     // Get therapists's own notes.
 
     const therapistId = req.user._id;
-    
-    const customFilter = { therapistId: therapistId }
-    
+
+    const customFilter = { therapistId: therapistId };
+
     const data = await res.getModelList(Notes, customFilter, [
       { path: "userId", select: "_id firstName lastName" },
-      { path: "therapistId", select: "_id firstName lastName" }
+      { path: "therapistId", select: "_id firstName lastName" },
     ]);
     res.status(200).send({
       error: false,
+      message: req.t(translations.notes.listSuccess),
       details: await res.getModelListDetails(Notes),
       data,
     });
@@ -56,9 +62,9 @@ module.exports = {
 
     const data = await Notes.create(req.body);
 
-
     res.status(201).send({
       error: false,
+      message: req.t(translations.notes.createSuccess),
       data,
     });
   },
@@ -76,12 +82,21 @@ module.exports = {
       }
     */
     // Just therapists notes
-    const data = await Notes.findOne({ _id: req.params.id, therapistId: req.user._id }).populate(["userId","therapistId"]);
+    const data = await Notes.findOne({
+      _id: req.params.id,
+      therapistId: req.user._id,
+    }).populate(["userId", "therapistId"]);
+
     if (!data) {
-      return res.status(404).send({ error: true, message: "Notes are not found or not belong to you" });
+      throw new CustomError(
+        req.t(translations.notes.notFoundOrNoPermission),
+        404
+      );
     }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.notes.readSuccess),
       data,
     });
   },
@@ -90,7 +105,7 @@ module.exports = {
     /*
       #swagger.tags = ['Notes']
       #swagger.summary = 'Update note by ID'
-      #swagger.description = 'Update a note’s details by its unique ID.'
+      #swagger.description = 'Update a note's details by its unique ID.'
       #swagger.parameters['id'] = {
           in: 'path',
           required: true,
@@ -110,13 +125,21 @@ module.exports = {
     const data = await Notes.updateOne(
       { _id: req.params.id, therapistId: req.user._id },
       req.body,
-      { runValidators: true }
+      {
+        runValidators: true,
+      }
     );
+
     if (data.modifiedCount === 0) {
-      throw new CustomError("Notes are not found or you have no permission to update");
+      throw new CustomError(
+        req.t(translations.notes.notFoundOrNoPermission),
+        403
+      );
     }
-    res.status(202).send({
+
+    res.status(200).send({
       error: !data.modifiedCount,
+      message: req.t(translations.notes.updateSuccess),
       data,
       new: await Notes.findOne({ _id: req.params.id }),
     });
@@ -135,13 +158,16 @@ module.exports = {
       }
     */
     // Sadece terapistin notunu sil
-    const data = await Notes.deleteOne({ _id: req.params.id, therapistId: req.user._id });
-    
+    const data = await Notes.deleteOne({
+      _id: req.params.id,
+      therapistId: req.user._id,
+    });
+
     res.status(data.deletedCount ? 200 : 404).send({
       error: !data.deletedCount,
       message: data.deletedCount
-        ? "Note deleted successfully"
-        : "Note already deleted or you have no permission to delete",
+        ? req.t(translations.notes.deleteSuccess)
+        : req.t(translations.notes.deletedOrNoPermission),
       data,
     });
   },
@@ -158,19 +184,18 @@ module.exports = {
           type: 'string',
         }
     */
-    
-    const { userId } = req.params;
-    
-    const data = await Notes.find({userId})
-    .populate(["userId","therapistId"]);
 
-    res.status(202).send({
+    const { userId } = req.params;
+
+    const data = await Notes.find({ userId }).populate([
+      "userId",
+      "therapistId",
+    ]);
+
+    res.status(200).send({
       error: false,
+      message: req.t(translations.notes.getSingleUserSuccess),
       data,
     });
   },
-
-
-
 };
-

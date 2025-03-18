@@ -20,6 +20,17 @@
   "tokenExpired": "Token is invalid or has expired",
   "invalidVerificationCode": "Invalid verification code",
   "passwordResetSuccess": "Password has been reset successfully!",
+  "loginSuccess": "Logged in successfully",
+
+  "authVerificationEmailSent": "A verification email has been sent to your email address",
+  "authVerificationEmailSubject": "Verify Your Email",
+  "authVerifyEmailSuccess": "Email verified successfully",
+  "authVerifyEmailError": "Error verifying email",
+  "authVerifyEmailMissingToken": "Verification token is missing",
+  "authVerifyEmailInvalidToken": "Invalid or expired verification token",
+  "authVerifyEmailUserNotFound": "User not found",
+  "authVerifyEmailAlreadyVerified": "Email is already verified",
+  "authWelcomeEmailSubject": "Welcome to Soul Journey Team",
 
   "categoryListSuccess": "Categories listed successfully",
   "categoryCreateSuccess": "Category created successfully",
@@ -71,6 +82,8 @@
   "userCurrentPasswordIncorrect": "Your current password is not correct",
   "userPasswordsDontMatch": "Passwords don't match",
   "userPasswordChangeSuccess": "Password changed successfully",
+  "userNoFileUploaded": "No file uploaded",
+  "userProfilePictureUploaded": "Profile picture uploaded successfully",
 
   "therapistListSuccess": "Therapists listed successfully",
   "therapistCreateSuccess": "Therapist created successfully",
@@ -86,6 +99,8 @@
   "therapistCurrentPasswordIncorrect": "Your current password is not correct",
   "therapistPasswordsDontMatch": "Passwords don't match",
   "therapistPasswordChangeSuccess": "Password changed successfully",
+  "therapistNoFileUploaded": "No file uploaded",
+  "therapistProfilePictureUploaded": "Profile picture uploaded successfully",
 
   "feedbackListSuccess": "Feedbacks listed successfully",
   "feedbackCreateSuccess": "Feedback created successfully",
@@ -106,5 +121,33 @@
   "blogDeleteUnauthorized": "You cannot delete someone else's blog post",
   "blogDeleteFailed": "Deletion failed. Make sure you have the necessary permissions",
   "blogGetLikeSuccess": "Blog likes retrieved successfully",
-  "blogPostLikeSuccess": "Blog like status updated successfully"
+  "blogPostLikeSuccess": "Blog like status updated successfully",
+
+  "messageListSuccess": "Messages retrieved successfully",
+  "messageCreateSuccess": "Message sent successfully",
+  "messageMarkAsSeenSuccess": "Message marked as seen successfully",
+  "messageDeleteSuccess": "Message deleted successfully",
+  "messageNotFound": "Message not found",
+  "messageInvalidUserType": "Invalid user type. User type must be either 'Therapist' or 'User'",
+
+  "notesListSuccess": "Notes listed successfully",
+  "notesCreateSuccess": "Note created successfully",
+  "notesReadSuccess": "Note details retrieved successfully",
+  "notesUpdateSuccess": "Note updated successfully",
+  "notesDeleteSuccess": "Note deleted successfully",
+  "notesNotFound": "Note not found",
+  "notesNotFoundOrNoPermission": "Notes are not found or not belong to you",
+  "notesDeletedOrNoPermission": "Note already deleted or you have no permission to delete",
+  "notesGetSingleUserSuccess": "User notes retrieved successfully",
+
+  "notificationListSuccess": "Notifications listed successfully",
+  "notificationCreateSuccess": "Notification created successfully",
+  "notificationReadSuccess": "Notifications retrieved successfully",
+  "notificationMarkAsReadSuccess": "Notification marked as read successfully",
+  "notificationDeleteSuccess": "Notification deleted successfully",
+  "notificationNotFound": "Notification not found",
+  "notificationInvalidUserType": "Invalid user type. User type must be either 'Therapist' or 'User'",
+
+  "middlewareAuthTokenUserNotExists": "The user belonging to this token no longer exists",
+  "middlewareAuthJwtUserNotExists": "The user belonging to this token no longer exists"
 }

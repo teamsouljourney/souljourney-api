@@ -10,9 +10,15 @@ const sendEmail = require("../helpers/sendEmail");
 const CustomError = require("../errors/customError");
 const filterObj = require("../helpers/allowedFields");
 const translations = require("../../locales/translations");
-const { verificationEmail } = require("../utils/emailTamplates/verificationEmail");
-const { deleteAccountEmail } = require("../utils/emailTamplates/deleteAccountEmail");
-const { changePasswordEmail } = require("../utils/emailTamplates/changePasswordEmail");
+const {
+  verificationEmail,
+} = require("../utils/emailTamplates/verificationEmail");
+const {
+  deleteAccountEmail,
+} = require("../utils/emailTamplates/deleteAccountEmail");
+const {
+  changePasswordEmail,
+} = require("../utils/emailTamplates/changePasswordEmail");
 const Appointment = require("../models/appointment");
 const TherapistTimeTable = require("../models/therapistTimeTable");
 
@@ -73,7 +79,7 @@ module.exports = {
 
     const verificationUrl = `${process.env.SERVER_URL}/auth/verify-email?token=${verificationToken}`;
 
-    const message = verificationEmail(newUser.userName, verificationUrl)
+    const message = verificationEmail(newUser.userName, verificationUrl);
 
     await sendEmail({
       email: newUser.email,
@@ -156,27 +162,25 @@ module.exports = {
         #swagger.tags = ["Users"]
         #swagger.summary = "Change User Status"
     */
-  
+
     const userId = req.user.isAdmin ? req.params.id : req.user._id;
-  
+
     const user = await User.findOne({ _id: userId });
-  
+
     if (!user) {
       return res.status(404).send({
         error: true,
         message: req.t(translations.user.notFound),
       });
     }
-  
-  
+
     user.isActive = !user.isActive;
     await user.save();
-  
+
     // If the user is deactivated:
     if (!user.isActive) {
-  
       const appointments = await Appointment.find({ userId: user._id });
-  
+
       // Delete all appointments related to the user
       await Appointment.deleteMany({ userId: user._id });
       for (const appointment of appointments) {
@@ -194,16 +198,16 @@ module.exports = {
         );
       }
     }
-  
-  
+
     const message = deleteAccountEmail(user.userName);
-  
+
     await sendEmail({
       email: user.email,
-      subject: "Your Soul Journey Account Has Been Deleted – Come Back to Soul Journey Anytime",
+      subject:
+        "Your Soul Journey Account Has Been Deleted – Come Back to Soul Journey Anytime",
       message,
     });
-  
+
     res.status(200).send({
       error: false,
       message: req.t(translations.user.statusChanged, {
@@ -302,7 +306,7 @@ module.exports = {
 
     await user.save();
 
-    const message = changePasswordEmail(user.userName)
+    const message = changePasswordEmail(user.userName);
 
     await sendEmail({
       email: user.email,
@@ -314,6 +318,54 @@ module.exports = {
       error: false,
       message: req.t(translations.user.passwordChangeSuccess),
       data: user,
+    });
+  },
+
+  uploadProfilePicture: async (req, res) => {
+    /* 
+        #swagger.tags = ["Users"]
+        #swagger.summary = "Upload User Profile Picture"
+        #swagger.consumes = ['multipart/form-data']
+        #swagger.parameters['image'] = {
+            in: 'formData',
+            type: 'file',
+            required: 'true',
+            description: 'User profile picture'
+        }
+    */
+
+    // Check if file exists
+    if (!req.file) {
+      throw new CustomError(req.t(translations.user.noFileUploaded), 400);
+    }
+
+    const userId = req.params.id;
+
+    // Find the user
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      throw new CustomError(req.t(translations.user.notFound), 404);
+    }
+
+    // If user already has an image that's stored in our uploads folder, delete it
+    if (user.image && user.image.includes("_")) {
+      const oldImagePath = `./uploads/${user.image.split("/").pop()}`;
+      if (require("fs").existsSync(oldImagePath)) {
+        require("fs").unlinkSync(oldImagePath);
+      }
+    }
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+    user.image = imageUrl;
+    await user.save();
+
+    res.status(200).send({
+      error: false,
+      message: req.t(translations.user.profilePictureUploaded),
+      data: {
+        imageUrl,
+      },
     });
   },
 };

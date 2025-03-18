@@ -20,6 +20,17 @@
   "tokenExpired": "Token ist ungültig oder abgelaufen",
   "invalidVerificationCode": "Ungültiger Bestätigungscode",
   "passwordResetSuccess": "Passwort wurde erfolgreich zurückgesetzt!",
+  "loginSuccess": "Erfolgreich eingeloggt",
+
+  "authVerificationEmailSent": "Eine Bestätigungs-E-Mail wurde an Ihre E-Mail-Adresse gesendet",
+  "authVerificationEmailSubject": "Bestätigen Sie Ihre E-Mail",
+  "authVerifyEmailSuccess": "E-Mail erfolgreich bestätigt",
+  "authVerifyEmailError": "Fehler bei der Bestätigung der E-Mail",
+  "authVerifyEmailMissingToken": "Bestätigungstoken fehlt",
+  "authVerifyEmailInvalidToken": "Ungültiges oder abgelaufenes Bestätigungstoken",
+  "authVerifyEmailUserNotFound": "Benutzer nicht gefunden",
+  "authVerifyEmailAlreadyVerified": "E-Mail ist bereits bestätigt",
+  "authWelcomeEmailSubject": "Willkommen im Soul Journey Team",
 
   "categoryListSuccess": "Kategorien erfolgreich aufgelistet",
   "categoryCreateSuccess": "Kategorie erfolgreich erstellt",
@@ -71,6 +82,8 @@
   "userCurrentPasswordIncorrect": "Ihr aktuelles Passwort ist nicht korrekt",
   "userPasswordsDontMatch": "Passwörter stimmen nicht überein",
   "userPasswordChangeSuccess": "Passwort erfolgreich geändert",
+  "userNoFileUploaded": "Keine Datei hochgeladen",
+  "userProfilePictureUploaded": "Profilbild erfolgreich hochgeladen",
 
   "therapistListSuccess": "Therapeuten erfolgreich aufgelistet",
   "therapistCreateSuccess": "Therapeut erfolgreich erstellt",
@@ -86,6 +99,8 @@
   "therapistCurrentPasswordIncorrect": "Ihr aktuelles Passwort ist nicht korrekt",
   "therapistPasswordsDontMatch": "Passwörter stimmen nicht überein",
   "therapistPasswordChangeSuccess": "Passwort erfolgreich geändert",
+  "therapistNoFileUploaded": "Keine Datei hochgeladen",
+  "therapistProfilePictureUploaded": "Profilbild erfolgreich hochgeladen",
 
   "feedbackListSuccess": "Feedbacks erfolgreich aufgelistet",
   "feedbackCreateSuccess": "Feedback erfolgreich erstellt",
@@ -106,5 +121,33 @@
   "blogDeleteUnauthorized": "Sie können den Blog-Beitrag eines anderen nicht löschen",
   "blogDeleteFailed": "Löschen fehlgeschlagen. Stellen Sie sicher, dass Sie die erforderlichen Berechtigungen haben",
   "blogGetLikeSuccess": "Blog-Likes erfolgreich abgerufen",
-  "blogPostLikeSuccess": "Blog-Like-Status erfolgreich aktualisiert"
+  "blogPostLikeSuccess": "Blog-Like-Status erfolgreich aktualisiert",
+
+  "messageListSuccess": "Nachrichten erfolgreich abgerufen",
+  "messageCreateSuccess": "Nachricht erfolgreich gesendet",
+  "messageMarkAsSeenSuccess": "Nachricht erfolgreich als gesehen markiert",
+  "messageDeleteSuccess": "Nachricht erfolgreich gelöscht",
+  "messageNotFound": "Nachricht nicht gefunden",
+  "messageInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein",
+
+  "notesListSuccess": "Notizen erfolgreich aufgelistet",
+  "notesCreateSuccess": "Notiz erfolgreich erstellt",
+  "notesReadSuccess": "Notizdetails erfolgreich abgerufen",
+  "notesUpdateSuccess": "Notiz erfolgreich aktualisiert",
+  "notesDeleteSuccess": "Notiz erfolgreich gelöscht",
+  "notesNotFound": "Notiz nicht gefunden",
+  "notesNotFoundOrNoPermission": "Notizen wurden nicht gefunden oder gehören nicht zu Ihnen",
+  "notesDeletedOrNoPermission": "Notiz bereits gelöscht oder Sie haben keine Berechtigung zum Löschen",
+  "notesGetSingleUserSuccess": "Benutzernotizen erfolgreich abgerufen",
+
+  "notificationListSuccess": "Benachrichtigungen erfolgreich aufgelistet",
+  "notificationCreateSuccess": "Benachrichtigung erfolgreich erstellt",
+  "notificationReadSuccess": "Benachrichtigungen erfolgreich abgerufen",
+  "notificationMarkAsReadSuccess": "Benachrichtigung erfolgreich als gelesen markiert",
+  "notificationDeleteSuccess": "Benachrichtigung erfolgreich gelöscht",
+  "notificationNotFound": "Benachrichtigung nicht gefunden",
+  "notificationInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein",
+
+  "middlewareAuthTokenUserNotExists": "Der zu diesem Token gehörende Benutzer existiert nicht mehr",
+  "middlewareAuthJwtUserNotExists": "Der zu diesem Token gehörende Benutzer existiert nicht mehr"
 }

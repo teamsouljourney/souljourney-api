@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const router = require("express").Router();
 
 //routes/feedback:
@@ -9,19 +13,13 @@ const {
   read,
   update,
   deleteFeedback,
-  getSingleTherapistFeedbacks
+  getSingleTherapistFeedbacks,
 } = require("../controllers/feedback");
 
-router.route("/")
-  .get(list)
-  .post(create);
+router.route("/").get(list).post(create);
 
-router.route("/:id")
-  .get(read)
-  .put(update)
-  .patch(update)
-  .delete(deleteFeedback);
+router.route("/:id").get(read).put(update).patch(update).delete(deleteFeedback);
 
-router.route("/therapists/:therapistId").get(getSingleTherapistFeedbacks)
+router.route("/therapists/:therapistId").get(getSingleTherapistFeedbacks);
 
 module.exports = router;

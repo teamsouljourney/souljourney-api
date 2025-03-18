@@ -20,6 +20,17 @@
   "tokenExpired": "Token geçersiz veya süresi dolmuş",
   "invalidVerificationCode": "Geçersiz doğrulama kodu",
   "passwordResetSuccess": "Şifre başarıyla sıfırlandı!",
+  "loginSuccess": "Başarıyla giriş yapıldı",
+
+  "authVerificationEmailSent": "E-posta adresinize bir doğrulama e-postası gönderildi",
+  "authVerificationEmailSubject": "E-postanızı Doğrulayın",
+  "authVerifyEmailSuccess": "E-posta başarıyla doğrulandı",
+  "authVerifyEmailError": "E-posta doğrulanırken hata oluştu",
+  "authVerifyEmailMissingToken": "Doğrulama token'ı eksik",
+  "authVerifyEmailInvalidToken": "Geçersiz veya süresi dolmuş doğrulama token'ı",
+  "authVerifyEmailUserNotFound": "Kullanıcı bulunamadı",
+  "authVerifyEmailAlreadyVerified": "E-posta zaten doğrulanmış",
+  "authWelcomeEmailSubject": "Soul Journey Ekibine Hoş Geldiniz",
 
   "categoryListSuccess": "Kategoriler başarıyla listelendi",
   "categoryCreateSuccess": "Kategori başarıyla oluşturuldu",
@@ -71,6 +82,8 @@
   "userCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
   "userPasswordsDontMatch": "Şifreler eşleşmiyor",
   "userPasswordChangeSuccess": "Şifre başarıyla değiştirildi",
+  "userNoFileUploaded": "Dosya yüklenmedi",
+  "userProfilePictureUploaded": "Profil resmi başarıyla yüklendi",
 
   "therapistListSuccess": "Terapistler başarıyla listelendi",
   "therapistCreateSuccess": "Terapist başarıyla oluşturuldu",
@@ -86,6 +99,8 @@
   "therapistCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
   "therapistPasswordsDontMatch": "Şifreler eşleşmiyor",
   "therapistPasswordChangeSuccess": "Şifre başarıyla değiştirildi",
+  "therapistNoFileUploaded": "Dosya yüklenmedi",
+  "therapistProfilePictureUploaded": "Profil resmi başarıyla yüklendi",
 
   "feedbackListSuccess": "Geri bildirimler başarıyla listelendi",
   "feedbackCreateSuccess": "Geri bildirim başarıyla oluşturuldu",
@@ -106,5 +121,33 @@
   "blogDeleteUnauthorized": "Başkasının blog gönderisini silemezsiniz",
   "blogDeleteFailed": "Silme işlemi başarısız oldu. Gerekli izinlere sahip olduğunuzdan emin olun",
   "blogGetLikeSuccess": "Blog beğenileri başarıyla alındı",
-  "blogPostLikeSuccess": "Blog beğeni durumu başarıyla güncellendi"
+  "blogPostLikeSuccess": "Blog beğeni durumu başarıyla güncellendi",
+
+  "messageListSuccess": "Mesajlar başarıyla alındı",
+  "messageCreateSuccess": "Mesaj başarıyla gönderildi",
+  "messageMarkAsSeenSuccess": "Mesaj başarıyla görüldü olarak işaretlendi",
+  "messageDeleteSuccess": "Mesaj başarıyla silindi",
+  "messageNotFound": "Mesaj bulunamadı",
+  "messageInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır",
+
+  "notesListSuccess": "Notlar başarıyla listelendi",
+  "notesCreateSuccess": "Not başarıyla oluşturuldu",
+  "notesReadSuccess": "Not detayları başarıyla alındı",
+  "notesUpdateSuccess": "Not başarıyla güncellendi",
+  "notesDeleteSuccess": "Not başarıyla silindi",
+  "notesNotFound": "Not bulunamadı",
+  "notesNotFoundOrNoPermission": "Notlar bulunamadı veya size ait değil",
+  "notesDeletedOrNoPermission": "Not zaten silinmiş veya silme izniniz yok",
+  "notesGetSingleUserSuccess": "Kullanıcı notları başarıyla alındı",
+
+  "notificationListSuccess": "Bildirimler başarıyla listelendi",
+  "notificationCreateSuccess": "Bildirim başarıyla oluşturuldu",
+  "notificationReadSuccess": "Bildirimler başarıyla alındı",
+  "notificationMarkAsReadSuccess": "Bildirim başarıyla okundu olarak işaretlendi",
+  "notificationDeleteSuccess": "Bildirim başarıyla silindi",
+  "notificationNotFound": "Bildirim bulunamadı",
+  "notificationInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır",
+
+  "middlewareAuthTokenUserNotExists": "Bu token'a ait kullanıcı artık mevcut değil",
+  "middlewareAuthJwtUserNotExists": "Bu token'a ait kullanıcı artık mevcut değil"
 }

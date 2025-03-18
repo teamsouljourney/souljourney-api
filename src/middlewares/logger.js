@@ -1,7 +1,8 @@
 "use strict";
-/* -------------------------------------------------------
-    | FULLSTACK TEAM | NODEJS / EXPRESS |
-------------------------------------------------------- */
+
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
 // $ npm i morgan
 // app.use(logger):
 
@@ -22,7 +23,7 @@ if (!fs.existsSync(logDirectory)) {
 
 const logStream = fs.createWriteStream(
   path.join(logDirectory, `${today}.log`),
-  { flags: "a+" },
+  { flags: "a+" }
 );
 
 module.exports = morgan("combined", {

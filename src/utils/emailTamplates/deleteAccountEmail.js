@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 module.exports.deleteAccountEmail = (username) => {
   return `
     <!DOCTYPE html>

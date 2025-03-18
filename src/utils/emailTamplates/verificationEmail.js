@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 module.exports.verificationEmail = (username, verificationUrl) => {
   return `
     <!DOCTYPE html>

@@ -1,10 +1,14 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 module.exports.changePasswordEmail = (userName, timestamp = new Date()) => {
   // Format the timestamp
-  const formattedDate = new Date(timestamp).toLocaleString('en-US', {
-    dateStyle: 'long',
-    timeStyle: 'short'
+  const formattedDate = new Date(timestamp).toLocaleString("en-US", {
+    dateStyle: "long",
+    timeStyle: "short",
   });
 
   return `

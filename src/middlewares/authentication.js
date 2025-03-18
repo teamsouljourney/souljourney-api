@@ -1,3 +1,5 @@
+"use strict";
+
 /* ------------------------------------------------- */
 /*                  SOULJOURNEY API                  */
 /* ------------------------------------------------- */
@@ -7,6 +9,8 @@ const { promisify } = require("util");
 const Token = require("../models/token");
 const User = require("../models/user");
 const Therapist = require("../models/therapist");
+const CustomError = require("../errors/customError");
+const translations = require("../../locales/translations");
 
 module.exports = async (req, res, next) => {
   req.user = null;
@@ -23,10 +27,10 @@ module.exports = async (req, res, next) => {
         .populate("therapistId");
 
       if (!tokenData || (!tokenData.userId && !tokenData.therapistId)) {
-        return res.status(401).json({
-          status: "fail",
-          message: "The user belonging to this token no longer exists.",
-        });
+        throw new CustomError(
+          req.t(translations.middleware.tokenUserNotExists),
+          401
+        );
       }
 
       if (tokenData.userId) {
@@ -54,10 +58,10 @@ module.exports = async (req, res, next) => {
       }
 
       if (!currentUser) {
-        return res.status(401).json({
-          status: "fail",
-          message: "The user belonging to this token no longer exists.",
-        });
+        throw new CustomError(
+          req.t(translations.middleware.jwtUserNotExists),
+          401
+        );
       }
 
       req.user = currentUser;

@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 module.exports.welcomeEmail = (username) => {
   return `
     <!DOCTYPE html>
