@@ -142,5 +142,8 @@
   "notificationMarkAsReadSuccess": "Benachrichtigung erfolgreich als gelesen markiert",
   "notificationDeleteSuccess": "Benachrichtigung erfolgreich gelöscht",
   "notificationNotFound": "Benachrichtigung nicht gefunden",
-  "notificationInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein"
+  "notificationInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein",
+
+  "middlewareAuthTokenUserNotExists": "Der zu diesem Token gehörende Benutzer existiert nicht mehr",
+  "middlewareAuthJwtUserNotExists": "Der zu diesem Token gehörende Benutzer existiert nicht mehr"
 }

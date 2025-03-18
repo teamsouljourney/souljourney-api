@@ -142,5 +142,8 @@
   "notificationMarkAsReadSuccess": "Bildirim başarıyla okundu olarak işaretlendi",
   "notificationDeleteSuccess": "Bildirim başarıyla silindi",
   "notificationNotFound": "Bildirim bulunamadı",
-  "notificationInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır"
+  "notificationInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır",
+
+  "middlewareAuthTokenUserNotExists": "Bu token'a ait kullanıcı artık mevcut değil",
+  "middlewareAuthJwtUserNotExists": "Bu token'a ait kullanıcı artık mevcut değil"
 }

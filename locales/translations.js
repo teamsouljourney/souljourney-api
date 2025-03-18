@@ -181,6 +181,11 @@ const translations = {
     notFound: "notificationNotFound",
     invalidUserType: "notificationInvalidUserType",
   },
+
+  middleware: {
+    tokenUserNotExists: "middlewareAuthTokenUserNotExists",
+    jwtUserNotExists: "middlewareAuthJwtUserNotExists",
+  },
 };
 
 module.exports = translations;
