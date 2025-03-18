@@ -1,5 +1,9 @@
 "use strict";
 
+/* ------------------------------------------------- */
+/*                  SOULJOURNEY API                  */
+/* ------------------------------------------------- */
+
 const { mongoose } = require("../configs/dbConnection");
 
 const NotificationSchema = new mongoose.Schema(
