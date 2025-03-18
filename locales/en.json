@@ -97,6 +97,8 @@
   "therapistCurrentPasswordIncorrect": "Your current password is not correct",
   "therapistPasswordsDontMatch": "Passwords don't match",
   "therapistPasswordChangeSuccess": "Password changed successfully",
+  "therapistNoFileUploaded": "No file uploaded",
+  "therapistProfilePictureUploaded": "Profile picture uploaded successfully",
 
   "feedbackListSuccess": "Feedbacks listed successfully",
   "feedbackCreateSuccess": "Feedback created successfully",

@@ -324,54 +324,46 @@ module.exports = {
 
   uploadProfilePicture: async (req, res) => {
     /* 
-        #swagger.tags = ["Users"]
-        #swagger.summary = "Upload User Profile Picture"
+        #swagger.tags = ["Therapists"]
+        #swagger.summary = "Upload Therapist Profile Picture"
         #swagger.consumes = ['multipart/form-data']
         #swagger.parameters['image'] = {
             in: 'formData',
             type: 'file',
             required: 'true',
-            description: 'User profile picture'
+            description: 'Therapist profile picture'
         }
     */
 
     // Check if file exists
     if (!req.file) {
-      return res.status(400).send({
-        error: true,
-        message: req.t(translations.user.noFileUploaded),
-      });
+      throw new CustomError(req.t(translations.therapist.noFileUploaded), 400);
     }
 
-    const userId = req.params.id;
+    const therapistId = req.params.id;
 
-    // Find the user
-    const user = await User.findOne({ _id: userId });
+    // Find the therapist
+    const therapist = await Therapist.findOne({ _id: therapistId });
 
-    if (!user) {
-      return res.status(404).send({
-        error: true,
-        message: req.t(translations.user.notFound),
-      });
+    if (!therapist) {
+      throw new CustomError(req.t(translations.therapist.notFound), 404);
     }
 
-    // If user already has an image that's stored in our uploads folder, delete it
-    if (user.image && user.image.includes("_")) {
-      const oldImagePath = `./uploads/${user.image.split("/").pop()}`;
+    // If therapist already has an image that's stored in our uploads folder, delete it
+    if (therapist.image && therapist.image.includes("_")) {
+      const oldImagePath = `./uploads/${therapist.image.split("/").pop()}`;
       if (require("fs").existsSync(oldImagePath)) {
         require("fs").unlinkSync(oldImagePath);
       }
     }
 
-    // Update user with new image path
-    // The file name is already set by the multer middleware with timestamp
     const imageUrl = `/uploads/${req.file.filename}`;
-    user.image = imageUrl;
-    await user.save();
+    therapist.image = imageUrl;
+    await therapist.save();
 
     res.status(200).send({
       error: false,
-      message: req.t(translations.user.profilePictureUploaded),
+      message: req.t(translations.therapist.profilePictureUploaded),
       data: {
         imageUrl,
       },

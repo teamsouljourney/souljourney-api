@@ -97,6 +97,8 @@
   "therapistCurrentPasswordIncorrect": "Mevcut şifreniz doğru değil",
   "therapistPasswordsDontMatch": "Şifreler eşleşmiyor",
   "therapistPasswordChangeSuccess": "Şifre başarıyla değiştirildi",
+  "therapistNoFileUploaded": "Dosya yüklenmedi",
+  "therapistProfilePictureUploaded": "Profil resmi başarıyla yüklendi",
 
   "feedbackListSuccess": "Geri bildirimler başarıyla listelendi",
   "feedbackCreateSuccess": "Geri bildirim başarıyla oluşturuldu",

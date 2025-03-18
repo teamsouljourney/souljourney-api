@@ -124,6 +124,8 @@ const translations = {
     currentPasswordIncorrect: "therapistCurrentPasswordIncorrect",
     passwordsDontMatch: "therapistPasswordsDontMatch",
     passwordChangeSuccess: "therapistPasswordChangeSuccess",
+    noFileUploaded: "therapistNoFileUploaded",
+    profilePictureUploaded: "therapistProfilePictureUploaded",
   },
 
   feedback: {
