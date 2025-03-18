@@ -5,6 +5,8 @@
 /* ------------------------------------------------- */
 
 const Notification = require("../models/notification");
+const CustomError = require("../errors/customError");
+const translations = require("../../locales/translations");
 
 module.exports = {
   list: async (req, res) => {
@@ -16,10 +18,11 @@ module.exports = {
       { createdAt: -1 }
     );
 
-    const data = [...readNotifications, ...unreadNotifications];
+    const data = [...unreadNotifications, ...readNotifications];
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.notification.listSuccess),
       data,
     });
   },
@@ -36,16 +39,19 @@ module.exports = {
 
     res.status(201).send({
       error: false,
+      message: req.t(translations.notification.createSuccess),
       data,
     });
   },
+
   read: async (req, res) => {
     const { recieverId, recieverModel } = req.query;
 
     if (!["Therapist", "User"].includes(recieverModel)) {
-      return res
-        .status(400)
-        .send({ error: true, message: "Invalid user type" });
+      throw new CustomError(
+        req.t(translations.notification.invalidUserType),
+        400
+      );
     }
 
     const data = await Notification.find({
@@ -57,6 +63,7 @@ module.exports = {
 
     res.status(200).send({
       error: false,
+      message: req.t(translations.notification.readSuccess),
       data,
     });
   },
@@ -68,8 +75,13 @@ module.exports = {
       { new: true }
     );
 
+    if (!data) {
+      throw new CustomError(req.t(translations.notification.notFound), 404);
+    }
+
     res.status(200).send({
       error: false,
+      message: req.t(translations.notification.markAsReadSuccess),
       data,
     });
   },
@@ -81,6 +93,9 @@ module.exports = {
 
     res.status(data.deletedCount ? 204 : 404).send({
       error: !data.deletedCount,
+      message: data.deletedCount
+        ? req.t(translations.notification.deleteSuccess)
+        : req.t(translations.notification.notFound),
       data,
     });
   },

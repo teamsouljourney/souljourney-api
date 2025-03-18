@@ -123,5 +123,13 @@
   "notesNotFound": "Notiz nicht gefunden",
   "notesNotFoundOrNoPermission": "Notizen wurden nicht gefunden oder gehören nicht zu Ihnen",
   "notesDeletedOrNoPermission": "Notiz bereits gelöscht oder Sie haben keine Berechtigung zum Löschen",
-  "notesGetSingleUserSuccess": "Benutzernotizen erfolgreich abgerufen"
+  "notesGetSingleUserSuccess": "Benutzernotizen erfolgreich abgerufen",
+
+  "notificationListSuccess": "Benachrichtigungen erfolgreich aufgelistet",
+  "notificationCreateSuccess": "Benachrichtigung erfolgreich erstellt",
+  "notificationReadSuccess": "Benachrichtigungen erfolgreich abgerufen",
+  "notificationMarkAsReadSuccess": "Benachrichtigung erfolgreich als gelesen markiert",
+  "notificationDeleteSuccess": "Benachrichtigung erfolgreich gelöscht",
+  "notificationNotFound": "Benachrichtigung nicht gefunden",
+  "notificationInvalidUserType": "Ungültiger Benutzertyp. Der Benutzertyp muss entweder 'Therapist' oder 'User' sein"
 }

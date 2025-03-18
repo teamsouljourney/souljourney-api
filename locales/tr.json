@@ -123,5 +123,13 @@
   "notesNotFound": "Not bulunamadı",
   "notesNotFoundOrNoPermission": "Notlar bulunamadı veya size ait değil",
   "notesDeletedOrNoPermission": "Not zaten silinmiş veya silme izniniz yok",
-  "notesGetSingleUserSuccess": "Kullanıcı notları başarıyla alındı"
+  "notesGetSingleUserSuccess": "Kullanıcı notları başarıyla alındı",
+
+  "notificationListSuccess": "Bildirimler başarıyla listelendi",
+  "notificationCreateSuccess": "Bildirim başarıyla oluşturuldu",
+  "notificationReadSuccess": "Bildirimler başarıyla alındı",
+  "notificationMarkAsReadSuccess": "Bildirim başarıyla okundu olarak işaretlendi",
+  "notificationDeleteSuccess": "Bildirim başarıyla silindi",
+  "notificationNotFound": "Bildirim bulunamadı",
+  "notificationInvalidUserType": "Geçersiz kullanıcı türü. Kullanıcı türü 'Therapist' veya 'User' olmalıdır"
 }

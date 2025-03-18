@@ -162,6 +162,16 @@ const translations = {
     deletedOrNoPermission: "notesDeletedOrNoPermission",
     getSingleUserSuccess: "notesGetSingleUserSuccess",
   },
+
+  notification: {
+    listSuccess: "notificationListSuccess",
+    createSuccess: "notificationCreateSuccess",
+    readSuccess: "notificationReadSuccess",
+    markAsReadSuccess: "notificationMarkAsReadSuccess",
+    deleteSuccess: "notificationDeleteSuccess",
+    notFound: "notificationNotFound",
+    invalidUserType: "notificationInvalidUserType",
+  },
 };
 
 module.exports = translations;

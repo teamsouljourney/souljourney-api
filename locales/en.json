@@ -123,5 +123,13 @@
   "notesNotFound": "Note not found",
   "notesNotFoundOrNoPermission": "Notes are not found or not belong to you",
   "notesDeletedOrNoPermission": "Note already deleted or you have no permission to delete",
-  "notesGetSingleUserSuccess": "User notes retrieved successfully"
+  "notesGetSingleUserSuccess": "User notes retrieved successfully",
+
+  "notificationListSuccess": "Notifications listed successfully",
+  "notificationCreateSuccess": "Notification created successfully",
+  "notificationReadSuccess": "Notifications retrieved successfully",
+  "notificationMarkAsReadSuccess": "Notification marked as read successfully",
+  "notificationDeleteSuccess": "Notification deleted successfully",
+  "notificationNotFound": "Notification not found",
+  "notificationInvalidUserType": "Invalid user type. User type must be either 'Therapist' or 'User'"
 }
