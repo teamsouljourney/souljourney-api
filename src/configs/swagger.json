@@ -633,6 +633,38 @@
         }
       }
     },
+    "/users/{id}/upload-profile-picture": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Upload User Profile Picture",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "User profile picture"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/appointments/": {
       "get": {
         "tags": [
@@ -1747,6 +1779,9 @@
         ],
         "summary": "Update Therapist",
         "description": "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category.",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -1841,6 +1876,9 @@
         ],
         "summary": "Update Therapist",
         "description": "This endpoint allows you to update the therapist's information, including their personal details, description, image, and category.",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
           {
             "name": "id",
@@ -2023,6 +2061,38 @@
                 }
               }
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/therapists/{id}/upload-profile-picture": {
+      "post": {
+        "tags": [
+          "Therapists"
+        ],
+        "summary": "Upload Therapist Profile Picture",
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "image",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Therapist profile picture"
           }
         ],
         "responses": {
