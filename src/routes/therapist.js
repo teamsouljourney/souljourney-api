@@ -7,7 +7,7 @@
 const router = require("express").Router();
 
 const therapist = require("../controllers/therapist");
-const upload = require("../middlewares/upload");
+const { upload } = require("../middlewares/upload");
 
 router.route("/").get(therapist.list).post(therapist.create);
 router

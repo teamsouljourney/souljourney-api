@@ -10,6 +10,11 @@ const CustomError = require("../errors/customError");
 const translations = require("../../locales/translations");
 const Appointment = require("../models/appointment");
 const TherapistTimeTable = require("../models/therapistTimeTable");
+const {
+  s3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require("../middlewares/upload");
 
 module.exports = {
   list: async (req, res) => {
@@ -325,15 +330,46 @@ module.exports = {
       throw new CustomError(req.t(translations.therapist.notFound), 404);
     }
 
-    // If therapist already has an image that's stored in our uploads folder, delete it
-    if (therapist.image && therapist.image.includes("_")) {
-      const oldImagePath = `./uploads/${therapist.image.split("/").pop()}`;
-      if (require("fs").existsSync(oldImagePath)) {
-        require("fs").unlinkSync(oldImagePath);
+    // If therapist already has an image stored in S3, delete it
+    if (therapist.image && therapist.image.includes("amazonaws.com")) {
+      try {
+        // Extract Key from S3 URL
+        const s3Url = new URL(therapist.image);
+        const key = s3Url.pathname.substring(1); // Remove leading slash
+
+        // Delete old image from S3
+        await s3Client.send(
+          new DeleteObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: key,
+          })
+        );
+      } catch (error) {
+        console.error("Error deleting old image from S3:", error);
       }
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`;
+    // Create filename (replace spaces with hyphens)
+    const fileName = `therapists/${therapistId}/profile-pictures/${Date.now()}_${req.file.originalname.replace(
+      /\s+/g,
+      "-"
+    )}`;
+
+    // S3 upload parameters
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: fileName,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+
+    // Upload file to S3
+    await s3Client.send(new PutObjectCommand(params));
+
+    // Generate file URL
+    const imageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+
+    // Update therapist information
     therapist.image = imageUrl;
     await therapist.save();
 
