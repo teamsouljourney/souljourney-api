@@ -29,15 +29,14 @@ const storage = multer.memoryStorage();
 // Create Multer middleware
 const upload = multer({ storage });
 
-// Function to upload to S3
+// Function to upload to S3 (General Usage)
+/*
 const uploadToS3 = async (file, folder = "uploads") => {
-  // Create filename (replace spaces with hyphens)
   const fileName = `${folder}/${Date.now()}_${file.originalname.replace(
     /\s+/g,
     "-"
   )}`;
 
-  // S3 upload parameters
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: fileName,
@@ -45,17 +44,15 @@ const uploadToS3 = async (file, folder = "uploads") => {
     ContentType: file.mimetype,
   };
 
-  // Upload file to S3
   await s3Client.send(new PutObjectCommand(params));
 
-  // Generate file URL
   return `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
 };
+*/
 
 // Export middleware
 module.exports = {
   upload,
-  uploadToS3,
   s3Client,
   PutObjectCommand,
   DeleteObjectCommand,

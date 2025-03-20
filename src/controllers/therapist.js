@@ -345,7 +345,6 @@ module.exports = {
         );
       } catch (error) {
         console.error("Error deleting old image from S3:", error);
-        // Error deleting old image is not critical, continue
       }
     }
 
