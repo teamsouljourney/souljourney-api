@@ -250,7 +250,6 @@ module.exports = {
       "address",
       "profession"
     );
-    console.log(filteredObj);
 
     const data = await User.updateOne({ _id: req.params.id }, filteredObj, {
       runValidators: true,

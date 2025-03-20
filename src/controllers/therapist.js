@@ -222,7 +222,8 @@ module.exports = {
       "image",
       "description",
       "experience",
-      "graduation"
+      "graduation",
+      "categoryId"
     );
 
     const data = await Therapist.updateOne(

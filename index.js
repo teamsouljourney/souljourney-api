@@ -5,7 +5,7 @@
 /* ------------------------------------------------- */
 
 const express = require("express");
-const fs = require("fs");
+// const fs = require("fs");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
@@ -15,15 +15,16 @@ const http = require("http");
 const https = require("https");
 const initializeSocket = require("./src/configs/socket");
 
-const key = fs.readFileSync("./certs/localhost-key.pem");
-const cert = fs.readFileSync("./certs/localhost.pem");
+// const key = fs.readFileSync("./certs/localhost-key.pem");
+// const cert = fs.readFileSync("./certs/localhost.pem");
 
 let server;
-if (process.env.NODE_ENV === "production") {
-  server = http.createServer(app);
-} else {
-  server = https.createServer({ key, cert }, app);
-}
+server = http.createServer(app);
+// if (process.env.NODE_ENV === "production") {
+//   server = http.createServer(app);
+// } else {
+//   server = https.createServer({ key, cert }, app);
+// }
 
 /* ----------------------------------- */
 // Required Modules:
