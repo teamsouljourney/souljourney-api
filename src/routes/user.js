@@ -1,4 +1,4 @@
-"use strict";
+("use strict");
 
 /* ------------------------------------------------- */
 /*                  SOULJOURNEY API                  */
@@ -7,7 +7,7 @@
 const router = require("express").Router();
 
 const user = require("../controllers/user");
-const upload = require("../middlewares/upload");
+const { upload } = require("../middlewares/upload");
 
 router.route("/").get(user.list).post(user.create);
 router
