@@ -21,6 +21,11 @@ const {
 } = require("../utils/emailTamplates/changePasswordEmail");
 const Appointment = require("../models/appointment");
 const TherapistTimeTable = require("../models/therapistTimeTable");
+const {
+  s3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} = require("../middlewares/upload");
 
 module.exports = {
   list: async (req, res) => {
@@ -349,15 +354,47 @@ module.exports = {
       throw new CustomError(req.t(translations.user.notFound), 404);
     }
 
-    // If user already has an image that's stored in our uploads folder, delete it
-    if (user.image && user.image.includes("_")) {
-      const oldImagePath = `./uploads/${user.image.split("/").pop()}`;
-      if (require("fs").existsSync(oldImagePath)) {
-        require("fs").unlinkSync(oldImagePath);
+    // If user already has an image stored in S3, delete it
+    if (user.image && user.image.includes("amazonaws.com")) {
+      try {
+        // Extract Key from S3 URL
+        const s3Url = new URL(user.image);
+        const key = s3Url.pathname.substring(1); // Remove leading slash
+
+        // Delete old image from S3
+        await s3Client.send(
+          new DeleteObjectCommand({
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: key,
+          })
+        );
+      } catch (error) {
+        console.error("Error deleting old image from S3:", error);
+        // Error deleting old image is not critical, continue
       }
     }
 
-    const imageUrl = `/uploads/${req.file.filename}`;
+    // Create filename (replace spaces with hyphens)
+    const fileName = `users/${userId}/profile-pictures/${Date.now()}_${req.file.originalname.replace(
+      /\s+/g,
+      "-"
+    )}`;
+
+    // S3 upload parameters
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: fileName,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+
+    // Upload file to S3
+    await s3Client.send(new PutObjectCommand(params));
+
+    // Generate file URL
+    const imageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+
+    // Update user information
     user.image = imageUrl;
     await user.save();
 
