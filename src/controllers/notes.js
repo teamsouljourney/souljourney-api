@@ -187,7 +187,7 @@ module.exports = {
 
     const { userId } = req.params;
 
-    const data = await Notes.find({ userId }).populate([
+    const data = await Notes.find({ userId, therapistId: req.user._id }).populate([
       "userId",
       "therapistId",
     ]);
